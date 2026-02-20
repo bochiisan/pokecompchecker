@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ポケモン図鑑コンプ率チェッカー</title>
+        <style>
+        	body { 
+        		font-family: Arial, sans-serif;
+		        text-align: center; 
+        		background: #eef2f5; /* 背景を少し青みのあるグレーに */
+		        margin: 0;
+        		padding: 20px;
+	        }
+
+	        /* 操作パネルの固定 */
+        	.controls { 
+	        	position: sticky; 
+		        top: 0; 
+        		background: #f4f7f9; 
+        		padding: 15px; 
+        		z-index: 100; 
+        		border-bottom: 1px solid #ddd; 
+         	}
+        	
+            input, select { 
+		        padding: 8px; 
+        		border-radius: 5px; 
+		        border: 1px solid #ccc; 
+        		margin: 5px; 
+            }
+
+
+            /* マス目の設定（1マスのサイズを完全に固定） */
+            .grid { 
+                display: grid; 
+                /* 1マスの幅を 100px に固定。画面幅に合わせて自動配置 */
+                grid-template-columns: repeat(auto-fill, 100px); 
+                gap: 12px; 
+                max-width: 1000px; 
+                margin: 0 auto; 
+                justify-content: center;
+            }
+
+            /* 1つ1つのマスのデザイン */
+            /* 1. 名前の設定（改行を許可し、すべて表示する） */
+            .name {
+                display: block;
+                font-size: 11px;
+                font-weight: bold;
+                color: #333; 
+                width: 100%;
+                text-align: center;
+                white-space: normal;
+                overflow: visible;
+                line-height: 1.2;
+    
+                /* 【ここを修正】一文字ずつ切るのをやめ、自然な位置で改行させる */
+                word-break: normal; 
+                overflow-wrap: anywhere; 
+    
+                /* 少し上下の余白を作ってバランスを取る */
+                margin-top: 4px; 
+                pointer-events: none;
+            }
+
+            /* 2. マスの設定（名前が2行になっても耐えられるようにする） */
+            .pokemon { 
+                position: relative; 
+                background: white; 
+                width: 100px;
+                /* 固定高さ(height)ではなく、最小高さ(min-height)を使うのがコツです */
+                min-height: 85px; 
+                height: auto;           /* 内容量に合わせて伸びるようにする */
+    
+                padding: 22px 4px 10px; 
+                display: flex;
+                flex-direction: column;
+                justify-content: center; /* 常に中央寄せ */
+                align-items: center;
+                box-sizing: border-box;
+                /* 指でなぞる時にテキストが選択されないようにする */
+                user-select: none;
+                -webkit-user-select: none;
+    
+                /* スマホで長押しした時のメニュー（コピーなど）を防止 */
+                -webkit-touch-callout: none;
+
+                /* タッチ操作時のデフォルト動作（スクロール等）を制御 */
+                touch-action: auto; 
+            }
+
+            /* 捕まえた時のデザイン（半透明＋緑の枠） */
+            .caught { 
+                border: 2px solid #4caf50; /* 捕まえたら緑の枠を表示 */
+                background: #e1f5fe; /* 背景を薄い水色に */
+                box-shadow: 0 0 10px rgba(0, 210, 255, 0.5); /* ほんのり光るエフェクト */
+            }
+            /* ボタンの共通設定（共通の大きさにする） */
+            .mini-btn {
+                position: absolute;
+                top: 5px;
+                width: 22px;  /* 幅を固定 */
+                height: 22px; /* 高さを固定 */
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #ccc;
+                cursor: pointer;
+                z-index: 10;
+                transition: 0.2s;
+                font-size: 10px;
+                pointer-events: auto;
+            }
+
+            /* 左上：色違いボタン（星型） */
+            .shiny-btn {
+                left: 5px;
+                background: #eee;
+                /* 星型に切り抜く設定 */
+                clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                }
+            /* 右上：メスボタン（円形） */
+            .female-btn {
+                right: 5px;
+                background: #eee;
+                border-radius: 50%; /* 完全に丸くする */
+                font-weight: 900 !important; /* 可能な限り太くする */
+                font-size: 14px !important;   /* 文字サイズを少し大きく */
+                font-family: Arial, sans-serif; /* 記号がはっきり見えるフォントを指定 */
+            }
+            /* ONの時の色指定（形を維持したまま色を変える） */
+            .shiny-btn.shiny-on {
+                background: #fbc02d !important;
+                color: #fbc02d;
+                border: none;
+            }
+
+            .female-btn.female-on {
+                background: #f06292 !important;
+                color: #fff;
+                border: none;
+            }
+
+            .container {
+                position: absolute; /* 絶対配置にして、ボタンと同じ行に浮かせる */
+                top: 5px;           /* ボタンのtopと同じ値 */
+                left: 0;
+                width: 100%;        /* 横幅いっぱいに広げて中央計算の基準にする */
+                height: 22px;       /* ボタンの高さと同じ */
+                display: flex;
+                align-items: center;
+                justify-content: center; /* これで左右中央 */
+                pointer-events: none;    /* 下にあるカードのクリックを邪魔しない */
+                z-index: 5;              /* ボタン(z-index:10)より少し下に配置 */
+            }
+
+            .number {
+                font-size: 11px;
+                font-weight: bold;
+                color: #333;
+                background: rgba(255,255,255,0.8); /* 重なりで見えにくい場合に背景を少し白く */
+                padding: 0 4px;
+                border-radius: 4px;
+                pointer-events: none;
+            }
+            /* 説明ゾーン全体のレイアウト */
+            .info-section {
+                max-width: 1000px;
+                margin: 40px auto; /* マス目との間に余白を作る */
+                padding: 0 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+                text-align: left; /* 説明文は左寄せが読みやすい */
+            }
+
+            /* 各カードのデザイン */
+            .info-card {
+                background: white;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                border: 1px solid #ddd;
+            }
+
+            .info-card h2 {
+                font-size: 18px;
+                margin-top: 0;
+                color: #4caf50;
+                border-bottom: 2px solid #eef2f5;
+                padding-bottom: 8px;
+            }
+
+            .info-list {
+                list-style: none;
+                padding: 0;
+                font-size: 14px;
+                line-height: 1.8;
+                color: #555;
+            }
+
+            .info-list li::before {
+                content: "・";
+                color: #4caf50;
+                font-weight: bold;
+                margin-right: 5px;
+            }
+
+            .update-tag {
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                color: #3a3a3a;
+                margin-top: 10px;
+            }
+            /* アコーディオン全体のスタイル */
+            .accordion {
+                margin-bottom: 10px;
+                border: 1px solid #eee;
+                border-radius: 8px;
+                overflow: hidden;
+                transition: 0.3s;
+            }
+
+            /* 見出し部分（クリックできる場所） */
+            .accordion summary {
+                padding: 12px 15px;
+                background: #f9fbff;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                list-style: none; /* デフォルトの三角形を消す（任意） */
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: #444;
+            }
+
+            /* カスタムの矢印アイコン（右側に配置） */
+            .accordion summary::after {
+                content: '▼';
+                font-size: 10px;
+                color: #aaa;
+                transition: 0.3s;
+            }
+
+            /* 開いている時の矢印の向き */
+            .accordion[open] summary::after {
+                transform: rotate(180deg);
+            }
+
+            .accordion summary:hover {
+                background: #edf2f7;
+            }
+
+            /* 中身のコンテンツ */
+            .accordion .content {
+                padding: 15px;
+                font-size: 13px;
+                line-height: 1.6;
+                background: white;
+                border-top: 1px solid #eee;
+                color: #252525;
+            }
+            .accordion .minicontent {
+                padding: 10px;
+                font-size: 10px;
+                line-height: 1.6;
+                border-top: 1px solid #eee;
+                color: #252525;
+            }
+
+            /* 開いている時に少し影をつける */
+            .accordion[open] {
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                border-color: #4caf50;
+            }
+            /* 単語の途中での改行を禁止するクラス */
+            .nowrap {
+                display: inline-block; /* これで囲った部分が「1つの塊」として扱われます */
+                white-space: nowrap;   /* 塊の中での改行を完全に禁止 */
+            }
+            .filter-row {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin: 10px 0;
+            }
+
+            /* プルダウンとボタンの共通スタイル */
+            #pokedexType, .dropdown-button {
+                height: 35px; /* 標準的なセレクトボックスの高さ */
+                padding: 0 30px 0 10px; /* 右側に矢印用の余白 */
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 13.3px; /* 標準的なセレクトボックスのサイズ */
+                background: #fff;
+                cursor: pointer;
+                box-sizing: border-box;
+                position: relative;
+                color: #333;
+                min-width: 160px;
+                text-align: left;
+                padding-top: 0;
+                padding-bottom: 0;
+                display: flex;       /* ボタン内の文字も中央寄せにする */
+                align-items: center;
+            }
+
+            /* プルダウン特有の矢印（▼）を再現 */
+            .dropdown-button::after {
+                content: "";
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #888; /* 下向き矢印 */
+                pointer-events: none;
+            }
+
+            /* 浮き出るメニュー（プルダウンの中身と同じ挙動） */
+            .custom-select-container { position: relative; }
+
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1000;
+                background: white;
+                border: 1px solid #ccc;
+                border-top: none;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                min-width: 100%;
+                max-height: 250px;
+                overflow-y: auto;
+                padding: 5px 0;
+                text-align: left; 
+            }
+
+            .dropdown-menu label {
+                display: block;
+                padding: 8px 12px;
+                font-size: 13px;
+                white-space: nowrap;
+                cursor: pointer;
+            }
+
+            .dropdown-menu label:hover { background-color: #f0f0f0; }
+
+
+            /* 親要素：すべての要素を垂直方向の中央で揃える */
+            .filter-row, .search-bar-row, .controls {
+                display: flex;
+                justify-content: center;
+                align-items: center; /* これで上下の中央が揃います */
+                gap: 10px;
+                flex-wrap: wrap; /* スマホで入り切らない時に折り返す */
+            }
+
+            /* プルダウン・入力欄・自作ボタンの高さを完全に統一 */
+            #pokedexType, #searchInput, .dropdown-button {
+                height: 38px;         /* 高さを固定値で統一 */
+                line-height: 36px;    /* 文字の位置を中央に寄せる */
+                margin: 0;            /* ブラウザ特有の余白を消す */
+                vertical-align: middle; /* Flexが効かない環境への保険 */
+                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
+            }
+            /* ボタンをきれいに並べるための共通スタイル */
+            .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange, .bulk-btn-pink {
+                height: 30px;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .bulk-btn-green { background: #4caf50; }
+            .bulk-btn-red { background: #f44336; }
+            .bulk-btn-orange { background: #fbc02d; }
+            .bulk-btn-pink { background: #f06292; }
+
+            #scroll-nav {
+                position: fixed;
+                top: 20px;       /* 上からの位置（右上） */
+                right: 15px;     /* 右からの位置 */
+                z-index: 9999;   /* 他の要素より手前に表示 */
+                display: flex;
+                flex-direction: column;
+                opacity: 0.4;    /* うっすら表示（40%） */
+                transition: opacity 0.3s; /* マウスを乗せた時にふわっと濃くする */
+            }
+
+            /* マウスを乗せた時、またはスマホで触れた時に濃くする */
+            #scroll-nav:hover {
+                opacity: 1.0;
+            }
+
+            #scroll-nav button {
+                width: 40px;
+                height: 40px;
+                background-color: #333;
+                color: white;
+                border: none;
+                border-radius: 50%; /* まん丸のボタン */
+                cursor: pointer;
+                font-size: 18px;
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    
+            /* スマホ（画面幅600px以下）専用の設定 */
+            @media screen and (max-width: 600px) {
+                /* 1. タイトル（h1）をスリムにする */
+                h2 {
+                    font-size: 15px !important;   /* PC版よりかなり小さく */
+                    margin: 10px 0 5px 0 !important; /* 上下の余白をギュッと詰める */
+                    letter-spacing: 0.05em;      /* 文字間隔を少し詰める */
+                }
+                #pokedex {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    justify-content: flex-start !important; /* 左から詰め込む */
+                    padding: 2px !important; /* 画面端の極小の余白のみ */
+                    gap: 0 !important; /* 隙間をゼロにする */
+                    padding-left: 12px !important;  /* 左側のゆとり */
+                    padding-right: 12px !important; /* 右側のゆとり */
+                    justify-content: center !important; /* 中央に寄せる */
+                    box-sizing: border-box !important;
+                }
+                /* 1. ポケモンカード本体を大きくする */
+                .pokemon {
+                    /* 画面の25%から、マージン分(2px)を引いたサイズ */
+                    width: calc(20% - 2px) !important; 
+                            min-height: 10px !important; 
+                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
+                    height: auto !important; 
+                    
+                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
+                    margin: 1px !important; 
+                    
+                    box-sizing: border-box !important; /* 枠線を含めたサイズ計算 */
+                }
+            
+                /* 2. 図鑑番号と名前の文字を大きくする */
+                .number {
+                    font-size: 9px !important;
+                    top: 5px !important;
+                }
+                
+                .name {
+                    font-size: 8px !important;
+                    bottom: 6px !important;
+                    line-height: 1.1;
+                    font-weight: bold; /* 名前をはっきりさせる */
+                }
+            
+                /* 3. ミニボタン（★や♀）を押しやすく大きくする */
+                .mini-btn {
+                    width: 14px !important;  /* 面積を広げる */
+                    height: 14px !important;
+                    font-size: 12px !important;
+                    border-width: 2px !important;
+                }
+            
+                /* 4. 全体の一括操作メニューなどの文字サイズアップ */
+                #counter, #shiny-counter {
+                    font-size: 12px !important; /* 進捗をドーンと見せる */
+                }
+            /* 3. 折りたたみメニュー*/
+                summary {
+                    font-size: 12px !important; /* メニューの文字も大きく */
+                    padding: 5px !important;
+                }
+            
+                .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange, .bulk-btn-pink {
+                    padding: 10px 15px !important; /* 一括ボタンを巨大化 */
+                    font-size: 14px !important;
+                    flex: 1 1 45%; /* スマホでは2列に並ぶように */
+                }
+                
+                /* 3. 検索窓やプルダウンの入っているエリアの余白もカット */
+                .controls {
+                    gap: 3px !important;         /* 要素同士の隙間を狭く */
+                    margin-bottom: 10px !important;
+                }
+            
+                /* 4. プルダウン（図鑑選択）や検索窓自体のサイズも微調整 */
+                #pokedexType, #searchInput, #originDropdownBtn{
+                    width: calc(30% - 2px) !important;  /* 横幅を自由に調整してください */
+                    max-width: 300px;       /* 大きなスマホでも広がりすぎないように */
+                    font-size: 11px !important;
+                    height: 28px !important;
+                    padding: 2px 8px !important;
+                }
+                
+            
+                /* 2. チェックボックスのラベル（地方名など） */
+                .filter-group label, .origin-filter label {
+                    font-size: 8px !important;  /* 最小クラスの文字サイズ */
+                    margin-right: 3px !important;
+                    line-height: 1.2 !important;
+                }
+            
+                /* 3. チェックボックス自体の大きさ（小さくして文字と合わせる） */
+                input[type="checkbox"] {
+                    transform: scale(0.7); /* 80%の大きさに縮小 */
+                    margin: 0 2px 0 0 !important;
+                    vertical-align: middle;
+                }
+            
+                /* 4. 絞り込みエリア全体の隙間を詰める */
+                .controls, .filter-group {
+                    gap: 1px !important;
+                    margin-bottom: 5px !important;
+                    padding: 0 5px !important;
+                }
+                
+                #scroll-nav {
+                    top: 15px;   /* スマホでは少し位置を詰める */
+                    right: 10px;
+                }
+                #scroll-nav button {
+                    width: 35px; /* スマホでは一回り小さく */
+                    height: 35px;
+                    font-size: 16px;
+                }
+    
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <h2>ポケモン図鑑コンプ率チェッカー</h2>
+        <div class="controls">
+            <!-- カウンター表示用 -->
+            <div style="width: 100%; display: block; clear: both; margin: 15px 0;">
+                <div style="display: flex; justify-content: center; gap: 10px; font-weight: bold; font-size: 16px;">
+                    <div id="counter" style="color: #000;">進捗: 0 / 0 (0%)</div>
+                    <div id="shiny-counter" style="color: #000;">★色違い: 0 / 0 (0%)</div>
+                </div>
+            </div>
+
+            <div style="width: 100%; display: block; clear: both;">
+                <div class="filter-row">
+                    <!-- 既存の図鑑タイプ選択 -->
+                    <select id="pokedexType">
+                        <option value="all">全国図鑑</option>
+                        <option value="g1">カントー図鑑 (赤緑青ピFRLG)</option>
+                        <option value="g2">ジョウト図鑑 (金銀ク)</option>
+                        <option value="g3">ホウエン図鑑 (RSE)</option>
+                        <option value="g4">シンオウ図鑑</option>
+                        <option value="g4-1">ジョウト図鑑 (HGSS)</option>
+                        <option value="g5">イッシュ図鑑 (BW)</option>
+                        <option value="g5-1">イッシュ図鑑 (BW2)</option>
+                        <option value="g6s">セントラルカロス図鑑</option>
+                        <option value="g6k">コーストカロス図鑑</option>
+                        <option value="g6m">マウンテンカロス図鑑</option>
+                        <option value="g6-1">ホウエン図鑑 (ORAS)</option>
+                        <option value="g7">アローラ図鑑 (SM)</option>
+                        <option value="g7m">メレメレ図鑑 (SM)</option>
+                        <option value="g7a">アーカラ図鑑 (SM)</option>
+                        <option value="g7u">ウラウラ図鑑 (SM)</option>
+                        <option value="g7p">ポニ図鑑 (SM)</option>
+                        <option value="g7-1">アローラ図鑑 (USUM)</option>
+                        <option value="g7-1m">メレメレ図鑑 (USUM)</option>
+                        <option value="g7-1a">アーカラ図鑑 (USUM)</option>
+                        <option value="g7-1u">ウラウラ図鑑 (USUM)</option>
+                        <option value="g7-1p">ポニ図鑑 (USUM)</option>
+                        <option value="g7-2">カントー図鑑 (LPLE)</option>
+                        <option value="g8">ガラル図鑑</option>
+                        <option value="g8y">ヨロイ島図鑑</option>
+                        <option value="g8k">カンムリ雪原図鑑</option>
+                        <option value="g8-1">ヒスイ図鑑</option>
+                        <option value="g9">パルデア図鑑</option>
+                        <option value="g9k">キタカミ図鑑</option>
+                        <option value="g9b">ブルーベリー図鑑</option>
+                        <option value="g9-1">ミアレ図鑑</option>
+                        <option value="g9-1i">異次元図鑑</option>
+                    </select>
+    
+                    <!-- 地方選択（プルダウンに見えるボタン） -->
+                    <div class="custom-select-container">
+                        <button type="button" id="originDropdownBtn" class="dropdown-button">
+                            初登場地方 (複数選択可) <span class="arrow"></span>
+                        </button>
+                        
+                        <div id="originDropdownMenu" class="dropdown-menu">
+                            <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
+                            <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
+                            <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
+                            <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
+                            <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
+                            <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
+                            <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
+                            <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
+                            <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
+                            <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
+                            <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
+                            <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
+                        </div>
+                    </div>
+    
+                    <input type="text" id="searchInput" placeholder="名前検索...">
+    
+                </div>
+            </div>
+    
+    
+            <div style="width: 100%; display: block; clear: both;">
+                <div class="filter-group">
+        	        <label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label>
+                    <label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label>
+        	        <label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label>
+                </div>
+            </div>
+            <div style="width: 100%; display: block; clear: both;">
+                <div class="filter-group">
+                    <label><input type="checkbox" id="hideCaughtFilter"> 捕獲済みを非表示</label>
+                    <label><input type="checkbox" id="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label>
+                </div>
+            </div>
+            <div style="width: 100%; display: block; clear: both;">
+                <div class="filter-group">
+                    <label><input type="checkbox" id="notInGoFilter"> ポケモンGOモード</label>
+                	<label><input type="checkbox" id="MegaFilter"> メガシンカ一覧</label>
+                	<label><input type="checkbox" id="GmaxFilter"> キョダイマックス一覧</label>
+                </div>
+            </div>
+    
+            <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
+            <div style="width: 100%; display: block; clear: both;">
+                <details style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background: #fff; max-width: 500px; margin: 0 auto;">
+                    <summary style="padding: 10px; background: #f8f9fa; cursor: pointer; font-size: 13px; font-weight: bold; color: #000000; list-style: none;">
+                        一括操作（表示中のみ）
+                    </summary>
+                    <div style="padding: 10px; background: white;">
+                        <!-- ポケモン行 -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
+                            <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">ポケモン</p>
+                            <button onclick="bulkCollectDisplayed(true)" class="bulk-btn-green" style="width: 80px;">一括捕獲</button>
+                            <button onclick="bulkCollectDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                        </div>
+                    
+                        <!-- ★色違い行 -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
+                            <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">★色違い</p>
+                            <button onclick="bulkShinyDisplayed(true)" class="bulk-btn-orange" style="width: 80px;">一括捕獲</button>
+                            <button onclick="bulkShinyDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                        </div>
+            
+                        <!-- ♀メスのすがた行 -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
+                            <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;"><span style="font-weight: 900; font-size: 16px; color: #000000; margin-right: 2px;">♀</span>メスのすがた</p>
+                            <button onclick="bulkFemaleDisplayed(true)" class="bulk-btn-pink" style="width: 80px;">一括捕獲</button>
+                            <button onclick="bulkFemaleDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="grid" id="pokedex"></div>
+
+        <!-- 説明ゾーン -->
+        <div class="info-section">
+            <div class="info-card">
+                
+                <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
+                    <p style="font-size: 11px; color: #666; margin-bottom: 8px;">SNSで進捗を報告する</p>
+                    <button onclick="shareProgress()" style="padding: 8px 20px; background: #1DA1F2; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                        Twitter(X)でシェア
+                    </button>
+                </div>
+
+                <h2>使い方ガイド</h2>
+                <ul class="info-list">
+                    <li><strong>捕獲チェック:</strong> マス目を直接クリックすると「捕獲済み」になります。再度クリックで解除できます。</li>
+                    <li><strong>ドラッグ・なぞり:</strong> マス目をドラッグする/なぞることで、一括操作ができます。</li>
+                    <li><strong>色違い/メスのすがた:</strong> マス内の <span style="color: #fbc02d;">★</span> や <span style="font-weight: 900; font-size: 16px; color: #d81b60; margin-right: 2px;">♀</span> ボタンで個別に記録できます。</li>
+                    <li><strong>絞り込み:</strong> 地方チェックボックスや検索窓を使って、特定のポケモンだけを表示できます。</li>
+                    <li><strong>ポケモンGOモード:</strong> ポケモンGOに実装済みのポケモンと色違いだけを表示するモードです。</li>
+                    <li><strong>一括操作:</strong> 「一括捕獲/解除」ボタンで、現在見えている範囲を一気に埋める/解除することができます。</li>
+                </ul>
+
+                <h2>詳細・データの扱い</h2>
+                
+                <!-- 開閉リスト -->
+                <details class="accordion">
+                    <summary>記載していないポケモンについて</summary>
+                    <div class="content">
+                        <p>以下のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
+                        <div class="minicontent">
+                            <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウスのの各タイプの姿、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクトのの各カセットの姿、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディの各タイプの姿、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="accordion">
+                    <summary>データの保存場所とバックアップについて</summary>
+                    <div class="content">
+                        <p>データはブラウザの「ローカルストレージ」に自動保存されます。サーバーにデータは送信されず、あなたのPCやスマホ内にのみ保存されます。</p>
+                        <p>ブラウザのキャッシュを削除するとデータが消えてしまいます。データの消失を防ぐのに、以下のバックアップ機能をご利用ください。</p>
+                        <p><strong>【バックアップ】</strong></p>
+                        <ol style="margin-left: 20px; font-size: 13px;">
+                            <li><strong>「バックアップ」</strong>ボタンを押すと、下の枠にバックアップ用テキストが表示されます。</li>
+                            <li>枠内のテキストをすべてコピーして、メモ帳などに貼り付けて保存してください。</li>
+                        </ol>
+
+                        <p style="margin-top: 15px;"><strong>【復元】</strong></p>
+                        <ol style="margin-left: 20px; font-size: 13px;">
+                            <li>保存しておいたバックアップテキストをコピーします。</li>
+                            <li>以下の入力枠に、テキストを貼り付けます。</li>
+                            <li><strong>「データの復元」</strong>ボタンを押すと、以前の記録が復元されます。</li>
+                        </ol>
+                        <p style="font-size: 12px; color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされるのでご注意ください。</p>
+                    </div>
+                    
+                    <div style="border-top: 1px dashed #ddd; padding-top: 15px; text-align: center;">
+                        <p style="font-size: 11px; color: #666; margin-bottom: 8px;">データのバックアップ・復元</p>
+    
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+                            <button onclick="exportToTextarea()" style="padding: 6px 12px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                バックアップ
+                            </button>
+                            <button onclick="importFromTextarea()" style="padding: 6px 12px; background: #607D8B; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                データの復元
+                            </button>
+                        </div>
+
+                        <!-- 入力・出力用のテキストエリア -->
+                        <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます" 
+                            style="width: 90%; height: 80px; font-size: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                        
+                        <p style="font-size: 10px; color: #999; margin-top: 5px;">※復元時はテキストを貼り付けてからボタンを押してください</p>
+                    </div>
+
+                </details>
+
+                <details class="accordion">
+                    <summary>データの初期化について</summary>
+                    <div class="content">
+                        <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消すことができます。</p>
+                        <button onclick="resetAllData()" style="padding: 8px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; opacity: 0.7;">
+                            データ初期化ボタン
+                        </button>
+                    </div>
+                </details>
+
+                <h2>免責事項</h2>
+                <div class="content">
+                    <p>ポケットモンスター・ポケモン・Pokémonは<span class="nowrap">任天堂・</span><span class="nowrap">クリーチャーズ・</span><span class="nowrap">ゲームフリーク</span>の登録商標です。<br>
+                    当サイトは個人制作の非公式ファンサイトであり、<span class="nowrap">任天堂株式会社、</span><span class="nowrap">株式会社クリーチャーズ、</span><span class="nowrap">株式会社ゲームフリーク、</span><span class="nowrap">株式会社ポケモン</span>とは一切関係ありません。</p>
+    
+                    <p>当サイトの情報は、公式の情報と異なる可能性がございます。</p>
+
+                    <p>当サイトの利用により発生したデータの消失、不具合、その他いかなる損害についても、製作者は一切の責任を負いかねます。あらかじめご了承ください。</p>
+        
+                    <p>入力されたデータはブラウザ内にのみ保存され、外部サーバーに送信されることはありません。</p>
+                </div>
+
+                <h2>更新情報</h2>
+                <details class="accordion">
+                    <summary><div class="update-tag">最終更新: 2026/02/XX</div></summary>
+                    <div class="update-tag">2026/02/XX: 公開</div>
+                </details>
+                
+            </div>
+        </div>
+
+        <script>
+
+            // グローバル変数として定義
+            let pokemonData = []; 
+
+            // 【重要】JSONを読み込む関数
+            async function init() {
+                try {
+                // 同じフォルダにある pokemon.json を取得
+                    const response = await fetch('pokemon.json');
+
+                    if (!response.ok) {
+                        throw new Error('ファイルの読み込みに失敗しました');
+                    }
+
+                    // JSONデータを配列として読み込む
+                    pokemonData = await response.json();
+                    
+                    // 読み込みが完了してから描画を開始
+                    render(); 
+                    
+                } 
+                catch (error) {
+                    console.error("エラーが発生しました:", error);
+                    document.getElementById('pokedex').innerHTML = 
+                    `<p style="color:red;">データの読み込みに失敗しました。Live Serverで開いているか、ファイル名が正しいか確認してください。</p>`;
+                }
+            }
+
+            // ページの読み込みが終わったら実行
+            window.onload = init;
+
+            const modeSettings = {
+                "all": { base: ["all"], origins: [], ranges: []},
+                "g1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]]},
+                "g2": { base: ["g2"], origins: [], ranges: []},
+                "g3": { base: ["g3"], origins: [], ranges: []},
+                "g4": { base: ["g4"], origins: [], ranges: []},
+                "g4-1": { base: ["g4-1"], origins: [], ranges: []},
+                "g5": { base: ["g5"], origins: ["5"], ranges: []}, // カンマを追加
+                "g5-1": { base: ["g5-1"], origins: [], ranges: []},
+                "g6s": { base: ["g6s"], origins: [], ranges: []},
+                "g6k": { base: ["g6k"], origins: [], ranges: []},
+                "g6m": { base: ["g6m"], origins: [], ranges: []},
+                "g6-1": { base: ["g6-1"], origins: [], ranges: []},
+                "g7": { base: ["g7"], origins: [], ranges: []},
+                "g7m": { base: ["g7m"], origins: [], ranges: []},
+                "g7a": { base: ["g7a"], origins: [], ranges: []},
+                "g7u": { base: ["g7u"], origins: [], ranges: []},
+                "g7p": { base: ["g7p"], origins: [], ranges: []},
+                "g7-1": { base: ["g7-1"], origins: [], ranges: []},
+                "g7-1m": { base: ["g7-1m"], origins: [], ranges: []},
+                "g7-1a": { base: ["g7-1a"], origins: [], ranges: []},
+                "g7-1u": { base: ["g7-1u"], origins: [], ranges: []},
+                "g7-1p": { base: ["g7-1p"], origins: [], ranges: []},
+                "g7-2": { base: ["g7-2"], origins: ["1", "2", "3", "4", "5", "6", "7"], ranges: []},
+                "g8": { base: ["g8"], origins: [], ranges: []},
+                "g8y": { base: ["g8y"], origins: [], ranges: []},
+                "g8k": { base: ["g8k"], origins: [], ranges: []},
+                "g8-1": { base: ["g8-1"], origins: [], ranges: []},
+                "g9": { base: ["g9"], origins: [], ranges: []},
+                "g9k": { base: ["g9k"], origins: [], ranges: []},
+                "g9b": { base: ["g9b"], origins: [], ranges: []},
+                "g9-1": { base: ["g9-1"], origins: [], ranges: []},
+                "g9-1i": { base: ["g9-1i"], origins: [], ranges: []},
+            };
+
+        	const pokedex = document.getElementById('pokedex');
+        	const searchInput = document.getElementById('searchInput');
+        	const modeSelect = document.getElementById('pokedexType'); 
+        	const originsFilter = document.getElementById('originsFilter');
+        	const eventOnlyFilter = document.getElementById('eventOnlyFilter');
+        	const notInGoFilter = document.getElementById('notInGoFilter');
+        	const noFormFilter = document.getElementById('noFormFilter');
+        	const more869Filter = document.getElementById('more869Filter');
+        	const MegaFilter = document.getElementById('MegaFilter');
+        	const GmaxFilter = document.getElementById('GmaxFilter');
+
+
+            // 保存用リストの読み込み
+            let caughtList = JSON.parse(localStorage.getItem('caughtPokemon')) || [];
+            let shinyList = JSON.parse(localStorage.getItem('shinyPokemon')) || [];
+            let femaleList = JSON.parse(localStorage.getItem('femalePokemon')) || [];
+
+        	function render() {
+        		pokedex.innerHTML = '';
+        		const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                // チェックされている地方の値を配列で取得
+                const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked'))
+                .map(cb => cb.value);
+        		let displayData = [...pokemonData];
+                const hideCaught = document.getElementById('hideCaughtFilter').checked;
+                const hideShinyCaught = document.getElementById('hideShinyCaughtFilter').checked;
+
+                // ① フィルタリング & 番号(currentNo)の付与
+        		displayData = displayData.filter(p => {
+        			const bases = Array.isArray(config.base) ? config.base : [config.base];
+                    // 修正後（0 を数値として許可する）
+                    const isBaseMatch = (bases.includes("all")) || (p.localNos && bases.some(b => p.localNos[b] !== undefined));
+        			const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
+                    // 1つもチェックがない場合は「すべて表示」、チェックがある場合はその地方のみ
+                    const isSelectOriginMatch = (selectedOrigins.length === 0) || (selectedOrigins.includes(p.origins));
+
+		        	// --- ② 【追加】配布限定の「追加表示」ロジック ---
+			        // チェックONなら「すべて許可」、チェックOFFなら「配布限定(true)以外を許可」
+            		const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
+
+        			// --- ③ 【追加】GO未登場の「除外」ロジック（ONで消える） ---
+		        	const matchGo = !notInGoFilter.checked || p.notInGo !== true;
+
+        			// 【追加】姿違いの除外（ONで非表示）
+		        	// noForm が true の個体を、チェックONの時に取り除く
+         			const matchForm = !noFormFilter.checked || p.noForm !== true;
+
+        			// 【追加】マホイップの全表示（ONで表示）
+		        	// チェックONなら「すべて許可」、チェックOFFなら「それ以外を許可」
+            		const match869 = more869Filter.checked || p.more869 !== true;
+
+                    // チェックONなら「Megaがtrue」のみ、チェックOFFなら「Megaがtrue以外」のみ表示
+                    const matchMega = MegaFilter.checked ? p.Mega === true : p.Mega !== true;
+
+                    // チェックONなら「Gmaxがtrue」のみ、チェックOFFなら「Gmaxがtrue以外」のみ表示
+                    const matchGmax = GmaxFilter.checked ? p.Gmax === true : p.Gmax !== true;
+                    // 【追加】捕獲済みを非表示にするロジック
+                    // 「非表示フィルタがOFF」 または 「捕獲リストに含まれていない（未捕獲）」 なら表示
+                    const isNotCaught = !caughtList.some(id => String(id) === String(p.id));
+                    const matchHideCaught = !hideCaught || isNotCaught;
+                    const isShinyCaught = shinyList.some(id => String(id) === String(p.id));
+                    const matchHideShinyCaught = !hideShinyCaught || !isShinyCaught;
+
+
+        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught;
+        		})
+                .map(p => {
+                    const bases = Array.isArray(config.base) ? config.base : [config.base];
+                    const foundBase = bases.find(b => b === "all" || (p.localNos && p.localNos[b] !== undefined)); // ここ！
+                    let currentNo = p.id;
+                    if (foundBase !== "all") {
+                        currentNo = (p.localNos && p.localNos[foundBase] !== undefined) ? p.localNos[foundBase] : p.id;
+                    }
+                    return { ...p, currentNo };
+                });
+
+
+        		// ② 詳細な範囲指定（ranges）での絞り込み
+        		if (config.ranges.length > 0) {
+        			displayData = displayData.filter(p => {
+        				return config.ranges.some(([targetBase, start, end]) => {
+        					const num = (targetBase === "all") ? p.id : (p.localNos ? p.localNos[targetBase] : null);
+        					const actualEnd = (end === undefined) ? start : end;
+        					return num !== null && num >= start && num <= actualEnd;
+        				});
+        			});
+        		}
+
+        		// ③ 並び替え（rangesの掲載順優先 ＋ 同じ範囲内なら番号順）
+        		displayData.sort((a, b) => {
+        			const getRangeIndex = (pokemon) => {
+        				if (config.ranges.length === 0) return 0;
+        				return config.ranges.findIndex(([targetBase, start, end]) => {
+        					const num = (targetBase === "all") ? pokemon.id : (pokemon.localNos ? pokemon.localNos[targetBase] : null);
+        					return num !== null && num >= start && num <= (end || start);
+        				});
+        			};
+
+        			const indexA = getRangeIndex(a);
+        			const indexB = getRangeIndex(b);
+
+        			if (indexA !== indexB) return indexA - indexB; // rangesの順序を優先
+        			return a.currentNo - b.currentNo; // 同じ範囲内なら現在の番号順
+        		});
+
+        		// ④ 名前検索フィルタ
+        		if (searchInput.value) {
+        			displayData = displayData.filter(p => p.name.includes(searchInput.value));
+        		}
+
+        		// ⑤ 描画
+        		displayData.forEach((p, index) => {
+        			const card = document.createElement('div');
+
+        		    const isCaught = caughtList.some(id => String(id) === String(p.id));
+        			const isShiny = shinyList.some(id => String(id) === String(p.id));
+        			const isFemale = femaleList.some(id => String(id) === String(p.id));
+        			card.className = 'pokemon' + (isCaught ? ' caught' : '');
+        			// 保存や判定には元の p.id (808.1など) を使用
+                    
+                    // 【重要】スマホ判定用にIDを埋め込む
+                    card.setAttribute('data-id', p.id);
+
+
+        			// --- 表示番号(displayNo)の決定ロジック ---
+        			    let displayNo;
+
+                    if (config.startAt === 0 || config.startAt === 1) {
+                      // 0番や1番から連番を振るモードの場合
+                       displayNo = index + config.startAt;
+                    } 
+                    else {
+                        // p.currentNo が 0 の場合でも Math.floor が動くように明示
+                        // undefined や null の時だけフォールバックする
+                        const target = (p.currentNo !== undefined && p.currentNo !== null) ? p.currentNo : p.id;
+                        displayNo = Math.floor(Number(target)); 
+                    }
+
+                    // 名前の中に「(」や「（」があれば、その前で改行しやすくする
+                    // また、長いカタカナの間に「wbr（改行候補）」を挟む処理
+                    const styledName = p.name
+                    .replace(/([（(])/g, '<br>$1') // カッコがあれば強制改行
+                    .replace(/(.{6})(?=.)/g, '$1<wbr>'); // 4文字ごとに改行候補を隠し入れる
+
+        			// ① チェックボックスの状態を取得
+        		    const isNotInGoActive = notInGoFilter.checked;
+
+        			// ② 判定用のフラグ（現在チェックされているか）
+        			const isShinyActive = shinyList.some(id => String(id) === String(p.id));
+        			const isFemaleActive = femaleList.some(id => String(id) === String(p.id));
+
+        			// 「フィルタがON」 または 「JSONのnotInGoShinyがtrue」 なら非表示
+        		    const shinyBtnHtml = !(isNotInGoActive && p.notInGoShiny|| p.noShiny) 
+        		    ? `<button class="mini-btn shiny-btn ${isShinyActive ? 'shiny-on' : ''}" title="色違い">★</button>` 
+        		    : '';
+
+        		    let femaleBtnHtml = p.hasFemale 
+        		    ? `<button class="mini-btn female-btn ${isFemaleActive ? 'female-on' : ''}" title="メスのすがた">♀</button>` 
+        		    : '';
+
+        		    card.innerHTML = `
+      			        <!-- 左上：色違いボタン (ここを includes から isShinyActive に変更) -->
+      			        ${shinyBtnHtml}
+        			
+      			        <!-- 中央：番号表示 -->
+      			        <div class="container">
+      			            <span class="number">No.${displayNo}</span>
+      			        </div>
+
+      			        <!-- 右上：メスボタン -->
+      			        ${femaleBtnHtml}
+
+      			        <!-- 名前 -->
+      			        <span class="name">${styledName}</span>
+    			    `;
+
+                    // 【重要】ドラッグ開始の判定用
+                    let moveCount = 0;
+
+                    // ① なぞり（2枚目以降、または1枚目を動かした時）
+                    card.onmouseenter = () => {
+                        if (isDragging) {
+                            hasMoved = true;
+                            processDragAction(p.id, card);
+                        }
+                    };
+                    // ボタンのクリックイベント（なぞり後はキャンセル）
+                    [ {key: 'shiny', list: shinyList, sKey: 'shinyPokemon', class: 'shiny-on'},
+                      {key: 'female', list: femaleList, sKey: 'femalePokemon', class: 'female-on'} ].forEach(opt => {
+                        const btn = card.querySelector(`.${opt.key}-btn`);
+                        if (!btn) return;
+                        
+                        btn.onclick = (e) => {
+                            e.stopPropagation();
+                            if (hasMoved) return; // なぞり中なら無視
+                    
+                            const isOn = btn.classList.toggle(opt.class);
+                            toggleIdInList(opt.list, p.id, isOn, opt.sKey);
+                            render();
+                        };
+                    });
+
+                    // ② クリック（ここが1枚目の処理を担当する）
+                    card.onclick = (e) => {
+                        if (e.target.closest('.mini-btn')) return;
+                    
+                        // 【最重要】なぞり中、またはなぞり直後（300ms以内）はクリックを完全に無視
+                        if (isDragging || hasMoved) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            return;
+                        }
+                    
+                        // 通常の単発タップ処理
+                        const pId = p.id;
+                        const isIncluded = caughtList.some(id => String(id) === String(pId));
+                        if (isIncluded) {
+                            caughtList = caughtList.filter(id => String(id) !== String(pId));
+                        } 
+                        else {
+                            caughtList.push(pId);
+                        }
+                        localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
+                        render();
+                    };
+
+                    card.onmousedown = (e) => {
+                        if (e.button !== 0) return;
+                        e.preventDefault();
+                        startDrag(p.id, 'caught', card); // ドラッグ開始
+                    };
+                    
+                    // 色違いボタンの設定
+                    const sBtn = card.querySelector('.shiny-btn');
+                    if (sBtn) {
+                        sBtn.onmousedown = (e) => {
+                            e.stopPropagation(); // 親（カード）にイベントを流さない
+                            e.preventDefault();  // ブラウザの標準動作を止める
+                            startDrag(p.id, 'shiny', card); // ドラッグ開始
+                        };
+                    }
+                    
+                    // メスボタンの設定（存在する場合）
+                    const fBtn = card.querySelector('.female-btn');
+                    if (fBtn) {
+                        fBtn.onmousedown = (e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            startDrag(p.id, 'female', card); // ドラッグ開始
+                        };
+                    }
+                    
+        			pokedex.appendChild(card);
+        	    });
+            
+                // --- ⑥ 集計処理（ループの外に出す） ---
+                const totalVisible = displayData.length;
+                
+                // 1. 通常の捕獲集計
+                const caughtCount = displayData.filter(p => 
+                    caughtList.some(id => String(id) === String(p.id))
+                ).length;
+                const percent = totalVisible > 0 ? Math.round((caughtCount / totalVisible) * 1000) / 10 : 0;
+                
+                // 2. ★色違いの「表示されている総数」を計算（ここがポイント！）
+                // render内のボタン非表示ロジック（!p.noShiny && !(isNotInGoActive && p.notInGoShiny)など）と同じ条件で絞り込む
+                const isNotInGoActive = notInGoFilter.checked; // フィルタの状態を取得
+                
+                const totalShinyPossible = displayData.filter(p => {
+                    // ボタンが表示される条件：(noShinyがtrueでない) かつ (GO未実装フィルタONかつnotInGoShinyがtrue)ではない
+                    // つまり render内の shinyBtnHtml が空文字にならない条件
+                    return !(p.noShiny || (isNotInGoActive && p.notInGoShiny));
+                }).length;
+                
+                // 3. 色違いの捕獲集計
+                const shinyCount = displayData.filter(p => 
+                    shinyList.some(id => String(id) === String(p.id))
+                ).length;
+                
+                // 分母を totalShinyPossible に変更
+                const shinyPercent = totalShinyPossible > 0 ? Math.round((shinyCount / totalShinyPossible) * 1000) / 10 : 0;
+                
+                // 画面に反映
+                const counterElement = document.getElementById('counter');
+                if (counterElement) {
+                    counterElement.innerText = `進捗: ${caughtCount} / ${totalVisible} (${percent}%)`;
+                }
+                
+                const shinyCounterElement = document.getElementById('shiny-counter');
+                if (shinyCounterElement) {
+                    // 分母を totalShinyPossible に差し替え
+                    shinyCounterElement.innerText = `★色違い: ${shinyCount} / ${totalShinyPossible} (${shinyPercent}%)`;
+                }
+            }
+
+            // 表示中のポケモンを一括操作する関数
+            function bulkCollectDisplayed(isCaught) {
+                const action = isCaught ? "「捕獲済み」" : "「未捕獲」";
+                if (!confirm(`現在表示されているポケモンをすべて${action}にしますか？`)) return;
+
+                // 現在のフィルタ条件を再現して、対象のIDリストを作成
+                const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked')).map(cb => cb.value);
+                
+                const targets = pokemonData.filter(p => {
+                    const bases = Array.isArray(config.base) ? config.base : [config.base];
+                    const isBaseMatch = (bases.includes("all")) || (p.localNos && bases.some(b => p.localNos[b] !== undefined));
+                    const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
+                    const isSelectOriginMatch = (selectedOrigins.length === 0) || (selectedOrigins.includes(p.origins));
+                    const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
+                    const matchGo = !notInGoFilter.checked || p.notInGo !== true;
+                    const matchForm = !noFormFilter.checked || p.noForm !== true;
+                    const match869 = more869Filter.checked || p.more869 !== true;
+                    const matchMega = MegaFilter.checked ? p.Mega === true : p.Mega !== true;
+                    const matchGmax = GmaxFilter.checked ? p.Gmax === true : p.Gmax !== true;
+                    const matchSearch = !searchInput.value || p.name.includes(searchInput.value);
+
+                    return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega && matchSearch;
+                });
+
+                const targetIds = targets.map(p => p.id);
+
+                if (isCaught) {
+                    // 捕獲済みにする場合：まだ入っていないIDを追加
+                    targetIds.forEach(id => {
+                        if (!caughtList.includes(id)) caughtList.push(id);
+                    });
+                } 
+                else {
+                    // 解除する場合：リストから除外
+                    caughtList = caughtList.filter(id => !targetIds.includes(id));
+                }
+
+                // 保存して再描画
+                localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
+                render();
+            }
+            // 色違いを一括操作する関数
+            function bulkShinyDisplayed(isShiny) {
+                const action = isShiny ? "「色違い捕獲済み」" : "「色違い未捕獲」";
+                if (!confirm(`現在表示されているポケモンの★色違いをすべて${action}にしますか？\n（※色違いボタンが表示されていない個体は無視されます）`)) return;
+            
+                // 現在表示されているポケモンのうち、色違いボタンが存在するものだけを対象にする
+                const isNotInGoActive = notInGoFilter.checked;
+                const targets = getCurrentlyDisplayedTargets().filter(p => {
+                    // ボタンが表示される条件を再現
+                    return !(p.noShiny || (isNotInGoActive && p.notInGoShiny));
+                });
+            
+                const targetIds = targets.map(p => p.id);
+            
+                if (isShiny) {
+                    targetIds.forEach(id => {
+                    if (!shinyList.includes(id)) shinyList.push(id);
+                    });
+                } 
+                else {
+                    shinyList = shinyList.filter(id => !targetIds.includes(id));
+                }
+
+                localStorage.setItem('shinyPokemon', JSON.stringify(shinyList));
+                render();
+            }
+            
+            // メスのすがたを一括操作する関数
+            function bulkFemaleDisplayed(isFemale) {
+                const action = isFemale ? "「記録済み」" : "「未記録」";
+                if (!confirm(`現在表示されているポケモンの♀メスのすがたをすべて${action}にしますか？\n`)) return;
+            
+                // メスボタンが存在するものだけを対象にする
+                const targets = getCurrentlyDisplayedTargets().filter(p => p.hasFemale && !p.noFemale);
+            
+                const targetIds = targets.map(p => p.id);
+            
+                if (isFemale) {
+                    targetIds.forEach(id => {
+                        if (!femaleList.includes(id)) femaleList.push(id);
+                    });
+                } 
+                else {
+                    femaleList = femaleList.filter(id => !targetIds.includes(id));
+                }
+            
+                localStorage.setItem('femalePokemon', JSON.stringify(femaleList));
+                render();
+            }
+            
+            // フィルタ条件を共通化するための補助関数（既存の条件をここにまとめるとスッキリします）
+            function getCurrentlyDisplayedTargets() {
+                const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked')).map(cb => cb.value);
+                
+                return pokemonData.filter(p => {
+                    const bases = Array.isArray(config.base) ? config.base : [config.base];
+                    const isBaseMatch = (bases.includes("all")) || (p.localNos && bases.some(b => p.localNos[b] !== undefined));
+                    const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
+                    const isSelectOriginMatch = (selectedOrigins.length === 0) || (selectedOrigins.includes(p.origins));
+                    const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
+                    const matchGo = !notInGoFilter.checked || p.notInGo !== true;
+                    const matchForm = !noFormFilter.checked || p.noForm !== true;
+                    const match869 = more869Filter.checked || p.more869 !== true;
+                    const matchMega = MegaFilter.checked ? p.Mega === true : p.Mega !== true;
+                    const matchGmax = GmaxFilter.checked ? p.Gmax === true : p.Gmax !== true;
+                    const matchSearch = !searchInput.value || p.name.includes(searchInput.value);
+            
+                    return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega && matchSearch;
+                });
+            }
+            
+            
+            // 全データを初期化する関数
+            function resetAllData() {
+                // 1段階目の確認
+                const firstCheck = confirm("【注意】これまでに記録した「捕獲済み」「色違い」「メスのすがた」の全データが消去されます。よろしいですか？");
+
+                if (firstCheck) {
+                    // 2段階目の確認（誤操作防止）
+                    const secondCheck = confirm("本当によろしいですか？この操作は取り消せません。");
+                    
+                    if (secondCheck) {
+                        // 1. 各リストを空にする
+                        caughtList = [];
+                        shinyList = [];
+                        femaleList = [];
+
+                        // 2. ローカルストレージを削除
+                        localStorage.removeItem('caughtPokemon');
+                        localStorage.removeItem('shinyPokemon');
+                        localStorage.removeItem('femalePokemon');
+
+                        // 3. 画面を再描画（これでカウンターも0になります）
+                        render();
+
+                        alert("すべてのデータをリセットしました。");
+                    }
+                }
+            }
+
+            const dropBtn = document.getElementById('originDropdownBtn');
+            const dropMenu = document.getElementById('originDropdownMenu');
+
+            // 開閉の切り替え
+            dropBtn.onclick = (e) => {
+                e.stopPropagation();
+                const isOpen = dropMenu.style.display === 'block';
+                dropMenu.style.display = isOpen ? 'none' : 'block';
+            };
+
+            // メニュー外をクリックで閉じる
+            document.addEventListener('click', () => {
+                dropMenu.style.display = 'none';
+            });
+
+            // メニュー内クリックで勝手に閉じないようにする（複数選択のため）
+            dropMenu.onclick = (e) => e.stopPropagation();
+
+            // 選択状況をボタンのテキストに反映（おまけ）
+            document.querySelectorAll('.origin-check').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const checked = document.querySelectorAll('.origin-check:checked');
+                    dropBtn.innerText = checked.length > 0 ? `${checked.length}件選択中` : "地方を選択 (複数可)";
+                });
+            });
+
+            // --- ドラッグ・なぞり操作の統合管理 ---
+            let isDragging = false;
+            let hasMoved = false; // 「なぞり」が発生したかどうかのフラグ
+            let dragMode = null;
+            let targetType = null; // 'caught', 'shiny', 'female' のいずれか
+
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    dragMode = null;
+                    targetType = null;
+                    // なぞった場合のみ、最後に数字を更新
+                    if (hasMoved) render();
+                }
+            });
+            // 共通のなぞり処理関数
+            function processDragAction(pId, cardElement) {
+                let list, storageKey, activeClass, targetElement;
+            
+                if (targetType === 'shiny') {
+                    list = shinyList; storageKey = 'shinyPokemon'; activeClass = 'shiny-on';
+                    targetElement = cardElement.querySelector('.shiny-btn');
+                } 
+                else if (targetType === 'female') {
+                    list = femaleList; storageKey = 'femalePokemon'; activeClass = 'female-on';
+                    targetElement = cardElement.querySelector('.female-btn');
+                } 
+                else {
+                    list = caughtList; storageKey = 'caughtPokemon'; activeClass = 'caught';
+                    targetElement = cardElement;
+                }
+            
+                if (!targetElement) return;
+            
+                // 型を文字列に揃えて判定（解除ができない原因を解消）
+                const isIncluded = list.some(id => String(id) === String(pId));
+            
+                if (dragMode === 'add' && !isIncluded) {
+                    list.push(pId);
+                    targetElement.classList.add(activeClass);
+                } 
+                else if (dragMode === 'remove' && isIncluded) {
+                    // 全ての型に対応して削除
+                    const newList = list.filter(id => String(id) !== String(pId));
+                    if (targetType === 'shiny') shinyList = newList;
+                    else if (targetType === 'female') femaleList = newList;
+                    else caughtList = newList;
+                    
+                    targetElement.classList.remove(activeClass);
+                }
+                localStorage.setItem(storageKey, JSON.stringify(targetType === 'shiny' ? shinyList : targetType === 'female' ? femaleList : caughtList));
+            }
+            
+            function startDrag(pId, type, cardElement) {
+                isDragging = true;
+                hasMoved = false; // まだ動いていない
+                targetType = type;
+            
+                let list = (type === 'shiny') ? shinyList : (type === 'female') ? femaleList : caughtList;
+                const isIncluded = list.some(id => String(id) === String(pId));
+                
+                // モードだけ決めておく
+                dragMode = isIncluded ? 'remove' : 'add';
+            }
+            
+            let isTouching = false;
+            let startTouchX, startTouchY; // タップか移動かを判定するため
+            // スマホ：指が触れた（開始）
+            document.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0]; // 1本目の指を確実に指定
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                const card = target ? target.closest('.pokemon') : null;
+                const isControl = target ? target.closest('.mini-btn, input, select, button, .dropdown-menu') : null;
+            
+                if (card) {
+                    isTouching = true;
+                    hasMoved = false; 
+                    startTouchX = touch.clientX;
+                    startTouchY = touch.clientY;
+            
+                    // 【重要】何をなぞり始めたか（種類）を特定
+                    const sBtn = target.closest('.shiny-btn');
+                    const fBtn = target.closest('.female-btn');
+                    
+                    if (sBtn) targetType = 'shiny';
+                    else if (fBtn) targetType = 'female';
+                    else targetType = 'caught';
+            
+                    // モード決定（型を考慮）
+                    const pId = card.getAttribute('data-id');
+                    let list = (targetType === 'shiny') ? shinyList : (targetType === 'female') ? femaleList : caughtList;
+                    dragMode = list.some(id => String(id) === String(pId)) ? 'remove' : 'add';
+                }
+            }, { passive: true });
+            
+            // スマホ：指が動いた（なぞり中）
+            document.addEventListener('touchmove', (e) => {
+                if (!isTouching) return;
+            
+                const touch = e.touches[0];
+                const dx = Math.abs(touch.clientX - startTouchX);
+                const dy = Math.abs(touch.clientY - startTouchY);
+            
+                // 5px以上動いたら「なぞり（ドラッグ）」と確定
+                if (dx > 5 || dy > 5) {
+                    hasMoved = true;
+                    
+                    // なぞり中はスクロールを完全に止める（これで全解除暴発を防ぐ）
+                    if (e.cancelable) e.preventDefault();
+            
+                    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                    const card = target ? target.closest('.pokemon') : null;
+                    if (card) {
+                        // PC版と共通の「なぞり処理関数」を呼び出す
+                        processDragAction(card.getAttribute('data-id'), card);
+                    }
+                }
+            }, { passive: false });
+            
+            // スマホ：指を離した
+            let isBlockingClick = false; // 「偽のクリック」を捨てるためのフラグ
+            
+            document.addEventListener('touchend', () => {
+                if (isTouching && hasMoved) {
+                    // 全てのリストを保存
+                    localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
+                    localStorage.setItem('shinyPokemon', JSON.stringify(shinyList));
+                    localStorage.setItem('femalePokemon', JSON.stringify(femaleList));
+                    
+                    render(); // 最新の保存データで画面を清書
+                }
+                isTouching = false;
+                hasMoved = false;
+                dragMode = null;
+            }, { passive: true });
+            
+            
+            // ① データをテキストエリアに書き出す
+            function exportToTextarea() {
+                const textContent = [
+                    `CAUGHT:${caughtList.join(',')}`,
+                    `SHINY:${shinyList.join(',')}`,
+                    `FEMALE:${femaleList.join(',')}`,
+                ].join('\n');
+            
+                const textarea = document.getElementById('backupTextarea');
+                textarea.value = textContent;
+                textarea.select(); // テキストエリアを選択状態にする
+            
+                // 【修正】安全なコピー処理
+                try {
+                    // まず新しい方法を試す
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(textContent);
+                    } else {
+                        // 失敗・または未対応時は古い方法（選択済みのテキストエリアをコピー）を実行
+                        document.execCommand('copy');
+                    }
+                    alert("テキストエリアに書き出し、クリップボードにコピーしました！");
+                } catch (err) {
+                    // コピー自体が失敗しても、書き出しは成功しているのでアラートのみ
+                    alert("テキストエリアに書き出しました。枠内の文字をコピーして保存してください。");
+                }
+            }
+            
+            // ② テキストエリアの文字列からデータを復元
+            function importFromTextarea() {
+                const input = document.getElementById('backupTextarea').value.trim();
+                if (!input) {
+                    alert("テキストエリアにバックアップデータを貼り付けてください。");
+                    return;
+                }
+            
+                try {
+                    const lines = input.split('\n');
+                    const newData = {};
+                    
+                    lines.forEach(line => {
+                        const separatorIndex = line.indexOf(':');
+                        if (separatorIndex !== -1) {
+                            const key = line.substring(0, separatorIndex).trim();
+                            const value = line.substring(separatorIndex + 1).trim();
+                            newData[key] = value ? value.split(',') : [];
+                        }
+                    });
+            
+                    // データの整合性チェック
+                    if (!newData['CAUGHT'] && !newData['SHINY']) {
+                        throw new Error("形式が正しくありません");
+                    }
+            
+                    if (confirm("現在のデータが上書きされます。よろしいですか？")) {
+                        caughtList = newData['CAUGHT'] || [];
+                        shinyList = newData['SHINY'] || [];
+                        femaleList = newData['FEMALE'] || [];
+                        
+                        localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
+                        localStorage.setItem('shinyPokemon', JSON.stringify(shinyList));
+                        localStorage.setItem('femalePokemon', JSON.stringify(femaleList));
+                        
+                        render();
+                        alert("バックアップからデータを復元しました！");
+                    }
+                } catch (err) {
+                    alert("データの形式が正しくありません。保存したテキストを正しく貼り付けてください。");
+                }
+            }
+            
+            function shareProgress() {
+                // 【重要】エラーの原因：displayData をここで取得し直す
+                const currentTargets = getCurrentlyDisplayedTargets();
+                const total = currentTargets.length;
+                
+                if (total === 0) {
+                    alert("表示されているポケモンがいません。");
+                    return;
+                }
+            
+                // 現在の図鑑名を取得（selectのテキストを取得）
+                const modeSelect = document.getElementById('pokedexType');
+                const configName = modeSelect.options[modeSelect.selectedIndex].text.split(' ')[0];
+            
+                // 捕獲済み集計（型変換対応の some を使用）
+                const caught = currentTargets.filter(p => 
+                    caughtList.some(id => String(id) === String(p.id))
+                ).length;
+            
+                // 色違い集計
+                // (※ 以前作成した「色違いボタンが表示されているものだけ」を分母にするロジック)
+                const isNotInGoActive = document.getElementById('notInGoFilter').checked;
+                const shinyPossibleTargets = currentTargets.filter(p => !(p.noShiny || (isNotInGoActive && p.notInGoShiny)));
+                const totalShiny = shinyPossibleTargets.length;
+                const shiny = currentTargets.filter(p => 
+                    shinyList.some(id => String(id) === String(p.id))
+                ).length;
+            
+                // パーセント計算
+                const caughtPer = Math.round((caught / total) * 1000) / 10;
+                const shinyPer = totalShiny > 0 ? Math.round((shiny / totalShiny) * 1000) / 10 : 0;
+            
+                const isGoMode = document.getElementById('notInGoFilter').checked;
+            
+            let title = "";
+            
+            if (isGoMode) {
+                title = "（ポケモンGO）";
+            }
+            
+                const text = `【ポケモン図鑑コンプ率チェッカー】\n` +
+                             `${configName}${title}\n` +
+                             `捕獲済み: ${caught} / ${total} (${caughtPer}%)\n` +
+                             `色違い: ${shiny} / ${totalShiny} (${shinyPer}%)`;
+            
+            // ② 実行部分
+            const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+            const protocol = isMobile ? "twitter://post?message=" : "https://x.com/intent/post?text=";
+                const xUrl = protocol + encodeURIComponent(text);
+            window.open(xUrl, '_blank');
+            }
+
+            // リスト操作の共通関数
+            function toggleIdInList(list, id, isAdd, storageKey) {
+                if (isAdd) {
+                    if (!list.includes(id)) list.push(id);
+                } 
+                else {
+                    const idx = list.indexOf(id);
+                    if (idx > -1) list.splice(idx, 1);
+                }
+                localStorage.setItem(storageKey, JSON.stringify(list));
+            }
+
+            modeSelect.onchange = render;
+            document.querySelectorAll('.origin-check').forEach(cb => {
+                cb.addEventListener('change', render);
+            });
+            document.getElementById('hideCaughtFilter').onchange = render;
+            document.getElementById('hideShinyCaughtFilter').onchange = render;
+            searchInput.oninput = render;
+            eventOnlyFilter.onchange = render;
+            notInGoFilter.onchange = render;
+            noFormFilter.onchange = render;
+            more869Filter.onchange = render;
+            GmaxFilter.onchange = render;
+            MegaFilter.onchange = render;
+            render();
+        </script>
+        <!-- スクロールナビゲーションボタン -->
+        <div id="scroll-nav">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="一番上へ">▲</button>
+            <div style="height: 5px;"></div> <!-- ボタン間の隙間 -->
+            <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" title="一番下へ">▼</button>
+        </div>
+    </body>
+</html>
