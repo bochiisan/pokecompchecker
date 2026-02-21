@@ -9,7 +9,7 @@
         <meta property="og:type" content="website">
         <meta property="og:title" content="ポケモン図鑑コンプ率チェッカー">
         <meta property="og:description" content="スマホ対応、Pokémon GO対応のポケモン図鑑チェッカー">
-        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:card" content="summary">
         <style>
         	body { 
         		font-family: Arial, sans-serif;
@@ -1621,7 +1621,7 @@
                 const shinyPer = totalShiny > 0 ? Math.round((shiny / totalShiny) * 1000) / 10 : 0;
             
                 const isGoMode = document.getElementById('notInGoFilter').checked;
-            
+                const siteUrl = window.location.href;
             let title = "";
             
             if (isGoMode) {
@@ -1632,7 +1632,7 @@
                              `${configName}${title}\n` +
                              `捕獲済み: ${caught} / ${total} (${caughtPer}%)\n` +
                              `色違い: ${shiny} / ${totalShiny} (${shinyPer}%)\n` +
-                             `https://pokecompchecker.vercel.app/`;
+                             `${siteUrl}`;
             
             // ② 実行部分
             const isMobile = /iPhone|Android/i.test(navigator.userAgent);
