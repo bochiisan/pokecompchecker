@@ -195,12 +195,19 @@
                 padding-bottom: 8px;
             }
 
+            .info-card .content {
+                font-size: 15px;
+                line-height: 1.6;
+                color: #161616;
+                padding: 0px;
+            }
+
             .info-list {
                 list-style: none;
                 padding: 0;
-                font-size: 14px;
+                font-size: 15px;
                 line-height: 1.8;
-                color: #555;
+                color: #161616;
             }
 
             .info-list li::before {
@@ -540,6 +547,51 @@
                     font-size: 16px;
                 }
     
+                .info-card h2 {
+                    font-size: 15px;
+                    margin-top: 0;
+                    color: #4caf50;
+                    border-bottom: 2px solid #eef2f5;
+                    padding-bottom: 8px;
+                }
+    
+                .info-card .content {
+                    font-size: 12px;
+                    line-height: 1.6;
+                    color: #161616;
+                    padding: 0px;
+                }
+    
+                .info-list {
+                    list-style: none;
+                    padding: 0;
+                    font-size: 12px;
+                    line-height: 1.8;
+                    color: #161616;
+                }
+                /* 見出し部分（クリックできる場所） */
+                .accordion summary {
+                    padding: 12px 15px;
+                    background: #f9fbff;
+                    font-size: 11px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    list-style: none; /* デフォルトの三角形を消す（任意） */
+                    position: relative;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    color: #444;
+                }
+                /* 中身のコンテンツ */
+                .accordion .content {
+                    padding: 15px;
+                    font-size: 10px;
+                    line-height: 1.6;
+                    background: white;
+                    border-top: 1px solid #eee;
+                    color: #252525;
+                }
             }
 
         </style>
@@ -722,18 +774,18 @@
                         <p>データはブラウザの「ローカルストレージ」に自動保存されます。サーバーにデータは送信されず、あなたのPCやスマホ内にのみ保存されます。</p>
                         <p>ブラウザのキャッシュを削除するとデータが消えてしまいます。データの消失を防ぐのに、以下のバックアップ機能をご利用ください。</p>
                         <p><strong>【バックアップ】</strong></p>
-                        <ol style="margin-left: 20px; font-size: 13px;">
+                        <ol>
                             <li><strong>「バックアップ」</strong>ボタンを押すと、下の枠にバックアップ用テキストが表示されます。</li>
                             <li>枠内のテキストをすべてコピーして、メモ帳などに貼り付けて保存してください。</li>
                         </ol>
 
                         <p style="margin-top: 15px;"><strong>【復元】</strong></p>
-                        <ol style="margin-left: 20px; font-size: 13px;">
+                        <ol>
                             <li>保存しておいたバックアップテキストをコピーします。</li>
                             <li>以下の入力枠に、テキストを貼り付けます。</li>
                             <li><strong>「データの復元」</strong>ボタンを押すと、以前の記録が復元されます。</li>
                         </ol>
-                        <p style="font-size: 12px; color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされるのでご注意ください。</p>
+                        <p style="color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされるのでご注意ください。</p>
                     </div>
                     
                     <div style="border-top: 1px dashed #ddd; padding-top: 15px; text-align: center;">
