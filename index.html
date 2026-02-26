@@ -128,15 +128,6 @@
                 /* 星型に切り抜く設定 */
                 clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
                 }
-            /* 右上：メスボタン（円形） */
-            .female-btn {
-                right: 5px;
-                background: #eee;
-                border-radius: 50%; /* 完全に丸くする */
-                font-weight: 900 !important; /* 可能な限り太くする */
-                font-size: 14px !important;   /* 文字サイズを少し大きく */
-                font-family: Arial, sans-serif; /* 記号がはっきり見えるフォントを指定 */
-            }
             /* ONの時の色指定（形を維持したまま色を変える） */
             .shiny-btn.shiny-on {
                 background: #fbc02d !important;
@@ -144,11 +135,6 @@
                 border: none;
             }
 
-            .female-btn.female-on {
-                background: #f06292 !important;
-                color: #fff;
-                border: none;
-            }
 
             .container {
                 position: absolute; /* 絶対配置にして、ボタンと同じ行に浮かせる */
@@ -223,11 +209,23 @@
             }
 
             .update-tag {
+                display: flex;   
+                align-items: baseline; 
                 padding: 4px 10px;
-                border-radius: 4px;
+                border-radius: 1px;
                 font-size: 12px;
                 color: #3a3a3a;
-                margin-top: 10px;
+                margin-top: 3px;
+            }
+
+            .update-date {
+                flex-shrink: 0;      /* 日付部分が潰れないように固定 */
+                width: 75px;        /* 日付エリアの幅（お好みで調整してください） */
+            }
+            
+            .update-content {
+                flex-grow: 1;        /* 残りの幅をすべて使う */
+                line-height: 1.5;    /* 行間を少し広げると読みやすい */
             }
             /* アコーディオン全体のスタイル */
             .accordion {
@@ -606,7 +604,7 @@
         <h2>ポケモン図鑑コンプ率チェッカー</h2>
         <div class="controls">
             <!-- カウンター表示用 -->
-            <div style="width: 100%; display: block; clear: both; margin: 15px 0;">
+            <div style="width: 100%; display: block; clear: both; margin: 5px 0;">
                 <div style="display: flex; justify-content: center; gap: 10px; font-weight: bold; font-size: 16px;">
                     <div id="counter" style="color: #000;">進捗: 0 / 0 (0%)</div>
                     <div id="shiny-counter" style="color: #000;">★色違い: 0 / 0 (0%)</div>
@@ -682,6 +680,7 @@
             <div style="width: 100%; display: block; clear: both;">
                 <div class="filter-group">
         	        <label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label>
+                    <label><input type="checkbox" id="hasFemaleFilter"> メスのすがたを表示</label>
                     <label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label>
         	        <label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label>
                 </div>
@@ -720,13 +719,6 @@
                             <button onclick="bulkShinyDisplayed(true)" class="bulk-btn-orange" style="width: 80px;">一括捕獲</button>
                             <button onclick="bulkShinyDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
                         </div>
-            
-                        <!-- ♀メスのすがた行 -->
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
-                            <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;"><span style="font-weight: 900; font-size: 16px; color: #000000; margin-right: 2px;">♀</span>メスのすがた</p>
-                            <button onclick="bulkFemaleDisplayed(true)" class="bulk-btn-pink" style="width: 80px;">一括捕獲</button>
-                            <button onclick="bulkFemaleDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
-                        </div>
                     </div>
                 </details>
             </div>
@@ -748,15 +740,15 @@
                 <div class="content">
                     <p>当サイトはポケモン収集の進捗の記録や、捕獲状況の管理を目的としたファンサイトで、PC・スマホの両方で利用可能です。</p>
                     <p>全国図鑑と「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOに対応しております。</p>
-                    <p>色違いやメスのすがたの捕獲状況、メガシンカやキョダイマックスも管理できます。</p>
-                    <p>姿違いはリージョンフォームはもちろん、アンノーンやビビヨン、配布限定やマホイップの全通りにまで対応しています。</p>
+                    <p>色違いの捕獲状況、メガシンカやキョダイマックスも管理できます。</p>
+                    <p>姿違いはリージョンフォームはもちろん、アンノーンやビビヨン、メスのすがたに加え、配布限定やマホイップの全通りにまで対応しています。</p>
                 </div>
 
                 <h2>使い方ガイド</h2>
                 <ul class="info-list">
                     <li><strong>捕獲チェック:</strong> マス目を直接クリックすると「捕獲済み」になります。再度クリックで解除できます。</li>
                     <li><strong>ドラッグ・なぞり:</strong> マス目をドラッグ、もしくはなぞることで、一括操作ができます。</li>
-                    <li><strong>色違い/メスのすがた:</strong> マス内の <span style="color: #fbc02d;">★</span> や <span style="font-weight: 900; font-size: 16px; color: #d81b60; margin-right: 2px;">♀</span> ボタンで個別に記録できます。</li>
+                    <li><strong>色違い:</strong> マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。</li>
                     <li><strong>絞り込み:</strong> 地方チェックボックスや検索窓を使って、特定のポケモンだけを表示できます。</li>
                     <li><strong>Pokémon GOモード:</strong> Pokémon GOに実装済みのポケモンと色違いだけを表示するモードです。</li>
                     <li><strong>一括操作:</strong> 「一括捕獲/解除」ボタンで、現在見えている範囲を一気に埋める/解除することができます。</li>
@@ -770,7 +762,7 @@
                     <div class="content">
                         <p>以下のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
                         <div class="minicontent">
-                            <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウスのの各タイプの姿、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクトのの各カセットの姿、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディの各タイプの姿、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
+                            <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span></span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウスのの各タイプの姿、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクトのの各カセットの姿、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディの各タイプの姿、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
                         </div>
                     </div>
                 </details>
@@ -840,8 +832,11 @@
 
                 <h2>更新情報</h2>
                 <details class="accordion">
-                    <summary><div class="update-tag">最終更新: 2026/02/20</div></summary>
-                    <div class="update-tag">2026/02/20: 公開</div>
+                    <summary><div class="update-tag">最終更新: 2026/02/26</div></summary>
+                    <div class="update-tag"><span class="update-date">2026/02/26:</span>
+                    <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。</br>初登場地方を初登場作品に変更。メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
+                    <div class="update-tag"><span class="update-date">2026/02/20:</span>
+                    <span class="update-content">公開</span></div>
                 </details>
                 
                 <div id="ad-container" style="max-width: 1000px; margin: 20px auto; padding: 0 20px; text-align: center;">
@@ -922,6 +917,7 @@
         	const searchInput = document.getElementById('searchInput');
         	const modeSelect = document.getElementById('pokedexType'); 
         	const originsFilter = document.getElementById('originsFilter');
+        	const hasFemaleFilter = document.getElementById('hasFemaleFilter');
         	const eventOnlyFilter = document.getElementById('eventOnlyFilter');
         	const notInGoFilter = document.getElementById('notInGoFilter');
         	const noFormFilter = document.getElementById('noFormFilter');
@@ -933,7 +929,6 @@
             // 保存用リストの読み込み
             let caughtList = JSON.parse(localStorage.getItem('caughtPokemon')) || [];
             let shinyList = JSON.parse(localStorage.getItem('shinyPokemon')) || [];
-            let femaleList = JSON.parse(localStorage.getItem('femalePokemon')) || [];
 
         	function render() {
         		pokedex.innerHTML = '';
@@ -958,13 +953,34 @@
 			        // チェックONなら「すべて許可」、チェックOFFなら「配布限定(true)以外を許可」
             		const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
 
+		        	// --- ② 【追加】メスのすがたの「追加表示」ロジック ---
+			        // チェックONなら「すべて許可」、チェックOFFなら「配布限定(true)以外を許可」
+            		const matchFemale = hasFemaleFilter.checked || p.hasFemale !== true;
+
         			// --- ③ 【追加】GO未登場の「除外」ロジック（ONで消える） ---
 		        	const matchGo = !notInGoFilter.checked || p.notInGo !== true;
 
-        			// 【追加】姿違いの除外（ONで非表示）
-		        	// noForm が true の個体を、チェックONの時に取り除く
-         			const matchForm = !noFormFilter.checked || p.noForm !== true;
+        			// 【追加】姿違いの除外（ONで非表示）// noForm が true の個体を、チェックONの時に取り除く// 1. 現在のモード（地方図鑑）を取得
+        			const currentMode = modeSelect.value;
 
+        			// 2. 判定に使うIDを特定
+        			let targetId;
+        			if (currentMode === "all") {
+        			    targetId = p.id; // 全国図鑑なら id
+        			} 
+                    else {
+        			    // 地方図鑑なら localNos 内の該当する番号を参照、なければ id
+        			    targetId = (p.localNos && p.localNos[currentMode] !== undefined) 
+        			               ? p.localNos[currentMode] 
+        			               : p.id;
+        			}
+        			
+        			// 3. IDを文字列にして「.」が含まれているか判定
+        			const isSubForm = targetId.toString().includes('.');
+        			
+        			// 4. 姿違い除外チェックONの時、小数点あり(isSubForm)なら除外
+        			const matchForm = !noFormFilter.checked || !isSubForm;
+        			
         			// 【追加】マホイップの全表示（ONで表示）
 		        	// チェックONなら「すべて許可」、チェックOFFなら「それ以外を許可」
             		const match869 = more869Filter.checked || p.more869 !== true;
@@ -982,7 +998,7 @@
                     const matchHideShinyCaught = !hideShinyCaught || !isShinyCaught;
 
 
-        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught;
+        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught;
         		})
                 .map(p => {
                     const bases = Array.isArray(config.base) ? config.base : [config.base];
@@ -1034,7 +1050,6 @@
 
         		    const isCaught = caughtList.some(id => String(id) === String(p.id));
         			const isShiny = shinyList.some(id => String(id) === String(p.id));
-        			const isFemale = femaleList.some(id => String(id) === String(p.id));
         			card.className = 'pokemon' + (isCaught ? ' caught' : '');
         			// 保存や判定には元の p.id (808.1など) を使用
                     
@@ -1067,15 +1082,10 @@
 
         			// ② 判定用のフラグ（現在チェックされているか）
         			const isShinyActive = shinyList.some(id => String(id) === String(p.id));
-        			const isFemaleActive = femaleList.some(id => String(id) === String(p.id));
 
         			// 「フィルタがON」 または 「JSONのnotInGoShinyがtrue」 なら非表示
         		    const shinyBtnHtml = !(isNotInGoActive && p.notInGoShiny|| p.noShiny) 
         		    ? `<button class="mini-btn shiny-btn ${isShinyActive ? 'shiny-on' : ''}" title="色違い">★</button>` 
-        		    : '';
-
-        		    let femaleBtnHtml = p.hasFemale 
-        		    ? `<button class="mini-btn female-btn ${isFemaleActive ? 'female-on' : ''}" title="メスのすがた">♀</button>` 
         		    : '';
 
         		    card.innerHTML = `
@@ -1086,9 +1096,6 @@
       			        <div class="container">
       			            <span class="number">No.${displayNo}</span>
       			        </div>
-
-      			        <!-- 右上：メスボタン -->
-      			        ${femaleBtnHtml}
 
       			        <!-- 名前 -->
       			        <span class="name">${styledName}</span>
@@ -1105,8 +1112,7 @@
                         }
                     };
                     // ボタンのクリックイベント（なぞり後はキャンセル）
-                    [ {key: 'shiny', list: shinyList, sKey: 'shinyPokemon', class: 'shiny-on'},
-                      {key: 'female', list: femaleList, sKey: 'femalePokemon', class: 'female-on'} ].forEach(opt => {
+                    [ {key: 'shiny', list: shinyList, sKey: 'shinyPokemon', class: 'shiny-on'}].forEach(opt => {
                         const btn = card.querySelector(`.${opt.key}-btn`);
                         if (!btn) return;
                         
@@ -1160,15 +1166,6 @@
                         };
                     }
                     
-                    // メスボタンの設定（存在する場合）
-                    const fBtn = card.querySelector('.female-btn');
-                    if (fBtn) {
-                        fBtn.onmousedown = (e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            startDrag(p.id, 'female', card); // ドラッグ開始
-                        };
-                    }
                     
         			pokedex.appendChild(card);
         	    });
@@ -1282,28 +1279,6 @@
                 render();
             }
             
-            // メスのすがたを一括操作する関数
-            function bulkFemaleDisplayed(isFemale) {
-                const action = isFemale ? "「記録済み」" : "「未記録」";
-                if (!confirm(`現在表示されているポケモンの♀メスのすがたをすべて${action}にしますか？\n`)) return;
-            
-                // メスボタンが存在するものだけを対象にする
-                const targets = getCurrentlyDisplayedTargets().filter(p => p.hasFemale && !p.noFemale);
-            
-                const targetIds = targets.map(p => p.id);
-            
-                if (isFemale) {
-                    targetIds.forEach(id => {
-                        if (!femaleList.includes(id)) femaleList.push(id);
-                    });
-                } 
-                else {
-                    femaleList = femaleList.filter(id => !targetIds.includes(id));
-                }
-            
-                localStorage.setItem('femalePokemon', JSON.stringify(femaleList));
-                render();
-            }
             
             // フィルタ条件を共通化するための補助関数（既存の条件をここにまとめるとスッキリします）
             function getCurrentlyDisplayedTargets() {
@@ -1331,7 +1306,7 @@
             // 全データを初期化する関数
             function resetAllData() {
                 // 1段階目の確認
-                const firstCheck = confirm("【注意】これまでに記録した「捕獲済み」「色違い」「メスのすがた」の全データが消去されます。よろしいですか？");
+                const firstCheck = confirm("【注意】これまでに記録した「捕獲済み」と「色違い」の全データが消去されます。よろしいですか？");
 
                 if (firstCheck) {
                     // 2段階目の確認（誤操作防止）
@@ -1341,12 +1316,10 @@
                         // 1. 各リストを空にする
                         caughtList = [];
                         shinyList = [];
-                        femaleList = [];
 
                         // 2. ローカルストレージを削除
                         localStorage.removeItem('caughtPokemon');
                         localStorage.removeItem('shinyPokemon');
-                        localStorage.removeItem('femalePokemon');
 
                         // 3. 画面を再描画（これでカウンターも0になります）
                         render();
@@ -1386,7 +1359,7 @@
             let isDragging = false;
             let hasMoved = false; // 「なぞり」が発生したかどうかのフラグ
             let dragMode = null;
-            let targetType = null; // 'caught', 'shiny', 'female' のいずれか
+            let targetType = null; // 'caught', 'shiny' のいずれか
 
 
             document.addEventListener('mouseup', () => {
@@ -1406,10 +1379,6 @@
                     list = shinyList; storageKey = 'shinyPokemon'; activeClass = 'shiny-on';
                     targetElement = cardElement.querySelector('.shiny-btn');
                 } 
-                else if (targetType === 'female') {
-                    list = femaleList; storageKey = 'femalePokemon'; activeClass = 'female-on';
-                    targetElement = cardElement.querySelector('.female-btn');
-                } 
                 else {
                     list = caughtList; storageKey = 'caughtPokemon'; activeClass = 'caught';
                     targetElement = cardElement;
@@ -1428,12 +1397,11 @@
                     // 全ての型に対応して削除
                     const newList = list.filter(id => String(id) !== String(pId));
                     if (targetType === 'shiny') shinyList = newList;
-                    else if (targetType === 'female') femaleList = newList;
                     else caughtList = newList;
                     
                     targetElement.classList.remove(activeClass);
                 }
-                localStorage.setItem(storageKey, JSON.stringify(targetType === 'shiny' ? shinyList : targetType === 'female' ? femaleList : caughtList));
+                localStorage.setItem(storageKey, JSON.stringify(targetType === 'shiny' ? shinyList : caughtList));
             }
             
             function startDrag(pId, type, cardElement) {
@@ -1441,7 +1409,7 @@
                 hasMoved = false; // まだ動いていない
                 targetType = type;
             
-                let list = (type === 'shiny') ? shinyList : (type === 'female') ? femaleList : caughtList;
+                let list = (type === 'shiny') ? shinyList  : caughtList;
                 const isIncluded = list.some(id => String(id) === String(pId));
                 
                 // モードだけ決めておく
@@ -1465,15 +1433,13 @@
             
                     // 【重要】何をなぞり始めたか（種類）を特定
                     const sBtn = target.closest('.shiny-btn');
-                    const fBtn = target.closest('.female-btn');
                     
                     if (sBtn) targetType = 'shiny';
-                    else if (fBtn) targetType = 'female';
                     else targetType = 'caught';
             
                     // モード決定（型を考慮）
                     const pId = card.getAttribute('data-id');
-                    let list = (targetType === 'shiny') ? shinyList : (targetType === 'female') ? femaleList : caughtList;
+                    let list = (targetType === 'shiny') ? shinyList : caughtList;
                     dragMode = list.some(id => String(id) === String(pId)) ? 'remove' : 'add';
                 }
             }, { passive: true });
@@ -1510,7 +1476,6 @@
                     // 全てのリストを保存
                     localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
                     localStorage.setItem('shinyPokemon', JSON.stringify(shinyList));
-                    localStorage.setItem('femalePokemon', JSON.stringify(femaleList));
                     
                     render(); // 最新の保存データで画面を清書
                 }
@@ -1525,7 +1490,6 @@
                 const textContent = [
                     `CAUGHT:${caughtList.join(',')}`,
                     `SHINY:${shinyList.join(',')}`,
-                    `FEMALE:${femaleList.join(',')}`,
                 ].join('\n');
             
                 const textarea = document.getElementById('backupTextarea');
@@ -1577,11 +1541,9 @@
                     if (confirm("現在のデータが上書きされます。よろしいですか？")) {
                         caughtList = newData['CAUGHT'] || [];
                         shinyList = newData['SHINY'] || [];
-                        femaleList = newData['FEMALE'] || [];
                         
                         localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
                         localStorage.setItem('shinyPokemon', JSON.stringify(shinyList));
-                        localStorage.setItem('femalePokemon', JSON.stringify(femaleList));
                         
                         render();
                         alert("バックアップからデータを復元しました！");
@@ -1663,6 +1625,7 @@
             document.getElementById('hideCaughtFilter').onchange = render;
             document.getElementById('hideShinyCaughtFilter').onchange = render;
             searchInput.oninput = render;
+            hasFemaleFilter.onchange = render;
             eventOnlyFilter.onchange = render;
             notInGoFilter.onchange = render;
             noFormFilter.onchange = render;
