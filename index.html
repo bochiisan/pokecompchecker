@@ -619,8 +619,9 @@
                         <option value="g1">カントー図鑑 (赤緑青ピFRLG)</option>
                         <option value="g2">ジョウト図鑑 (金銀ク)</option>
                         <option value="g3">ホウエン図鑑 (RSE)</option>
-                        <option value="g4">シンオウ図鑑</option>
-                        <option value="g4-1">ジョウト図鑑 (HGSS)</option>
+                        <option value="g4">シンオウ図鑑 (DP,DPSP)</option>
+                        <option value="g4-1">シンオウ図鑑 (Pt)</option>
+                        <option value="g4-2">ジョウト図鑑 (HGSS)</option>
                         <option value="g5">イッシュ図鑑 (BW)</option>
                         <option value="g5-1">イッシュ図鑑 (BW2)</option>
                         <option value="g6s">セントラルカロス図鑑</option>
@@ -663,6 +664,7 @@
                             <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
                             <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
                             <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
+                            <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
                             <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
                             <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
                             <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
@@ -832,7 +834,9 @@
 
                 <h2>更新情報</h2>
                 <details class="accordion">
-                    <summary><div class="update-tag">最終更新: 2026/02/26</div></summary>
+                    <summary><div class="update-tag">最終更新: 2026/02/27</div></summary>
+                    <div class="update-tag"><span class="update-date">2026/02/27:</span>
+                    <span class="update-content">シンオウ図鑑を「DP,DPSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。</br>GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
                     <div class="update-tag"><span class="update-date">2026/02/26:</span>
                     <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。</br>メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
                     <div class="update-tag"><span class="update-date">2026/02/20:</span>
@@ -885,7 +889,8 @@
                 "g3": { base: ["g3"], origins: [], ranges: []},
                 "g4": { base: ["g4"], origins: [], ranges: []},
                 "g4-1": { base: ["g4-1"], origins: [], ranges: []},
-                "g5": { base: ["g5"], origins: ["5"], ranges: []}, // カンマを追加
+                "g4-2": { base: ["g4-2"], origins: [], ranges: []},
+                "g5": { base: ["g5"], origins: ["5"], ranges: []}, 
                 "g5-1": { base: ["g5-1"], origins: [], ranges: []},
                 "g6s": { base: ["g6s"], origins: [], ranges: []},
                 "g6k": { base: ["g6k"], origins: [], ranges: []},
