@@ -1,0 +1,1 @@
+Sitemap: https://pokecompchecker.vercel.app/sitemap.xml
