@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>【なぞって簡単】ポケモン図鑑コンプ率チェッカー | 登録不要・スマホ対応の無料捕獲記録ツール</title>
-        <meta name="description" content="色違い・姿違い・メスのすがた・地方図鑑・Pokémon GO・メガシンカ・キョダイマックス対応、スマホでも利用可能でドラッグによる一括操作もできるポケモン収集進捗記録ツールです。">
+        <title>【なぞって簡単】ポケモン図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール</title>
+        <meta name="description" content="色違い・姿違い・メスのすがた・地方図鑑・Pokémon GO・メガシンカ・キョダイマックス対応の捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。">
         <meta name="google-site-verification" content="5c9R3aFrfz1n8qUdnFnts9T_lbN4yB94VZwp5CxdHRU" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1924167223511522"crossorigin="anonymous"></script>
         <meta property="og:type" content="website">
@@ -432,6 +432,17 @@
                 align-items: center;
                 justify-content: center;
             }
+
+            .seo-tag {
+                color: #001b38; /* リンクとわかる青色 */
+                text-decoration: none; /* ★下線を最初から消す */
+            }
+
+            /* マウスを乗せた時（スマホでタップした瞬間）の動き */
+            .seo-tag:hover {
+                color: #001831; /* 少し濃い青にする */
+                text-decoration: none; /* ★触った時だけ下線を出す */
+            }
     
             /* スマホ（画面幅600px以下）専用の設定 */
             @media screen and (max-width: 600px) {
@@ -601,7 +612,7 @@
     </head>
     <body>
 
-        <h1>ポケモン図鑑コンプ率チェッカー</h1>
+        <h1 id="main-title" style="font-size: 25px; text-align: center; margin: 15px 0;">ポケモン図鑑コンプ率チェッカー</h1>
         <div class="controls">
             <!-- カウンター表示用 -->
             <div style="width: 100%; display: block; clear: both; margin: 5px 0;">
@@ -616,10 +627,11 @@
                     <!-- 既存の図鑑タイプ選択 -->
                     <select id="pokedexType">
                         <option value="all">全国図鑑</option>
+                        <option value="go">全国図鑑 (Pokémon GO)</option>
                         <option value="g1">カントー図鑑 (赤緑青ピFRLG)</option>
                         <option value="g2">ジョウト図鑑 (金銀ク)</option>
                         <option value="g3">ホウエン図鑑 (RSE)</option>
-                        <option value="g4">シンオウ図鑑 (DP,DPSP)</option>
+                        <option value="g4">シンオウ図鑑 (DP,BDSP)</option>
                         <option value="g4-1">シンオウ図鑑 (Pt)</option>
                         <option value="g4-2">ジョウト図鑑 (HGSS)</option>
                         <option value="g5">イッシュ図鑑 (BW)</option>
@@ -638,7 +650,7 @@
                         <option value="g7-1a">アーカラ図鑑 (USUM)</option>
                         <option value="g7-1u">ウラウラ図鑑 (USUM)</option>
                         <option value="g7-1p">ポニ図鑑 (USUM)</option>
-                        <option value="g7-2">カントー図鑑 (LPLE)</option>
+                        <option value="g7-2">カントー図鑑 (ピカブイ)</option>
                         <option value="g8">ガラル図鑑</option>
                         <option value="g8y">ヨロイ島図鑑</option>
                         <option value="g8k">カンムリ雪原図鑑</option>
@@ -695,7 +707,6 @@
             </div>
             <div style="width: 100%; display: block; clear: both;">
                 <div class="filter-group">
-                    <label><input type="checkbox" id="notInGoFilter"> Pokémon GOモード</label>
                 	<label><input type="checkbox" id="MegaFilter"> メガシンカ一覧</label>
                 	<label><input type="checkbox" id="GmaxFilter"> キョダイマックス一覧</label>
                 </div>
@@ -752,7 +763,7 @@
                     <li><strong>ドラッグ・なぞり:</strong> マス目をドラッグ、もしくはなぞることで、一括操作ができます。</li>
                     <li><strong>色違い:</strong> マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。</li>
                     <li><strong>絞り込み:</strong> 地方チェックボックスや検索窓を使って、特定のポケモンだけを表示できます。</li>
-                    <li><strong>Pokémon GOモード:</strong> Pokémon GOに実装済み（実装発表済み）のポケモンと色違いだけを表示するモードです。</li>
+                    <li><strong>全国図鑑 (Pokémon GO):</strong> Pokémon GOに実装済み（実装発表済み）のポケモンと色違いだけを表示するモードです。</li>
                     <li><strong>一括操作:</strong> 「一括捕獲/解除」ボタンで、現在見えている範囲を一気に埋める/解除することができます。</li>
                 </ul>
 
@@ -762,9 +773,9 @@
                 <details class="accordion">
                     <summary>対応タイトル一覧</summary>
                     <div class="content">
-                        <p>以下の本編タイトル・DLCとPokémon GOに対応しております。</p>
+                        <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
                         <div class="minicontent">
-                            <p><span class="nowrap">赤・緑・</span><span class="nowrap">青・</span><span class="nowrap">ピカチュウ・</span><span class="nowrap">金・銀・</span><span class="nowrap">クリスタル・</span><span class="nowrap">ルビー・サファイア・</span><span class="nowrap">エメラルド・</span><span class="nowrap">ファイアレッド・リーフグリーン・</span><span class="nowrap">ダイヤモンド・パール・</span><span class="nowrap">プラチナ・</span><span class="nowrap">ハートゴールド・ソウルシルバー・</span><span class="nowrap">ブラック・ホワイト・</span><span class="nowrap">ブラック2・ホワイト2・</span><span class="nowrap">X・Y・</span><span class="nowrap">オメガルビー・アルファサファイア・</span><span class="nowrap">サン・ムーン・</span><span class="nowrap">ウルトラサン・ウルトラムーン・</span><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ・</span><span class="nowrap">ソード・シールド・エキスパンションパス (鎧の孤島・冠の雪原)・</span><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール・</span><span class="nowrap">LEGENDS アルセウス・</span><span class="nowrap">スカーレット・バイオレット・ゼロの秘宝（碧の仮面・藍の円盤）・</span><span class="nowrap">LEGENDS Z-A・M次元ラッシュ</span></p>
+                            <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
                         </div>
                     </div>
                 </details>
@@ -844,11 +855,13 @@
 
                 <h2>更新情報</h2>
                 <details class="accordion">
-                    <summary><div class="update-tag">最終更新: 2026/03/04</div></summary>
+                    <summary><div class="update-tag">最終更新: 2026/03/09</div></summary>
+                    <div class="update-tag"><span class="update-date">2026/03/09:</span>
+                    <span class="update-content">Pokémon GOモードを削除し、図鑑タブに全国図鑑 (Pokémon GO)を追加。</span></div>
                     <div class="update-tag"><span class="update-date">2026/03/04:</span>
                     <span class="update-content">対応タイトル一覧を追加。GOモードにゼラオラを追加。</span></div>
                     <div class="update-tag"><span class="update-date">2026/02/27:</span>
-                    <span class="update-content">シンオウ図鑑を「DP,DPSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。</br>メガガブリアスZを追加。GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
+                    <span class="update-content">シンオウ図鑑を「DP,BDSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。</br>メガガブリアスZを追加。GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
                     <div class="update-tag"><span class="update-date">2026/02/26:</span>
                     <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。</br>メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
                     <div class="update-tag"><span class="update-date">2026/02/20:</span>
@@ -870,7 +883,19 @@
             // 【重要】JSONを読み込む関数
             async function init() {
                 try {
-                // 同じフォルダにある pokemon.json を取得
+                    // 【追加】URLパラメータから初期モードを決定
+                    const urlParams = new URLSearchParams(window.location.search);
+                   const targetMode = urlParams.get('mode');
+                    const select = document.getElementById('pokedexType');
+
+                    if (targetMode && select.querySelector(`option[value="${targetMode}"]`)) {
+                        select.value = targetMode; // プルダウンをURLに合わせる
+                        updateSEOAndURL(targetMode, true); // タイトルを書き換え
+                    } 
+                    else {
+                        updateSEOAndURL(select.value, true); // デフォルト（allなど）でセット
+                    }
+                    // 同じフォルダにある pokemon.json を取得
                     const response = await fetch('pokemon.json');
 
                     if (!response.ok) {
@@ -882,6 +907,11 @@
                     
                     // 読み込みが完了してから描画を開始
                     render(); 
+
+                    select.addEventListener('change', function() {
+                        updateSEOAndURL(this.value, false); // URLとタイトルを更新
+                        render(); // 再描画
+                    });
                     
                 } 
                 catch (error) {
@@ -894,31 +924,233 @@
             // ページの読み込みが終わったら実行
             window.onload = init;
 
+            // ① 各図鑑ごとのタイトルと説明文のリスト
+            const seoData = {
+                'all': {
+                    h1: 'ポケモン図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ポケモン図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: '色違い・姿違い・メスのすがた・地方図鑑・Pokémon GO・メガシンカ・キョダイマックス対応の捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'go': {
+                    h1: 'ポケモンGO図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ポケモンGO図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'Pokémon GOに実装済みのポケモンや色違いに対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g1': {
+                    h1: 'カントー図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】カントー図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: '赤・緑・青・ピカチュウとファイアレッド・リーフグリーン(FRLG)のカントー図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g2': {
+                    h1: 'ジョウト図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ジョウト図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: '金・銀・クリスタルのジョウト図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g3': {
+                    h1: 'ホウエン図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ホウエン図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ルビー・サファイア・エメラルド(RSE)のホウエン図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g4': {
+                    h1: 'シンオウ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】シンオウ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ダイヤモンド・パール(DP)とブリリアントダイヤモンド・シャイニングパール(BDSP)のシンオウ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g4-1': {
+                    h1: 'シンオウ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】シンオウ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'プラチナのシンオウ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g4-2': {
+                    h1: 'ジョウト図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ジョウト図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ハートゴールド・ソウルシルバー(HGSS)のジョウト図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g5': {
+                    h1: 'イッシュ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】イッシュ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ブラック・ホワイト(BW)のイッシュ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g5-1': {
+                    h1: 'イッシュ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】イッシュ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ブラック2・ホワイト2(BW2)のイッシュ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g6s': {
+                    h1: 'セントラルカロス図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】セントラルカロス図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'X・Yのセントラルカロス図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g6k': {
+                    h1: 'コーストカロス図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】コーストカロス図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'X・Yのコーストカロス図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g6m': {
+                    h1: 'マウンテンカロス図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】マウンテンカロス図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'X・Yのマウンテンカロス図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g6-1': {
+                    h1: 'ホウエン図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ホウエン図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'オメガルビー・アルファサファイア・(ORAS)のホウエン図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g7': {
+                    h1: 'アローラ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】アローラ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'サン・ムーン(SM)のアローラ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7m': {
+                    h1: 'メレメレ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】メレメレ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'サン・ムーン(SM)のメレメレ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7a': {
+                    h1: 'アーカラ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】アーカラ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'サン・ムーン(SM)のアーカラ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7u': {
+                    h1: 'ウラウラ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ウラウラ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'サン・ムーン(SM)のウラウラ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7p': {
+                    h1: 'ポニ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ポニ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'サン・ムーン(SM)のポニ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7-1': {
+                    h1: 'アローラ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】アローラ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ウルトラサン・ウルトラムーン(USUM)のアローラ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7-1m': {
+                    h1: 'メレメレ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】メレメレ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ウルトラサン・ウルトラムーン(USUM)のメレメレ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7-1a': {
+                    h1: 'アーカラ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】アーカラ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ウルトラサン・ウルトラムーン(USUM)のアーカラ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7-1u': {
+                    h1: 'ウラウラ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ウラウラ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ウルトラサン・ウルトラムーン(USUM)のウラウラ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7-1p': {
+                    h1: 'ポニ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ポニ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ウルトラサン・ウルトラムーン(USUM)のポニ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。 '
+                },
+                'g7-2': {
+                    h1: 'カントー図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】カントー図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: "Let's Go ピカチュウ・Let's Go イーブイ(ピカブイ)のカントー図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。"
+                },
+                'g8': {
+                    h1: 'ガラル図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ガラル図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ソード・シールド(剣盾)のガラル図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g8y': {
+                    h1: 'ヨロイ島図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ヨロイ島図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ソード・シールド エキスパンションパス(鎧の孤島)のヨロイ島図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g8k': {
+                    h1: 'カンムリ雪原図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】カンムリ雪原図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ソード・シールド エキスパンションパス(冠の雪原)のカンムリ雪原図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g8-1': {
+                    h1: 'ヒスイ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ヒスイ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'LEGENDS アルセウスのヒスイ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g9': {
+                    h1: 'パルデア図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】パルデア図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'スカーレット・バイオレット(SV)のパルデア図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g9k': {
+                    h1: 'キタカミ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】キタカミ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'スカーレット・バイオレット ゼロの秘宝(碧の仮面)のキタカミ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g9b': {
+                    h1: 'ブルーベリー図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ブルーベリー図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'スカーレット・バイオレット ゼロの秘宝(藍の円盤)のブルーベリー図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g9-1': {
+                    h1: 'ミアレ図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】ミアレ図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'Pokémon LEGENDS Z-A(ZA)のミアレ図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g9-1i': {
+                    h1: '異次元図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】異次元図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'Pokémon LEGENDS Z-A M次元ラッシュ(メガ次元ラッシュ)の異次元図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                
+            };
+
+            // ② タイトルとURLを書き換える関数
+            function updateSEOAndURL(mode, isInitialLoad = false) {
+                if (seoData[mode]) {
+                    // 1. ブラウザのタブ名を書き換え
+                    document.title = seoData[mode].title;
+            
+                    // 2. ページ内の大見出し(h1)を書き換え 【★ここを追加】
+                    const h1 = document.getElementById('main-title');
+                    if (h1) {
+                        h1.textContent = seoData[mode].h1; 
+                        // ※もし「 | 地方図鑑...」などの後ろの部分を消して
+                        // 「パルデア図鑑コンプ率チェッカー」だけにしたい場合は工夫も可能です。
+                    }
+            
+                    // 3. Descriptionの書き換え
+                    const metaDesc = document.querySelector('meta[name="description"]');
+                    if (metaDesc) metaDesc.setAttribute('content', seoData[mode].description);
+                }
+            
+                // URLの書き換え処理（以下略）
+                if (!isInitialLoad) {
+                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?mode=' + mode;
+                    window.history.replaceState({ path: newUrl }, '', newUrl);
+                }
+            }
+
             const modeSettings = {
                 "all": { base: ["all"], origins: [], ranges: []},
-                "g1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]]},
-                "g2": { base: ["g2"], origins: [], ranges: []},
-                "g3": { base: ["g3"], origins: [], ranges: []},
-                "g4": { base: ["g4"], origins: [], ranges: []},
-                "g4-1": { base: ["g4-1"], origins: [], ranges: []},
-                "g4-2": { base: ["g4-2"], origins: [], ranges: []},
-                "g5": { base: ["g5"], origins: ["5"], ranges: []}, 
-                "g5-1": { base: ["g5-1"], origins: [], ranges: []},
+                "go": { base: ["all"], origins: [], ranges: [], onlyGo: true, suffix: "（Pokémon GO）"},
+                "g1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]], suffix: "（赤緑青ピカチュウ、FRLG）"},
+                "g2": { base: ["g2"], origins: [], ranges: [], suffix: "（金銀クリスタル）"},
+                "g3": { base: ["g3"], origins: [], ranges: [], suffix: "（RSE）"},
+                "g4": { base: ["g4"], origins: [], ranges: [], suffix: "（DP、DBSP）"},
+                "g4-1": { base: ["g4-1"], origins: [], ranges: [], suffix: "（プラチナ）"},
+                "g4-2": { base: ["g4-2"], origins: [], ranges: [], suffix: "（HGSS）"},
+                "g5": { base: ["g5"], origins: ["5"], ranges: [], suffix: "（BW）"}, 
+                "g5-1": { base: ["g5-1"], origins: [], ranges: [], suffix: "（BW2）"},
                 "g6s": { base: ["g6s"], origins: [], ranges: []},
                 "g6k": { base: ["g6k"], origins: [], ranges: []},
                 "g6m": { base: ["g6m"], origins: [], ranges: []},
-                "g6-1": { base: ["g6-1"], origins: [], ranges: []},
-                "g7": { base: ["g7"], origins: [], ranges: []},
-                "g7m": { base: ["g7m"], origins: [], ranges: []},
-                "g7a": { base: ["g7a"], origins: [], ranges: []},
-                "g7u": { base: ["g7u"], origins: [], ranges: []},
-                "g7p": { base: ["g7p"], origins: [], ranges: []},
-                "g7-1": { base: ["g7-1"], origins: [], ranges: []},
-                "g7-1m": { base: ["g7-1m"], origins: [], ranges: []},
-                "g7-1a": { base: ["g7-1a"], origins: [], ranges: []},
-                "g7-1u": { base: ["g7-1u"], origins: [], ranges: []},
-                "g7-1p": { base: ["g7-1p"], origins: [], ranges: []},
-                "g7-2": { base: ["g7-2"], origins: ["1", "2", "3", "4", "5", "6", "7"], ranges: []},
+                "g6-1": { base: ["g6-1"], origins: [], ranges: [], suffix: "（ORAS）"},
+                "g7": { base: ["g7"], origins: [], ranges: [], suffix: "（SM）"},
+                "g7m": { base: ["g7m"], origins: [], ranges: [], suffix: "（SM）"},
+                "g7a": { base: ["g7a"], origins: [], ranges: [], suffix: "（SM）"},
+                "g7u": { base: ["g7u"], origins: [], ranges: [], suffix: "（SM）"},
+                "g7p": { base: ["g7p"], origins: [], ranges: [], suffix: "（SM）"},
+                "g7-1": { base: ["g7-1"], origins: [], ranges: [], suffix: "（USUM）"},
+                "g7-1m": { base: ["g7-1m"], origins: [], ranges: [], suffix: "（USUM）"},
+                "g7-1a": { base: ["g7-1a"], origins: [], ranges: [], suffix: "（USUM）"},
+                "g7-1u": { base: ["g7-1u"], origins: [], ranges: [], suffix: "（USUM）"},
+                "g7-1p": { base: ["g7-1p"], origins: [], ranges: [], suffix: "（USUM）"},
+                "g7-2": { base: ["g7-2"], origins: ["1", "2", "3", "4", "5", "6", "7"], ranges: [], suffix: "（ピカブイ）"},
                 "g8": { base: ["g8"], origins: [], ranges: []},
                 "g8y": { base: ["g8y"], origins: [], ranges: []},
                 "g8k": { base: ["g8k"], origins: [], ranges: []},
@@ -936,7 +1168,6 @@
         	const originsFilter = document.getElementById('originsFilter');
         	const hasFemaleFilter = document.getElementById('hasFemaleFilter');
         	const eventOnlyFilter = document.getElementById('eventOnlyFilter');
-        	const notInGoFilter = document.getElementById('notInGoFilter');
         	const noFormFilter = document.getElementById('noFormFilter');
         	const more869Filter = document.getElementById('more869Filter');
         	const MegaFilter = document.getElementById('MegaFilter');
@@ -950,12 +1181,14 @@
         	function render() {
         		pokedex.innerHTML = '';
         		const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                const isGoMode = config.onlyGo === true;
                 // チェックされている地方の値を配列で取得
                 const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked'))
                 .map(cb => cb.value);
         		let displayData = [...pokemonData];
                 const hideCaught = document.getElementById('hideCaughtFilter').checked;
                 const hideShinyCaught = document.getElementById('hideShinyCaughtFilter').checked;
+                
 
                 // ① フィルタリング & 番号(currentNo)の付与
         		displayData = displayData.filter(p => {
@@ -974,8 +1207,9 @@
 			        // チェックONなら「すべて許可」、チェックOFFなら「配布限定(true)以外を許可」
             		const matchFemale = hasFemaleFilter.checked || p.hasFemale !== true;
 
+                    
         			// --- ③ 【追加】GO未登場の「除外」ロジック（ONで消える） ---
-		        	const matchGo = !notInGoFilter.checked || p.notInGo !== true;
+		        	const matchGo = !isGoMode || p.notInGo !== true;
 
         			// 【追加】姿違いの除外（ONで非表示）// noForm が true の個体を、チェックONの時に取り除く// 1. 現在のモード（地方図鑑）を取得
         			const currentMode = modeSelect.value;
@@ -1095,8 +1329,8 @@
                     .replace(/([（(])/g, '<br>$1') // カッコがあれば強制改行
                     .replace(/(.{6})(?=.)/g, '$1<wbr>'); // 4文字ごとに改行候補を隠し入れる
 
-        			// ① チェックボックスの状態を取得
-        		    const isNotInGoActive = notInGoFilter.checked;
+        			// ① フィルタ条件の判定（チェックボックスがON または GOモードが選択中）
+        		    const isNotInGoActive = isGoMode;
 
         			// ② 判定用のフラグ（現在チェックされているか）
         			const isShinyActive = shinyList.some(id => String(id) === String(p.id));
@@ -1216,7 +1450,7 @@
                 
                 // 2. ★色違いの「表示されている総数」を計算（ここがポイント！）
                 // render内のボタン非表示ロジック（!p.noShiny && !(isNotInGoActive && p.notInGoShiny)など）と同じ条件で絞り込む
-                const isNotInGoActive = notInGoFilter.checked; // フィルタの状態を取得
+                const isNotInGoActive = isGoMode; // フィルタの状態を取得
                 
                 const totalShinyPossible = displayData.filter(p => {
                     // ボタンが表示される条件：(noShinyがtrueでない) かつ (GO未実装フィルタONかつnotInGoShinyがtrue)ではない
@@ -1260,7 +1494,7 @@
                     // 捕獲済みにする場合：まだ入っていないIDを追加
                     targetIds.forEach(id => {
                         if (!caughtList.some(existingId => String(existingId) === id)) {
-                            shinyList.push(id);
+                            caughtList.push(id);
                         }
                     });
                 } 
@@ -1279,7 +1513,9 @@
                 if (!confirm(`現在表示されているポケモンの★色違いをすべて${action}にしますか？\n（※色違いボタンが表示されていない個体は無視されます）`)) return;
             
                 // 現在表示されているポケモンのうち、色違いボタンが存在するものだけを対象にする
-                const isNotInGoActive = notInGoFilter.checked;
+                const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                const isGoMode = config.onlyGo === true;
+                const isNotInGoActive = isGoMode;
                 const targets = getCurrentlyDisplayedTargets().filter(p => {
                     // ボタンが表示される条件を再現
                     return !(p.noShiny || (isNotInGoActive && p.notInGoShiny));
@@ -1308,6 +1544,7 @@
             // フィルタ条件を共通化するための補助関数（既存の条件をここにまとめるとスッキリします）
             function getCurrentlyDisplayedTargets() {
                 const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                const isGoMode = config.onlyGo === true;
                 const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked')).map(cb => cb.value);
                 
                 return pokemonData.filter(p => {
@@ -1316,7 +1553,7 @@
                     const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
                     const isSelectOriginMatch = (selectedOrigins.length === 0) || (selectedOrigins.includes(p.origins));
                     const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
-                    const matchGo = !notInGoFilter.checked || p.notInGo !== true;
+                    const matchGo = !isGoMode || p.notInGo !== true;
                     const matchForm = !noFormFilter.checked || p.noForm !== true;
                     const match869 = more869Filter.checked || p.more869 !== true;
                     const matchMega = MegaFilter.checked ? p.Mega === true : p.Mega !== true;
@@ -1599,7 +1836,9 @@
             
                 // 色違い集計
                 // (※ 以前作成した「色違いボタンが表示されているものだけ」を分母にするロジック)
-                const isNotInGoActive = document.getElementById('notInGoFilter').checked;
+                const config = modeSettings[modeSelect.value] || modeSettings["all"];
+                const isGoMode = config.onlyGo === true; // プルダウンがGOモードかどうか
+                const isNotInGoActive = isGoMode; // どちらかがONなら true
                 const shinyPossibleTargets = currentTargets.filter(p => !(p.noShiny || (isNotInGoActive && p.notInGoShiny)));
                 const totalShiny = shinyPossibleTargets.length;
                 const shiny = currentTargets.filter(p => 
@@ -1610,13 +1849,8 @@
                 const caughtPer = Math.round((caught / total) * 1000) / 10;
                 const shinyPer = totalShiny > 0 ? Math.round((shiny / totalShiny) * 1000) / 10 : 0;
             
-                const isGoMode = document.getElementById('notInGoFilter').checked;
                 const siteUrl = window.location.href;
-            let title = "";
-            
-            if (isGoMode) {
-                title = "（Pokémon GO）";
-            }
+                let title = config.suffix || "";
             
                 const text = `【ポケモン図鑑コンプ率チェッカー】\n` +
                              `${configName}${title}\n` +
@@ -1652,7 +1886,6 @@
             searchInput.oninput = render;
             hasFemaleFilter.onchange = render;
             eventOnlyFilter.onchange = render;
-            notInGoFilter.onchange = render;
             noFormFilter.onchange = render;
             more869Filter.onchange = render;
             GmaxFilter.onchange = render;
