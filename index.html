@@ -475,7 +475,11 @@
                                 
             /* 画像が潰れないように設定 */
             .product-image {
-                flex-shrink: 0;
+                width: 100%;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .product-image img {
@@ -953,7 +957,7 @@
                     <span class="update-content">公開</span></div>
                 </details>
 
-                <div id="random-recommend-container" class="recommend-card-container"></div>
+                <div id="random-recommend-container" class="recommend-card-container"style="min-height: 64px;"></div>
 
                 <script type="module">
                     import { itemList } from './items.js';
@@ -993,7 +997,7 @@
                                 <div class="product-recommend-card">
                                     <div class="product-image">
                                         <a href="${item.rakuten}" target="_blank" rel="noopener sponsored">
-                                            <img src="${displayImg}" alt="${item.title}">
+                                            <img src="${displayImg}" alt="${item.title}" width="150" height="150" loading="lazy">
                                         </a>
                                     </div>
                                     <div class="product-content">
@@ -1006,7 +1010,7 @@
                                 </div>
                             `;
                         }).join('');
-                        
+
                         container.innerHTML = html;
                     }
 
