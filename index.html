@@ -6,7 +6,6 @@
         <title>【なぞって簡単】ポケモン図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール</title>
         <meta name="description" content="色違い・姿違い・メスのすがた・地方図鑑・Pokémon GO・メガシンカ・キョダイマックス対応の捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。">
         <meta name="google-site-verification" content="5c9R3aFrfz1n8qUdnFnts9T_lbN4yB94VZwp5CxdHRU" />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1924167223511522"crossorigin="anonymous"></script>
         <meta property="og:type" content="website">
         <meta property="og:title" content="ポケモン図鑑コンプ率チェッカー">
         <meta property="og:description" content="Pokémon GO対応、スマホ利用可の捕獲記録ツール">
@@ -188,7 +187,7 @@
 
             .info-card .content {
                 font-size: 15px;
-                line-height: 1.6;
+                line-height: 1.2;
                 color: #161616;
                 padding: 0px;
             }
@@ -443,7 +442,95 @@
                 color: #001831; /* 少し濃い青にする */
                 text-decoration: none; /* ★触った時だけ下線を出す */
             }
-    
+            
+            /* --- 親枠：隙間なく並べるための設定 --- */
+            .recommend-card-container {
+                display: flex;
+                flex-wrap: wrap; /* 端まで行ったら折り返す */
+                gap: 12px;       /* カード同士の隙間 */
+                justify-content: center; /* 中央寄せ */
+                width: 100%;     /* 親の幅いっぱいに広げる */
+                box-sizing: border-box; /* パディングを含めて計算 */
+                padding: 0 10px; /* 画面端との最低限の余白 */
+            }                
+
+            /* --- カード本体：はみ出し防止のキモ --- */
+            .product-recommend-card {
+                display: flex;
+                align-items: center;
+                background-color: #ffffff;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 12px;
+                
+                /* ↓ ここが重要！ ↓ */
+                box-sizing: border-box;
+                flex: 1 1 220px;  /* 300pxを基準にしつつ、画面に合わせて伸び縮みする */
+                max-width: 100%;  /* 親要素（画面幅）より絶対にはみ出さない */
+                min-width: 0;     /* 中身の文字による突き抜けを防止 */
+                /* ↑↑↑↑↑↑↑↑↑↑↑↑ */
+                
+                gap: 12px;
+            }
+                                
+            /* 画像が潰れないように設定 */
+            .product-image {
+                flex-shrink: 0;
+            }
+            
+            .product-image img {
+                width: 64px;
+                height: auto;
+                display: block;
+            }
+                
+            /* テキストエリア */
+            .product-content {
+                flex-grow: 1;
+                min-width: 0; /* 文字が長すぎてもカードを突き破らないようにする */
+            }
+                
+            /* 商品名の省略設定 */
+            .product-title {
+                font-size: 13px;
+                color: #333;
+                margin: 0 0 8px 0;
+                line-height: 1.4em;
+                font-weight: bold;
+                height: 4.2em; /* 2行分の高さを確保 */
+
+                /* --- 修正ポイント：標準プロパティも追加 --- */
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3; /* 以前からのWebkit用 */
+                line-clamp: 3;         /* これが標準プロパティ */
+            }
+                
+            /* ボタン */
+            .shop-button-group {
+                display: flex;
+                gap: 8px;
+            }
+
+            .btn-shop {
+                flex: 1;
+                display: flex;             /* ボタン自身もFlexboxにする */
+                justify-content: center;   /* 横方向のど真ん中 */
+                align-items: center;       /* 縦方向のど真ん中（これがズレを直します！） */
+                height: 32px;              /* 高さをピクセルでカッチリ固定する */
+                line-height: 1;            /* 文字特有の上下の謎の隙間を無効化 */
+                padding: 0;                /* 以前の上下paddingは不要になるので0にする */
+                font-size: 11px;
+                border-radius: 4px;
+                text-decoration: none;
+                font-weight: bold;
+                box-sizing: border-box;
+            }
+                
+            .btn-rakuten { background-color: #bf0000; color: #fff; }
+            .btn-amazon { background-color: #f3a847; color: #000; }
+
             /* スマホ（画面幅600px以下）専用の設定 */
             @media screen and (max-width: 600px) {
                 /* 1. タイトル（h1）をスリムにする */
@@ -845,12 +932,10 @@
                 <div class="content">
                     <p>ポケットモンスター・ポケモン・Pokémonは<span class="nowrap">任天堂・</span><span class="nowrap">クリーチャーズ・</span><span class="nowrap">ゲームフリーク</span>の登録商標です。<br>
                     当サイトは個人制作の非公式ファンサイトであり、<span class="nowrap">任天堂株式会社、</span><span class="nowrap">株式会社クリーチャーズ、</span><span class="nowrap">株式会社ゲームフリーク、</span><span class="nowrap">株式会社ポケモン</span>とは一切関係ありません。</p>
-    
                     <p>当サイトの情報は、公式の情報と異なる可能性がございます。</p>
-
                     <p>当サイトの利用により発生したデータの消失、不具合、その他いかなる損害についても、製作者は一切の責任を負いかねます。あらかじめご了承ください。</p>
-        
                     <p>入力されたデータはブラウザ内にのみ保存され、外部サーバーに送信されることはありません。</p>
+                    <p>当サイトはAmazonアソシエイトおよび楽天アフィリエイト・プログラムの参加者です。最新の情報は各販売店にてご確認ください。掲載情報による損害等について一切の責任を負いません。</p>
                 </div>
 
                 <h2>更新情報</h2>
@@ -867,10 +952,70 @@
                     <div class="update-tag"><span class="update-date">2026/02/20:</span>
                     <span class="update-content">公開</span></div>
                 </details>
+
+                <div id="random-recommend-container" class="recommend-card-container"></div>
+
+                <script type="module">
+                    import { itemList } from './items.js';
+
+                    function displayRandomItems() {
+                        const container = document.getElementById('random-recommend-container');
+                        if (!container || !itemList || itemList.length === 0) return;
+
+                        // --- 画面幅によって表示数を変えるロジック ---
+                        const width = window.innerWidth;
+                        let displayCount = 4; // デフォルト（1025px以上）は3つ
+
+                        if (width <= 593) {
+                            displayCount = 1;
+                        }
+                        else if (width <= 825) {
+                            displayCount = 2;
+                        }
+                        else if (width <= 1057) {
+                            displayCount = 3;
+                        } 
+
+                        // 1. 配列をシャッフル
+                        const shuffled = [...itemList].sort(() => 0.5 - Math.random());
+
+                        // 2. 決定した数だけ抽出
+                        const selectedItems = shuffled.slice(0, displayCount);
+
+                        // 3. HTML生成
+                        const html = selectedItems.map(item => {
+                            // --- ここで画像が配列かチェックし、ランダムに1枚選ぶ ---
+                            const displayImg = Array.isArray(item.img) 
+                                ? item.img[Math.floor(Math.random() * item.img.length)] 
+                                : item.img;
                 
-                <div id="ad-container" style="max-width: 1000px; margin: 20px auto; padding: 0 20px; text-align: center;">
-    
-                </div>
+                            return `
+                                <div class="product-recommend-card">
+                                    <div class="product-image">
+                                        <a href="${item.rakuten}" target="_blank" rel="noopener sponsored">
+                                            <img src="${displayImg}" alt="${item.title}">
+                                        </a>
+                                    </div>
+                                    <div class="product-content">
+                                        <p class="product-title">${item.title}</p>
+                                        <div class="shop-button-group">
+                                            <a href="${item.rakuten}" class="btn-shop btn-rakuten" target="_blank" rel="noopener sponsored">楽天</a>
+                                            <a href="${item.amazon}" class="btn-shop btn-amazon" target="_blank" rel="noopener">Amazon</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        
+                        container.innerHTML = html;
+                    }
+
+                    // 実行
+                    displayRandomItems();
+
+                    // 画面サイズが変更されたら再実行して表示数を調整
+                    window.addEventListener('resize', displayRandomItems);
+                </script>
             </div>
             
         </div>
