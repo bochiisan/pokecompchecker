@@ -535,6 +535,13 @@
             .btn-rakuten { background-color: #bf0000; color: #fff; }
             .btn-amazon { background-color: #f3a847; color: #000; }
 
+            /* 読み込み中だけ高さを確保するクラス */
+#pokedex.is-loading {
+    min-height: 80vh; /* 画面の8割程度の高さを仮置き */
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* 補助線（任意） */
+    background-size: 100% 40px;
+}
+
             /* スマホ（画面幅600px以下）専用の設定 */
             @media screen and (max-width: 600px) {
                 /* 1. タイトル（h1）をスリムにする */
@@ -1312,6 +1319,7 @@
             };
 
         	const pokedex = document.getElementById('pokedex');
+            pokedex.classList.add('is-loading');
         	const searchInput = document.getElementById('searchInput');
         	const modeSelect = document.getElementById('pokedexType'); 
         	const originsFilter = document.getElementById('originsFilter');
@@ -1585,6 +1593,8 @@
                     
                     
         			pokedex.appendChild(card);
+                    
+                    pokedex.classList.remove('is-loading');
         	    });
                 
                 pokedex.appendChild(fragment);
