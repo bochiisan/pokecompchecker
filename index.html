@@ -96,6 +96,10 @@
 
                 /* タッチ操作時のデフォルト動作（スクロール等）を制御 */
                 touch-action: auto; 
+                /* 画面外にあるカードのレンダリングをブラウザに「後回し」にさせる */
+                content-visibility: auto;
+                /* カードの概算の高さを伝えておくと、スクロールバーがガタつきません */
+                contain-intrinsic-size: 100px 85px;
             }
 
             /* 捕まえた時のデザイン（半透明＋緑の枠） */
@@ -1457,6 +1461,7 @@
                 const fragment = document.createDocumentFragment();
         		// ⑤ 描画
         		displayData.forEach((p, index) => {
+                    
         			const card = document.createElement('div');
 
         		    const isCaught = caughtList.some(id => String(id) === String(p.id));
