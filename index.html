@@ -10,6 +10,8 @@
         <meta property="og:title" content="ポケモン図鑑コンプ率チェッカー">
         <meta property="og:description" content="Pokémon GO対応、スマホ利用可の捕獲記録ツール">
         <meta name="twitter:card" content="summary">
+        <link rel="preload" href="/pokemon.json" as="fetch" crossorigin="anonymous">
+        <link rel="preload" href="/items.js" as="script">
         <style>
         	body { 
         		font-family: Arial, sans-serif;
@@ -536,11 +538,11 @@
             .btn-amazon { background-color: #f3a847; color: #000; }
 
             /* 読み込み中だけ高さを確保するクラス */
-#pokedex.is-loading {
-    min-height: 80vh; /* 画面の8割程度の高さを仮置き */
-    background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* 補助線（任意） */
-    background-size: 100% 40px;
-}
+            #pokedex.is-loading {
+                min-height: 80vh; /* 画面の8割程度の高さを仮置き */
+                background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* 補助線（任意） */
+                background-size: 100% 40px;
+            }
 
             /* スマホ（画面幅600px以下）専用の設定 */
             @media screen and (max-width: 600px) {
