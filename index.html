@@ -184,7 +184,7 @@
             .info-card h2 {
                 font-size: 18px;
                 margin-top: 0;
-                color: #419e44;
+                color: #0fc515;
                 border-bottom: 2px solid #eef2f5;
                 padding-bottom: 8px;
             }
@@ -192,7 +192,7 @@
             .info-card .content {
                 font-size: 15px;
                 line-height: 1.2;
-                color: #161616;
+                color: #000000;
                 padding: 0px;
             }
 
@@ -201,12 +201,12 @@
                 padding: 0;
                 font-size: 15px;
                 line-height: 1.8;
-                color: #161616;
+                color: #000000;
             }
 
             .info-list li::before {
                 content: "・";
-                color: #4caf50;
+                color: #0fc515;
                 font-weight: bold;
                 margin-right: 5px;
             }
@@ -217,7 +217,7 @@
                 padding: 4px 10px;
                 border-radius: 1px;
                 font-size: 12px;
-                color: #3a3a3a;
+                color: #000000;
                 margin-top: 3px;
             }
 
@@ -251,7 +251,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                color: #444;
+                color: #000000;
             }
 
             /* カスタムの矢印アイコン（右側に配置） */
@@ -278,20 +278,20 @@
                 line-height: 1.6;
                 background: white;
                 border-top: 1px solid #eee;
-                color: #252525;
+                color: #000000;
             }
             .accordion .minicontent {
                 padding: 10px;
                 font-size: 10px;
                 line-height: 1.6;
                 border-top: 1px solid #eee;
-                color: #252525;
+                color: #000000;
             }
 
             /* 開いている時に少し影をつける */
             .accordion[open] {
-                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-                border-color: #4caf50;
+                box-shadow: 0 4px 12px #000000;
+                border-color: #0fc515;
             }
             /* 単語の途中での改行を禁止するクラス */
             .nowrap {
@@ -316,7 +316,7 @@
                 cursor: pointer;
                 box-sizing: border-box;
                 position: relative;
-                color: #333;
+                color: #000;
                 min-width: 160px;
                 text-align: left;
                 padding-top: 0;
@@ -334,7 +334,7 @@
                 transform: translateY(-50%);
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
-                border-top: 5px solid #888; /* 下向き矢印 */
+                border-top: 5px solid #000; /* 下向き矢印 */
                 pointer-events: none;
             }
 
@@ -387,7 +387,7 @@
                 box-sizing: border-box; /* 枠線を含めた高さ計算にする */
             }
             /* ボタンをきれいに並べるための共通スタイル */
-            .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange, .bulk-btn-pink {
+            .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange {
                 height: 30px;
                 border: none;
                 border-radius: 5px;
@@ -402,7 +402,6 @@
             .bulk-btn-green { background: #4caf50; }
             .bulk-btn-red { background: #f44336; }
             .bulk-btn-orange { background: #fbc02d; }
-            .bulk-btn-pink { background: #f06292; }
 
             #scroll-nav {
                 position: fixed;
@@ -879,7 +878,7 @@
                 
                 <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
                     <p style="font-size: 11px; color: #000; margin-bottom: 8px;">SNSで進捗を報告する</p>
-                    <button onclick="shareProgress()" style="padding: 8px 20px; background: #1565c0; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                    <button onclick="shareProgress()" style="padding: 8px 20px; background: #1f88ff; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
                         Twitter(X)でシェア
                     </button>
                 </div>
