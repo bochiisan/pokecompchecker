@@ -112,24 +112,23 @@
             .mini-btn {
                 position: absolute;
                 top: 5px;
-                width: 22px;  /* 幅を固定 */
-                height: 22px; /* 高さを固定 */
+                width: 18px;  /* 幅を固定 */
+                height: 18px; /* 高さを固定 */
                 padding: 0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 1px solid #ccc;
+                border: 1px solid #000000;
                 cursor: pointer;
                 z-index: 10;
                 transition: 0.2s;
-                font-size: 10px;
                 pointer-events: auto;
             }
 
             /* 左上：色違いボタン（星型） */
             .shiny-btn {
                 left: 5px;
-                background: #eee;
+                background: #000000;
                 /* 星型に切り抜く設定 */
                 clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
                 }
@@ -158,7 +157,6 @@
                 font-size: 11px;
                 font-weight: bold;
                 color: #333;
-                background: rgba(255,255,255,0.8); /* 重なりで見えにくい場合に背景を少し白く */
                 padding: 0 4px;
                 border-radius: 4px;
                 pointer-events: none;
@@ -583,10 +581,15 @@
             
                 /* 2. 図鑑番号と名前の文字を大きくする */
                 .number {
-                    font-size: 9px !important;
-                    top: 5px !important;
+                    font-size: 8px !important;
+                    padding: 0 0px !important;
+                    top: 0px !important;
                 }
                 
+                .container {
+                    height: 10px;       /* ボタンの高さと同じ */
+                }
+
                 .name {
                     font-size: 8px !important;
                     bottom: 6px !important;
@@ -596,12 +599,16 @@
             
                 /* 3. ミニボタン（★や♀）を押しやすく大きくする */
                 .mini-btn {
+                    top: 3px;
                     width: 14px !important;  /* 面積を広げる */
                     height: 14px !important;
-                    font-size: 12px !important;
                     border-width: 2px !important;
                 }
-            
+                
+                .shiny-btn {
+                    left: 3px !important;
+                }
+                
                 /* 4. 全体の一括操作メニューなどの文字サイズアップ */
                 #counter, #shiny-counter {
                     font-size: 12px !important; /* 進捗をドーンと見せる */
@@ -613,8 +620,8 @@
                 }
             
                 .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange, .bulk-btn-pink {
-                    padding: 10px 15px !important; /* 一括ボタンを巨大化 */
-                    font-size: 14px !important;
+                    padding: 8px 13px !important; /* 一括ボタンを巨大化 */
+                    font-size: 12px !important;
                     flex: 1 1 45%; /* スマホでは2列に並ぶように */
                 }
                 
@@ -709,6 +716,29 @@
                     background: white;
                     border-top: 1px solid #eee;
                     color: #252525;
+                }
+            }
+
+            
+            @media screen and (max-width: 391px) {
+                /* 1. ポケモンカード本体を大きくする */
+                .pokemon {
+                    /* 画面の25%から、マージン分(2px)を引いたサイズ */
+                    width: calc(25% - 2px) !important; 
+                            min-height: 10px !important; 
+                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
+                    height: auto !important; 
+                    
+                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
+                    margin: 1px !important; 
+                    
+                    box-sizing: border-box !important; /* 枠線を含めたサイズ計算 */
+                }
+                /* 捕まえた時のデザイン（半透明＋緑の枠） */
+                .caught { 
+                    border: 0px solid #4caf50; /* 捕まえたら緑の枠を表示 */
+                    background: #d1f0ff; /* 背景を薄い水色に */
+                    box-shadow: 0 0 0px rgba(0, 210, 255, 0.5); /* ほんのり光るエフェクト */
                 }
             }
 
