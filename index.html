@@ -742,327 +742,330 @@
         </style>
     </head>
     <body>
-
-        <h1 id="main-title" style="font-size: 25px; text-align: center; margin: 15px 0;">ポケモン図鑑コンプ率チェッカー</h1>
-        <div class="controls">
-            <!-- カウンター表示用 -->
-            <div style="width: 100%; display: block; clear: both; margin: 5px 0;">
-                <div style="display: flex; justify-content: center; gap: 10px; font-weight: bold; font-size: 16px;">
-                    <div id="counter" style="color: #000;">進捗: 0 / 0 (0%)</div>
-                    <div id="shiny-counter" style="color: #000;">★色違い: 0 / 0 (0%)</div>
-                </div>
-            </div>
-
-            <div style="width: 100%; display: block; clear: both;">
-                <div class="filter-row">
-                    <!-- 既存の図鑑タイプ選択 -->
-                    <select id="pokedexType" aria-label="表示する図鑑を選択">
-                        <option value="all">全国図鑑 (表示する図鑑を選択)</option>
-                        <option value="go">全国図鑑 (Pokémon GO)</option>
-                        <option value="g1">カントー図鑑 (赤緑青ピFRLG)</option>
-                        <option value="g2">ジョウト図鑑 (金銀ク)</option>
-                        <option value="g3">ホウエン図鑑 (RSE)</option>
-                        <option value="g4">シンオウ図鑑 (DP,BDSP)</option>
-                        <option value="g4-1">シンオウ図鑑 (Pt)</option>
-                        <option value="g4-2">ジョウト図鑑 (HGSS)</option>
-                        <option value="g5">イッシュ図鑑 (BW)</option>
-                        <option value="g5-1">イッシュ図鑑 (BW2)</option>
-                        <option value="g6s">セントラルカロス図鑑</option>
-                        <option value="g6k">コーストカロス図鑑</option>
-                        <option value="g6m">マウンテンカロス図鑑</option>
-                        <option value="g6-1">ホウエン図鑑 (ORAS)</option>
-                        <option value="g7">アローラ図鑑 (SM)</option>
-                        <option value="g7m">メレメレ図鑑 (SM)</option>
-                        <option value="g7a">アーカラ図鑑 (SM)</option>
-                        <option value="g7u">ウラウラ図鑑 (SM)</option>
-                        <option value="g7p">ポニ図鑑 (SM)</option>
-                        <option value="g7-1">アローラ図鑑 (USUM)</option>
-                        <option value="g7-1m">メレメレ図鑑 (USUM)</option>
-                        <option value="g7-1a">アーカラ図鑑 (USUM)</option>
-                        <option value="g7-1u">ウラウラ図鑑 (USUM)</option>
-                        <option value="g7-1p">ポニ図鑑 (USUM)</option>
-                        <option value="g7-2">カントー図鑑 (ピカブイ)</option>
-                        <option value="g8">ガラル図鑑</option>
-                        <option value="g8y">ヨロイ島図鑑</option>
-                        <option value="g8k">カンムリ雪原図鑑</option>
-                        <option value="g8-1">ヒスイ図鑑</option>
-                        <option value="g9">パルデア図鑑</option>
-                        <option value="g9k">キタカミ図鑑</option>
-                        <option value="g9b">ブルーベリー図鑑</option>
-                        <option value="g9-1">ミアレ図鑑</option>
-                        <option value="g9-1i">異次元図鑑</option>
-                    </select>
-    
-                    <!-- 地方選択（プルダウンに見えるボタン） -->
-                    <div class="custom-select-container">
-                        <button type="button" id="originDropdownBtn" class="dropdown-button">
-                            初登場地方 (複数選択可) <span class="arrow"></span>
-                        </button>
-                        
-                        <div id="originDropdownMenu" class="dropdown-menu">
-                            <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
-                            <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
-                            <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
-                            <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
-                            <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
-                            <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
-                            <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
-                            <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
-                            <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
-                            <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
-                            <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
-                            <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
-                            <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
-                        </div>
+        <header>
+            <h1 id="main-title" style="font-size: 25px; text-align: center; margin: 15px 0;">ポケモン図鑑コンプ率チェッカー</h1>
+        </header>
+        <main>
+            <div class="controls">
+                <!-- カウンター表示用 -->
+                <div style="width: 100%; display: block; clear: both; margin: 5px 0;">
+                    <div style="display: flex; justify-content: center; gap: 10px; font-weight: bold; font-size: 16px;">
+                        <div id="counter" style="color: #000;">進捗: 0 / 0 (0%)</div>
+                        <div id="shiny-counter" style="color: #000;">★色違い: 0 / 0 (0%)</div>
                     </div>
-    
-                    <input type="text" id="searchInput" placeholder="名前検索...">
-    
                 </div>
-            </div>
-    
-    
-            <div style="width: 100%; display: block; clear: both;">
-                <div class="filter-group">
-        	        <label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label>
-                    <label><input type="checkbox" id="hasFemaleFilter"> メスのすがたを表示</label>
-                    <label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label>
-        	        <label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label>
-                </div>
-            </div>
-            <div style="width: 100%; display: block; clear: both;">
-                <div class="filter-group">
-                    <label><input type="checkbox" id="hideCaughtFilter"> 捕獲済みを非表示</label>
-                    <label><input type="checkbox" id="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label>
-                </div>
-            </div>
-            <div style="width: 100%; display: block; clear: both;">
-                <div class="filter-group">
-                	<label><input type="checkbox" id="MegaFilter"> メガシンカ一覧</label>
-                	<label><input type="checkbox" id="GmaxFilter"> キョダイマックス一覧</label>
-                </div>
-            </div>
-    
-            <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
-            <div style="width: 100%; display: block; clear: both;">
-                <details style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background: #fff; max-width: 500px; margin: 0 auto;">
-                    <summary style="padding: 10px; background: #f8f9fa; cursor: pointer; font-size: 13px; font-weight: bold; color: #000000; list-style: none;">
-                        一括操作（表示中のみ）
-                    </summary>
-                    <div style="padding: 10px; background: white;">
-                        <!-- ポケモン行 -->
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
-                            <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">ポケモン</p>
-                            <button onclick="bulkCollectDisplayed(true)" class="bulk-btn-green" style="width: 80px;">一括捕獲</button>
-                            <button onclick="bulkCollectDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+            
+                <div style="width: 100%; display: block; clear: both;">
+                    <div class="filter-row">
+                        <!-- 既存の図鑑タイプ選択 -->
+                        <select id="pokedexType" aria-label="表示する図鑑を選択">
+                            <option value="all">全国図鑑 (表示する図鑑を選択)</option>
+                            <option value="go">全国図鑑 (Pokémon GO)</option>
+                            <option value="g1">カントー図鑑 (赤緑青ピFRLG)</option>
+                            <option value="g2">ジョウト図鑑 (金銀ク)</option>
+                            <option value="g3">ホウエン図鑑 (RSE)</option>
+                            <option value="g4">シンオウ図鑑 (DP,BDSP)</option>
+                            <option value="g4-1">シンオウ図鑑 (Pt)</option>
+                            <option value="g4-2">ジョウト図鑑 (HGSS)</option>
+                            <option value="g5">イッシュ図鑑 (BW)</option>
+                            <option value="g5-1">イッシュ図鑑 (BW2)</option>
+                            <option value="g6s">セントラルカロス図鑑</option>
+                            <option value="g6k">コーストカロス図鑑</option>
+                            <option value="g6m">マウンテンカロス図鑑</option>
+                            <option value="g6-1">ホウエン図鑑 (ORAS)</option>
+                            <option value="g7">アローラ図鑑 (SM)</option>
+                            <option value="g7m">メレメレ図鑑 (SM)</option>
+                            <option value="g7a">アーカラ図鑑 (SM)</option>
+                            <option value="g7u">ウラウラ図鑑 (SM)</option>
+                            <option value="g7p">ポニ図鑑 (SM)</option>
+                            <option value="g7-1">アローラ図鑑 (USUM)</option>
+                            <option value="g7-1m">メレメレ図鑑 (USUM)</option>
+                            <option value="g7-1a">アーカラ図鑑 (USUM)</option>
+                            <option value="g7-1u">ウラウラ図鑑 (USUM)</option>
+                            <option value="g7-1p">ポニ図鑑 (USUM)</option>
+                            <option value="g7-2">カントー図鑑 (ピカブイ)</option>
+                            <option value="g8">ガラル図鑑</option>
+                            <option value="g8y">ヨロイ島図鑑</option>
+                            <option value="g8k">カンムリ雪原図鑑</option>
+                            <option value="g8-1">ヒスイ図鑑</option>
+                            <option value="g9">パルデア図鑑</option>
+                            <option value="g9k">キタカミ図鑑</option>
+                            <option value="g9b">ブルーベリー図鑑</option>
+                            <option value="g9-1">ミアレ図鑑</option>
+                            <option value="g9-1i">異次元図鑑</option>
+                        </select>
+                    
+                        <!-- 地方選択（プルダウンに見えるボタン） -->
+                        <div class="custom-select-container">
+                            <button type="button" id="originDropdownBtn" class="dropdown-button">
+                                初登場地方 (複数選択可) <span class="arrow"></span>
+                            </button>
+                            
+                            <div id="originDropdownMenu" class="dropdown-menu">
+                                <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
+                                <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
+                                <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
+                                <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
+                                <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
+                                <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
+                                <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
+                                <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
+                                <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
+                                <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
+                                <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
+                                <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
+                                <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
+                            </div>
                         </div>
                     
-                        <!-- ★色違い行 -->
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
-                            <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">★色違い</p>
-                            <button onclick="bulkShinyDisplayed(true)" class="bulk-btn-orange" style="width: 80px;">一括捕獲</button>
-                            <button onclick="bulkShinyDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
-                        </div>
-                    </div>
-                </details>
-            </div>
-        </div>
-
-        <div class="grid" id="pokedex"></div>
-
-        <!-- 説明ゾーン -->
-        <div class="info-section">
-            <div class="info-card">
-                
-                <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
-                    <p style="font-size: 11px; color: #000; margin-bottom: 8px;">SNSで進捗を報告する</p>
-                    <button onclick="shareProgress()" style="padding: 8px 20px; background: #1565c0; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
-                        Twitter(X)でシェア
-                    </button>
-                </div>
-                <h2>当サイトについて</h2>
-                <div class="content">
-                    <p>当サイトはポケモン収集の進捗管理や、捕獲状況の記録、図鑑埋めの手助け等を目的としたファンサイトで、PC・スマホの両方で利用可能です。</p>
-                    <p>全国図鑑と「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOに対応しております。</p>
-                    <p>色違いの捕獲状況、メガシンカやキョダイマックスも管理できます。</p>
-                    <p>姿違いはリージョンフォームはもちろん、アンノーンやビビヨン、メスのすがたに加え、配布限定やマホイップの全通りにまで対応しています。</p>
-                </div>
-
-                <h2>使い方ガイド</h2>
-                <ul class="info-list">
-                    <li><strong>捕獲チェック:</strong> マス目を直接クリックすると「捕獲済み」になります。再度クリックで解除できます。</li>
-                    <li><strong>ドラッグ・なぞり:</strong> マス目をドラッグ、もしくはなぞることで、一括操作ができます。</li>
-                    <li><strong>色違い:</strong> マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。</li>
-                    <li><strong>絞り込み:</strong> 地方チェックボックスや検索窓を使って、特定のポケモンだけを表示できます。</li>
-                    <li><strong>全国図鑑 (Pokémon GO):</strong> Pokémon GOに実装済み（実装発表済み）のポケモンと色違いだけを表示するモードです。</li>
-                    <li><strong>一括操作:</strong> 「一括捕獲/解除」ボタンで、現在見えている範囲を一気に埋める/解除することができます。</li>
-                </ul>
-
-                <h2>詳細・データの扱い</h2>
-                
-                <!-- 開閉リスト -->
-                <details class="accordion">
-                    <summary>対応タイトル一覧</summary>
-                    <div class="content">
-                        <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
-                        <div class="minicontent">
-                            <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="accordion">
-                    <summary>記載していないポケモンについて</summary>
-                    <div class="content">
-                        <p>以下のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
-                        <div class="minicontent">
-                            <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="accordion">
-                    <summary>データの保存場所とバックアップについて</summary>
-                    <div class="content">
-                        <p>データはブラウザの「ローカルストレージ」に自動保存されます。サーバーにデータは送信されず、あなたのPCやスマホ内にのみ保存されます。</p>
-                        <p>ブラウザのキャッシュを削除するとデータが消えてしまいます。データの消失を防ぐのに、以下のバックアップ機能をご利用ください。</p>
-                        <p><strong>【バックアップ】</strong></p>
-                        <ol>
-                            <li><strong>「バックアップ」</strong>ボタンを押すと、下の枠にバックアップ用テキストが表示されます。</li>
-                            <li>枠内のテキストをすべてコピーして、メモ帳などに貼り付けて保存してください。</li>
-                        </ol>
-
-                        <p style="margin-top: 15px;"><strong>【復元】</strong></p>
-                        <ol>
-                            <li>保存しておいたバックアップテキストをコピーします。</li>
-                            <li>以下の入力枠に、テキストを貼り付けます。</li>
-                            <li><strong>「データの復元」</strong>ボタンを押すと、以前の記録が復元されます。</li>
-                        </ol>
-                        <p style="color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされるのでご注意ください。</p>
-                    </div>
+                        <input type="text" id="searchInput" placeholder="名前検索...">
                     
-                    <div style="border-top: 1px dashed #ddd; padding-top: 15px; text-align: center;">
-                        <p style="font-size: 11px; color: #000; margin-bottom: 8px;">データのバックアップ・復元</p>
-    
-                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
-                            <button onclick="exportToTextarea()" style="padding: 6px 12px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
-                                バックアップ
-                            </button>
-                            <button onclick="importFromTextarea()" style="padding: 6px 12px; background: #607D8B; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
-                                データの復元
-                            </button>
-                        </div>
-
-                        <!-- 入力・出力用のテキストエリア -->
-                        <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます" 
-                            style="width: 90%; height: 80px; font-size: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
-                        
-                        <p style="font-size: 10px; color: #999; margin-top: 5px;">※復元時はテキストを貼り付けてからボタンを押してください</p>
                     </div>
-
-                </details>
-
-                <details class="accordion">
-                    <summary>データの初期化について</summary>
-                    <div class="content">
-                        <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消すことができます。</p>
-                        <button onclick="resetAllData()" style="padding: 8px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; opacity: 0.7;">
-                            データ初期化ボタン
+                </div>
+            
+            
+                <div style="width: 100%; display: block; clear: both;">
+                    <div class="filter-group">
+            	        <label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label>
+                        <label><input type="checkbox" id="hasFemaleFilter"> メスのすがたを表示</label>
+                        <label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label>
+            	        <label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label>
+                    </div>
+                </div>
+                <div style="width: 100%; display: block; clear: both;">
+                    <div class="filter-group">
+                        <label><input type="checkbox" id="hideCaughtFilter"> 捕獲済みを非表示</label>
+                        <label><input type="checkbox" id="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label>
+                    </div>
+                </div>
+                <div style="width: 100%; display: block; clear: both;">
+                    <div class="filter-group">
+                    	<label><input type="checkbox" id="MegaFilter"> メガシンカ一覧</label>
+                    	<label><input type="checkbox" id="GmaxFilter"> キョダイマックス一覧</label>
+                    </div>
+                </div>
+            
+                <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
+                <div style="width: 100%; display: block; clear: both;">
+                    <details style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background: #fff; max-width: 500px; margin: 0 auto;">
+                        <summary style="padding: 10px; background: #f8f9fa; cursor: pointer; font-size: 13px; font-weight: bold; color: #000000; list-style: none;">
+                            一括操作（表示中のみ）
+                        </summary>
+                        <div style="padding: 10px; background: white;">
+                            <!-- ポケモン行 -->
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
+                                <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">ポケモン</p>
+                                <button onclick="bulkCollectDisplayed(true)" class="bulk-btn-green" style="width: 80px;">一括捕獲</button>
+                                <button onclick="bulkCollectDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                            </div>
+                        
+                            <!-- ★色違い行 -->
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
+                                <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">★色違い</p>
+                                <button onclick="bulkShinyDisplayed(true)" class="bulk-btn-orange" style="width: 80px;">一括捕獲</button>
+                                <button onclick="bulkShinyDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        
+            <div class="grid" id="pokedex"></div>
+        
+            <!-- 説明ゾーン -->
+            <div class="info-section">
+                <div class="info-card">
+                    
+                    <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
+                        <p style="font-size: 11px; color: #000; margin-bottom: 8px;">SNSで進捗を報告する</p>
+                        <button onclick="shareProgress()" style="padding: 8px 20px; background: #1565c0; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                            Twitter(X)でシェア
                         </button>
                     </div>
-                </details>
-
-                <h2>免責事項</h2>
-                <div class="content">
-                    <p>ポケットモンスター・ポケモン・Pokémonは<span class="nowrap">任天堂・</span><span class="nowrap">クリーチャーズ・</span><span class="nowrap">ゲームフリーク</span>の登録商標です。<br>
-                    当サイトは個人制作の非公式ファンサイトであり、<span class="nowrap">任天堂株式会社、</span><span class="nowrap">株式会社クリーチャーズ、</span><span class="nowrap">株式会社ゲームフリーク、</span><span class="nowrap">株式会社ポケモン</span>とは一切関係ありません。</p>
-                    <p>当サイトの情報は、公式の情報と異なる可能性がございます。</p>
-                    <p>当サイトの利用により発生したデータの消失、不具合、その他いかなる損害についても、製作者は一切の責任を負いかねます。あらかじめご了承ください。</p>
-                    <p>入力されたデータはブラウザ内にのみ保存され、外部サーバーに送信されることはありません。</p>
-                    <p>当サイトはAmazonアソシエイトおよび楽天アフィリエイト・プログラムの参加者です。最新の情報は各販売店にてご確認ください。掲載情報による損害等について一切の責任を負いません。</p>
-                </div>
-
-                <h2>更新情報</h2>
-                <details class="accordion">
-                    <summary><div class="update-tag">最終更新: 2026/03/09</div></summary>
-                    <div class="update-tag"><span class="update-date">2026/03/09:</span>
-                    <span class="update-content">Pokémon GOモードを削除し、図鑑タブに全国図鑑 (Pokémon GO)を追加。</span></div>
-                    <div class="update-tag"><span class="update-date">2026/03/04:</span>
-                    <span class="update-content">対応タイトル一覧を追加。GOモードにゼラオラを追加。</span></div>
-                    <div class="update-tag"><span class="update-date">2026/02/27:</span>
-                    <span class="update-content">シンオウ図鑑を「DP,BDSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。</br>メガガブリアスZを追加。GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
-                    <div class="update-tag"><span class="update-date">2026/02/26:</span>
-                    <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。</br>メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
-                    <div class="update-tag"><span class="update-date">2026/02/20:</span>
-                    <span class="update-content">公開</span></div>
-                </details>
-
-                <div id="random-recommend-container" class="recommend-card-container" style="min-height: 120px;"></div>
-
-                <script type="module">
-                    import { itemList } from './items.js';
-
-                    function displayRandomItems() {
-                        const container = document.getElementById('random-recommend-container');
-                        if (!container || !itemList || itemList.length === 0) return;
-
-                        // --- 画面幅によって表示数を変えるロジック ---
-                        const width = window.innerWidth;
-                        let displayCount = 4; // デフォルト（1025px以上）は3つ
-
-                        if (width <= 593) {
-                            displayCount = 1;
-                        }
-                        else if (width <= 825) {
-                            displayCount = 2;
-                        }
-                        else if (width <= 1057) {
-                            displayCount = 3;
-                        } 
-
-                        // 1. 配列をシャッフル
-                        const shuffled = [...itemList].sort(() => 0.5 - Math.random());
-
-                        // 2. 決定した数だけ抽出
-                        const selectedItems = shuffled.slice(0, displayCount);
-
-                        // 3. HTML生成
-                        const html = selectedItems.map(item => {
-                            // --- ここで画像が配列かチェックし、ランダムに1枚選ぶ ---
-                            const displayImg = Array.isArray(item.img) 
-                                ? item.img[Math.floor(Math.random() * item.img.length)] 
-                                : item.img;
+                    <h2>当サイトについて</h2>
+                    <div class="content">
+                        <p>当サイトはポケモン収集の進捗管理や、捕獲状況の記録、図鑑埋めの手助け等を目的としたファンサイトで、PC・スマホの両方で利用可能です。</p>
+                        <p>全国図鑑と「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOに対応しております。</p>
+                        <p>色違いの捕獲状況、メガシンカやキョダイマックスも管理できます。</p>
+                        <p>姿違いはリージョンフォームはもちろん、アンノーンやビビヨン、メスのすがたに加え、配布限定やマホイップの全通りにまで対応しています。</p>
+                    </div>
                 
-                            return `
-                                <div class="product-recommend-card">
-                                    <div class="product-image">
-                                        <a href="${item.rakuten}" target="_blank" rel="noopener sponsored">
-                                            <img src="${displayImg}" alt="${item.title}" width="150" height="150" loading="lazy">
-                                        </a>
-                                    </div>
-                                    <div class="product-content">
-                                        <p class="product-title">${item.title}</p>
-                                        <div class="shop-button-group">
-                                            <a href="${item.rakuten}" class="btn-shop btn-rakuten" target="_blank" rel="noopener sponsored">楽天</a>
-                                            <a href="${item.amazon}" class="btn-shop btn-amazon" target="_blank" rel="noopener">Amazon</a>
+                    <h2>使い方ガイド</h2>
+                    <ul class="info-list">
+                        <li><strong>捕獲チェック:</strong> マス目を直接クリックすると「捕獲済み」になります。再度クリックで解除できます。</li>
+                        <li><strong>ドラッグ・なぞり:</strong> マス目をドラッグ、もしくはなぞることで、一括操作ができます。</li>
+                        <li><strong>色違い:</strong> マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。</li>
+                        <li><strong>絞り込み:</strong> 地方チェックボックスや検索窓を使って、特定のポケモンだけを表示できます。</li>
+                        <li><strong>全国図鑑 (Pokémon GO):</strong> Pokémon GOに実装済み（実装発表済み）のポケモンと色違いだけを表示するモードです。</li>
+                        <li><strong>一括操作:</strong> 「一括捕獲/解除」ボタンで、現在見えている範囲を一気に埋める/解除することができます。</li>
+                    </ul>
+                
+                    <h2>詳細・データの扱い</h2>
+                    
+                    <!-- 開閉リスト -->
+                    <details class="accordion">
+                        <summary>対応タイトル一覧</summary>
+                        <div class="content">
+                            <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
+                            <div class="minicontent">
+                                <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
+                            </div>
+                        </div>
+                    </details>
+                
+                    <details class="accordion">
+                        <summary>記載していないポケモンについて</summary>
+                        <div class="content">
+                            <p>以下のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
+                            <div class="minicontent">
+                                <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
+                            </div>
+                        </div>
+                    </details>
+                
+                    <details class="accordion">
+                        <summary>データの保存場所とバックアップについて</summary>
+                        <div class="content">
+                            <p>データはブラウザの「ローカルストレージ」に自動保存されます。サーバーにデータは送信されず、あなたのPCやスマホ内にのみ保存されます。</p>
+                            <p>ブラウザのキャッシュを削除するとデータが消えてしまいます。データの消失を防ぐのに、以下のバックアップ機能をご利用ください。</p>
+                            <p><strong>【バックアップ】</strong></p>
+                            <ol>
+                                <li><strong>「バックアップ」</strong>ボタンを押すと、下の枠にバックアップ用テキストが表示されます。</li>
+                                <li>枠内のテキストをすべてコピーして、メモ帳などに貼り付けて保存してください。</li>
+                            </ol>
+                        
+                            <p style="margin-top: 15px;"><strong>【復元】</strong></p>
+                            <ol>
+                                <li>保存しておいたバックアップテキストをコピーします。</li>
+                                <li>以下の入力枠に、テキストを貼り付けます。</li>
+                                <li><strong>「データの復元」</strong>ボタンを押すと、以前の記録が復元されます。</li>
+                            </ol>
+                            <p style="color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされるのでご注意ください。</p>
+                        </div>
+                        
+                        <div style="border-top: 1px dashed #ddd; padding-top: 15px; text-align: center;">
+                            <p style="font-size: 11px; color: #000; margin-bottom: 8px;">データのバックアップ・復元</p>
+                        
+                            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+                                <button onclick="exportToTextarea()" style="padding: 6px 12px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                    バックアップ
+                                </button>
+                                <button onclick="importFromTextarea()" style="padding: 6px 12px; background: #607D8B; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                    データの復元
+                                </button>
+                            </div>
+                        
+                            <!-- 入力・出力用のテキストエリア -->
+                            <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます" 
+                                style="width: 90%; height: 80px; font-size: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                            
+                            <p style="font-size: 10px; color: #999; margin-top: 5px;">※復元時はテキストを貼り付けてからボタンを押してください</p>
+                        </div>
+                    
+                    </details>
+                
+                    <details class="accordion">
+                        <summary>データの初期化について</summary>
+                        <div class="content">
+                            <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消すことができます。</p>
+                            <button onclick="resetAllData()" style="padding: 8px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; opacity: 0.7;">
+                                データ初期化ボタン
+                            </button>
+                        </div>
+                    </details>
+                
+                    <h2>免責事項</h2>
+                    <div class="content">
+                        <p>ポケットモンスター・ポケモン・Pokémonは<span class="nowrap">任天堂・</span><span class="nowrap">クリーチャーズ・</span><span class="nowrap">ゲームフリーク</span>の登録商標です。<br>
+                        当サイトは個人制作の非公式ファンサイトであり、<span class="nowrap">任天堂株式会社、</span><span class="nowrap">株式会社クリーチャーズ、</span><span class="nowrap">株式会社ゲームフリーク、</span><span class="nowrap">株式会社ポケモン</span>とは一切関係ありません。</p>
+                        <p>当サイトの情報は、公式の情報と異なる可能性がございます。</p>
+                        <p>当サイトの利用により発生したデータの消失、不具合、その他いかなる損害についても、製作者は一切の責任を負いかねます。あらかじめご了承ください。</p>
+                        <p>入力されたデータはブラウザ内にのみ保存され、外部サーバーに送信されることはありません。</p>
+                        <p>当サイトはAmazonアソシエイトおよび楽天アフィリエイト・プログラムの参加者です。最新の情報は各販売店にてご確認ください。掲載情報による損害等について一切の責任を負いません。</p>
+                    </div>
+                
+                    <h2>更新情報</h2>
+                    <details class="accordion">
+                        <summary><div class="update-tag">最終更新: 2026/03/09</div></summary>
+                        <div class="update-tag"><span class="update-date">2026/03/09:</span>
+                        <span class="update-content">Pokémon GOモードを削除し、図鑑タブに全国図鑑 (Pokémon GO)を追加。</span></div>
+                        <div class="update-tag"><span class="update-date">2026/03/04:</span>
+                        <span class="update-content">対応タイトル一覧を追加。GOモードにゼラオラを追加。</span></div>
+                        <div class="update-tag"><span class="update-date">2026/02/27:</span>
+                        <span class="update-content">シンオウ図鑑を「DP,BDSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。</br>メガガブリアスZを追加。GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
+                        <div class="update-tag"><span class="update-date">2026/02/26:</span>
+                        <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。</br>メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
+                        <div class="update-tag"><span class="update-date">2026/02/20:</span>
+                        <span class="update-content">公開</span></div>
+                    </details>
+                
+                    <div id="random-recommend-container" class="recommend-card-container" style="min-height: 120px;"></div>
+                
+                    <script type="module">
+                        import { itemList } from './items.js';
+                    
+                        function displayRandomItems() {
+                            const container = document.getElementById('random-recommend-container');
+                            if (!container || !itemList || itemList.length === 0) return;
+                        
+                            // --- 画面幅によって表示数を変えるロジック ---
+                            const width = window.innerWidth;
+                            let displayCount = 4; // デフォルト（1025px以上）は3つ
+                        
+                            if (width <= 593) {
+                                displayCount = 1;
+                            }
+                            else if (width <= 825) {
+                                displayCount = 2;
+                            }
+                            else if (width <= 1057) {
+                                displayCount = 3;
+                            } 
+                        
+                            // 1. 配列をシャッフル
+                            const shuffled = [...itemList].sort(() => 0.5 - Math.random());
+                        
+                            // 2. 決定した数だけ抽出
+                            const selectedItems = shuffled.slice(0, displayCount);
+                        
+                            // 3. HTML生成
+                            const html = selectedItems.map(item => {
+                                // --- ここで画像が配列かチェックし、ランダムに1枚選ぶ ---
+                                const displayImg = Array.isArray(item.img) 
+                                    ? item.img[Math.floor(Math.random() * item.img.length)] 
+                                    : item.img;
+                            
+                                return `
+                                    <div class="product-recommend-card">
+                                        <div class="product-image">
+                                            <a href="${item.rakuten}" target="_blank" rel="noopener sponsored">
+                                                <img src="${displayImg}" alt="${item.title}" width="150" height="150" loading="lazy">
+                                            </a>
+                                        </div>
+                                        <div class="product-content">
+                                            <p class="product-title">${item.title}</p>
+                                            <div class="shop-button-group">
+                                                <a href="${item.rakuten}" class="btn-shop btn-rakuten" target="_blank" rel="noopener sponsored">楽天</a>
+                                                <a href="${item.amazon}" class="btn-shop btn-amazon" target="_blank" rel="noopener">Amazon</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            `;
-                        }).join('');
-
-                        container.innerHTML = html;
-                    }
-
-                    // 実行
-                    displayRandomItems();
-
-                    // 画面サイズが変更されたら再実行して表示数を調整
-                    window.addEventListener('resize', displayRandomItems);
-                </script>
+                                `;
+                            }).join('');
+                        
+                            container.innerHTML = html;
+                        }
+                    
+                        // 実行
+                        displayRandomItems();
+                    
+                        // 画面サイズが変更されたら再実行して表示数を調整
+                        window.addEventListener('resize', displayRandomItems);
+                    </script>
+                </div>
+                
             </div>
-            
-        </div>
+        </main>
 
         <script>
 
