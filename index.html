@@ -1036,7 +1036,9 @@
                 
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新: 2026/03/09</div></summary>
+                        <summary><div class="update-tag">最終更新: 2026/03/27</div></summary>
+                        <div class="update-tag"><span class="update-date">2026/03/27:</span>
+                        <span class="update-content">一括操作の不具合とガラルヤドキングの出身地方を修正。GOモードにスナヘビ系統を追加。GOモードにノノクラゲ系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/09:</span>
                         <span class="update-content">Pokémon GOモードを削除し、図鑑タブに全国図鑑 (Pokémon GO)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/04:</span>
@@ -1490,9 +1492,10 @@
                     const matchHideCaught = !hideCaught || isNotCaught;
                     const isShinyCaught = shinyList.some(id => String(id) === String(p.id));
                     const matchHideShinyCaught = !hideShinyCaught || !isShinyCaught;
+                    const matchSearch = !searchInput.value || p.name.includes(searchInput.value);
 
 
-        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught;
+        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch;
         		})
                 .map(p => {
                     const bases = Array.isArray(config.base) ? config.base : [config.base];
@@ -1789,24 +1792,45 @@
             
             // フィルタ条件を共通化するための補助関数（既存の条件をここにまとめるとスッキリします）
             function getCurrentlyDisplayedTargets() {
-                const config = modeSettings[modeSelect.value] || modeSettings["all"];
+        		const config = modeSettings[modeSelect.value] || modeSettings["all"];
                 const isGoMode = config.onlyGo === true;
-                const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked')).map(cb => cb.value);
+                const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked'))
+                .map(cb => cb.value);
+        		let displayData = [...pokemonData];
+                const hideCaught = document.getElementById('hideCaughtFilter').checked;
+                const hideShinyCaught = document.getElementById('hideShinyCaughtFilter').checked;
                 
                 return pokemonData.filter(p => {
-                    const bases = Array.isArray(config.base) ? config.base : [config.base];
+        			const bases = Array.isArray(config.base) ? config.base : [config.base];
                     const isBaseMatch = (bases.includes("all")) || (p.localNos && bases.some(b => p.localNos[b] !== undefined));
-                    const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
+        			const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
                     const isSelectOriginMatch = (selectedOrigins.length === 0) || (selectedOrigins.includes(p.origins));
-                    const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
-                    const matchGo = !isGoMode || p.notInGo !== true;
-                    const matchForm = !noFormFilter.checked || p.noForm !== true;
-                    const match869 = more869Filter.checked || p.more869 !== true;
+            		const matchEvent = eventOnlyFilter.checked || p.isEventOnly !== true;
+            		const matchFemale = hasFemaleFilter.checked || p.hasFemale !== true;
+		        	const matchGo = !isGoMode || p.notInGo !== true;
+        			const currentMode = modeSelect.value;
+        			let targetId;
+        			if (currentMode === "all") {
+        			    targetId = p.id; // 全国図鑑なら id
+        			} 
+                    else {
+        			    // 地方図鑑なら localNos 内の該当する番号を参照、なければ id
+        			    targetId = (p.localNos && p.localNos[currentMode] !== undefined) 
+        			               ? p.localNos[currentMode] 
+        			               : p.id;
+        			}
+        			const isSubForm = targetId.toString().includes('.');
+        			const matchForm = !noFormFilter.checked || !isSubForm;
+            		const match869 = more869Filter.checked || p.more869 !== true;
                     const matchMega = MegaFilter.checked ? p.Mega === true : p.Mega !== true;
                     const matchGmax = GmaxFilter.checked ? p.Gmax === true : p.Gmax !== true;
+                    const isNotCaught = !caughtList.some(id => String(id) === String(p.id));
+                    const matchHideCaught = !hideCaught || isNotCaught;
+                    const isShinyCaught = shinyList.some(id => String(id) === String(p.id));
+                    const matchHideShinyCaught = !hideShinyCaught || !isShinyCaught;
                     const matchSearch = !searchInput.value || p.name.includes(searchInput.value);
             
-                    return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega && matchSearch;
+                    return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch;
                 });
             }
             
