@@ -283,17 +283,25 @@
             /* 単語の途中での改行を禁止するクラス */
             .nowrap {
                 display: inline-block; /* これで囲った部分が「1つの塊」として扱われます */
-                white-space: nowrap;   /* 塊の中での改行を完全に禁止 */
             }
             .filter-row {
                 display: flex;
                 justify-content: center;
-                gap: 10px;
-                margin: 10px 0;
+                align-items: center; /* これで上下の中央が揃います */
+                gap: 15px;
+                flex-wrap: wrap; /* スマホで入り切らない時に折り返す */
+                width: 100%;
+            }
+            .filter-row label {
+                display: block;
+                padding: 0px 0px;
+                font-size: 15px;
+                white-space: nowrap;
+                cursor: pointer;
             }
 
             /* プルダウンとボタンの共通スタイル */
-            #pokedexType, .dropdown-button {
+            #pokedexType, #sortSelect, .dropdown-button {
                 height: 35px; /* 標準的なセレクトボックスの高さ */
                 padding: 0 30px 0 10px; /* 右側に矢印用の余白 */
                 border: 1px solid #ccc;
@@ -338,7 +346,7 @@
                 border: 1px solid #ccc;
                 border-top: none;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                min-width: 100%;
+                min-width: 160px;
                 max-height: 250px;
                 overflow-y: auto;
                 padding: 5px 0;
@@ -357,7 +365,7 @@
 
 
             /* 親要素：すべての要素を垂直方向の中央で揃える */
-            .filter-row, .search-bar-row, .controls {
+            .search-bar-row, .controls {
                 display: flex;
                 justify-content: center;
                 align-items: center; /* これで上下の中央が揃います */
@@ -366,7 +374,7 @@
             }
 
             /* プルダウン・入力欄・自作ボタンの高さを完全に統一 */
-            #pokedexType, #searchInput, .dropdown-button {
+            #pokedexType, #sortSelect, #searchInput, .dropdown-button {
                 height: 38px;         /* 高さを固定値で統一 */
                 line-height: 36px;    /* 文字の位置を中央に寄せる */
                 margin: 0;            /* ブラウザ特有の余白を消す */
@@ -738,15 +746,38 @@
                 #counter, #shiny-counter {
                     font-size: 12px !important; /* 進捗をドーンと見せる */
                 }
+                
+                .filter-row label {
+                    display: block;
+                    padding: 0px 3px;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    cursor: pointer;
+                }
                 /* 4. プルダウン（図鑑選択）や検索窓自体のサイズも微調整 */
-                #pokedexType, #searchInput, #originDropdownBtn{
+                #pokedexType, #sortSelect, .dropdown-button{
                     width: calc(30% - 2px) !important;  /* 横幅を自由に調整してください */
                     max-width: 300px;       /* 大きなスマホでも広がりすぎないように */
                     font-size: 11px !important;
-                    height: 28px !important;
+                    height: 24px !important;
+                    padding: 2px 8px !important;
+                }
+                /* 4. プルダウン（図鑑選択）や検索窓自体のサイズも微調整 */
+                #searchInput{
+                    width: calc(30% - 2px) !important;  /* 横幅を自由に調整してください */
+                    max-width: 300px;       /* 大きなスマホでも広がりすぎないように */
+                    min-width: 150px;       /* 大きなスマホでも広がりすぎないように */
+                    font-size: 11px !important;
+                    height: 24px !important;
                     padding: 2px 8px !important;
                 }
                 
+                .filter-row .nowrap {
+                    display: inline-block; /* これで囲った部分が「1つの塊」として扱われます */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center; /* 縦並びになった時、このspan自体が中央を向くようにする */
+                }
             
                 /* 2. チェックボックスのラベル（地方名など） */
                 .filter-group label, .origin-filter label {
@@ -763,10 +794,15 @@
                 }
             
                 /* 4. 絞り込みエリア全体の隙間を詰める */
-                .controls, .filter-group {
-                    gap: 1px !important;
-                    margin-bottom: 5px !important;
-                    padding: 0 5px !important;
+                .controls, .filter-row {
+                    gap: 3px !important;
+                    margin-bottom: 3px !important;
+                    padding: 0 3px !important;
+                }
+                .filter-group {
+                    gap: 0px !important;
+                    margin-bottom: 0px !important;
+                    padding: 0 0px !important;
                 }
                 
     
@@ -814,78 +850,105 @@
                 <div style="width: 100%; display: block; clear: both;">
                     <div class="filter-row">
                         <!-- 既存の図鑑タイプ選択 -->
-                        <select id="pokedexType" aria-label="表示する図鑑を選択">
-                            <option value="all">全国図鑑 (表示する図鑑を選択)</option>
-                            <option value="go">全国図鑑 (Pokémon GO)</option>
-                            <option value="g1">カントー図鑑 (赤緑青ピFRLG)</option>
-                            <option value="g2">ジョウト図鑑 (金銀ク)</option>
-                            <option value="g3">ホウエン図鑑 (RSE)</option>
-                            <option value="g4">シンオウ図鑑 (DP,BDSP)</option>
-                            <option value="g4-1">シンオウ図鑑 (Pt)</option>
-                            <option value="g4-2">ジョウト図鑑 (HGSS)</option>
-                            <option value="g5">イッシュ図鑑 (BW)</option>
-                            <option value="g5-1">イッシュ図鑑 (BW2)</option>
-                            <option value="g6s">セントラルカロス図鑑</option>
-                            <option value="g6k">コーストカロス図鑑</option>
-                            <option value="g6m">マウンテンカロス図鑑</option>
-                            <option value="g6-1">ホウエン図鑑 (ORAS)</option>
-                            <option value="g7">アローラ図鑑 (SM)</option>
-                            <option value="g7m">メレメレ図鑑 (SM)</option>
-                            <option value="g7a">アーカラ図鑑 (SM)</option>
-                            <option value="g7u">ウラウラ図鑑 (SM)</option>
-                            <option value="g7p">ポニ図鑑 (SM)</option>
-                            <option value="g7-1">アローラ図鑑 (USUM)</option>
-                            <option value="g7-1m">メレメレ図鑑 (USUM)</option>
-                            <option value="g7-1a">アーカラ図鑑 (USUM)</option>
-                            <option value="g7-1u">ウラウラ図鑑 (USUM)</option>
-                            <option value="g7-1p">ポニ図鑑 (USUM)</option>
-                            <option value="g7-2">カントー図鑑 (ピカブイ)</option>
-                            <option value="g8">ガラル図鑑</option>
-                            <option value="g8y">ヨロイ島図鑑</option>
-                            <option value="g8k">カンムリ雪原図鑑</option>
-                            <option value="g8-1">ヒスイ図鑑</option>
-                            <option value="g9">パルデア図鑑</option>
-                            <option value="g9k">キタカミ図鑑</option>
-                            <option value="g9b">ブルーベリー図鑑</option>
-                            <option value="g9-1">ミアレ図鑑</option>
-                            <option value="g9-1i">異次元図鑑</option>
-                        </select>
-                    
-                        <!-- 地方選択（プルダウンに見えるボタン） -->
-                        <div class="custom-select-container">
-                            <button type="button" id="originDropdownBtn" class="dropdown-button">
-                                初登場地方 (複数選択可) <span class="arrow"></span>
-                            </button>
-                            
-                            <div id="originDropdownMenu" class="dropdown-menu">
-                                <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
-                                <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
-                                <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
-                                <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
-                                <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
-                                <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
-                                <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
-                                <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
-                                <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
-                                <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
-                                <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
-                                <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
-                                <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
-                            </div>
-                        </div>
-                    
-                        <input type="text" id="searchInput" placeholder="名前検索...">
+                        <span class="nowrap">
+                            <label for="filter-row">表示中の図鑑</label>
+                            <select id="pokedexType" aria-label="表示する図鑑を選択">
+                                <option value="all">全国図鑑</option>
+                                <option value="go">全国図鑑 (Pokémon GO)</option>
+                                <option value="g1">カントー図鑑 (赤緑青ピ)</option>
+                                <option value="g2">ジョウト図鑑 (金銀ク)</option>
+                                <option value="g3">ホウエン図鑑 (RSE)</option>
+                                <option value="g3-1">カントー図鑑 (FRLG)</option>
+                                <option value="g4">シンオウ図鑑 (DP,BDSP)</option>
+                                <option value="g4-1">シンオウ図鑑 (Pt)</option>
+                                <option value="g4-2">ジョウト図鑑 (HGSS)</option>
+                                <option value="g5">イッシュ図鑑 (BW)</option>
+                                <option value="g5-1">イッシュ図鑑 (BW2)</option>
+                                <option value="g6s">セントラルカロス図鑑</option>
+                                <option value="g6k">コーストカロス図鑑</option>
+                                <option value="g6m">マウンテンカロス図鑑</option>
+                                <option value="g6-1">ホウエン図鑑 (ORAS)</option>
+                                <option value="g7">アローラ図鑑 (SM)</option>
+                                <option value="g7m">メレメレ図鑑 (SM)</option>
+                                <option value="g7a">アーカラ図鑑 (SM)</option>
+                                <option value="g7u">ウラウラ図鑑 (SM)</option>
+                                <option value="g7p">ポニ図鑑 (SM)</option>
+                                <option value="g7-1">アローラ図鑑 (USUM)</option>
+                                <option value="g7-1m">メレメレ図鑑 (USUM)</option>
+                                <option value="g7-1a">アーカラ図鑑 (USUM)</option>
+                                <option value="g7-1u">ウラウラ図鑑 (USUM)</option>
+                                <option value="g7-1p">ポニ図鑑 (USUM)</option>
+                                <option value="g7-2">カントー図鑑 (ピカブイ)</option>
+                                <option value="g8">ガラル図鑑</option>
+                                <option value="g8y">ヨロイ島図鑑</option>
+                                <option value="g8k">カンムリ雪原図鑑</option>
+                                <option value="g8-1">ヒスイ図鑑</option>
+                                <option value="g9">パルデア図鑑</option>
+                                <option value="g9k">キタカミ図鑑</option>
+                                <option value="g9b">ブルーベリー図鑑</option>
+                                <option value="g9-1">ミアレ図鑑</option>
+                                <option value="g9-1i">異次元図鑑</option>
+                            </select>
+                        </span>
+
+                        <span class="nowrap">
+                            <label for="filter-row">表示順</label>
+                            <select id="sortSelect" onchange="render()">
+                                <option value="regional">地方図鑑順</option>
+                                <option value="national">全国図鑑順</option>
+                                <option value="aiueo">あいうえお順</option>
+                            </select>
+                        </span>
                     
                     </div>
                 </div>
+
+                <div style="width: 100%; display: block; clear: both;">
+                    <div class="filter-row">
+                        <!-- 地方選択（プルダウンに見えるボタン） -->
+                        <div class="custom-select-container">
+                            <span class="nowrap">
+                                <label for="filter-row"> 初登場地方</label>
+                                <button type="button" id="originDropdownBtn" class="dropdown-button">
+                                    全地方<span class="arrow"></span>
+                                </button>
+                                
+                                <div id="originDropdownMenu" class="dropdown-menu">
+                                    <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
+                                    <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
+                                    <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
+                                    <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
+                                    <label><input type="checkbox" class="origin-check" value="3.5"> カントー (FRLG)</label>
+                                    <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
+                                    <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
+                                    <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
+                                    <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
+                                    <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
+                                    <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
+                                    <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
+                                    <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
+                                    <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
+                                </div>
+                            </span>
+                        </div>
+                    
+                        <span class="nowrap">
+                            <label for="filter-row"> 検索欄</label>
+                            <input type="text" id="searchInput" placeholder="名前での検索...">
+                        </span>
+                    </div>
+                    
+                </div>
+
             
             
                 <div style="width: 100%; display: block; clear: both;">
                     <div class="filter-group">
-            	        <label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label>
-                        <label><input type="checkbox" id="hasFemaleFilter"> メスのすがたを表示</label>
-                        <label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label>
-            	        <label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label>
+            	        <span class="nowrap"><label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label></span>
+                        <span class="nowrap"><label><input type="checkbox" id="hasFemaleFilter"> メスのすがたを表示</label></span>
+            	        <span class="nowrap"><label><input type="checkbox" id="notNeedFilter" onchange="render()">図鑑完成に不要なポケモンを非表示</label></span>
+                        <span class="nowrap"><label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label></span>
+            	        <span class="nowrap"><label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label></span>
                     </div>
                 </div>
                 <div style="width: 100%; display: block; clear: both;">
@@ -964,7 +1027,7 @@
                         <div class="content">
                             <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
                             <div class="minicontent">
-                                <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
+                                <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
                             </div>
                         </div>
                     </details>
@@ -976,6 +1039,18 @@
                             <div class="minicontent">
                                 <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
                             </div>
+                        </div>
+                    </details>
+                    <details class="accordion">
+                        <summary>作品別の色違い制限について</summary>
+                        <div class="content">
+                            <p>地方図鑑において、ブロックルーチンなどでその作品内で色違いが入手できないポケモンは、該当する地方図鑑で色違いボタンが表示されません。また、色違いが存在しない赤・緑・青・ピカチュウも、対応する地方図鑑で色違いボタンが表示されません。</p>
+                        </div>
+                    </details>
+                    <details class="accordion">
+                        <summary>図鑑完成に不要なポケモンを非表示について</summary>
+                        <div class="content">
+                            <p>地方図鑑完成（賞状の授与）に不必要なポケモンが非表示になります。賞状のないZAの図鑑はHOME図鑑を参照しています。</p>
                         </div>
                     </details>
                 
@@ -1042,13 +1117,15 @@
                 
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新: 2026/04/03</div></summary>
+                        <summary><div class="update-tag">最終更新: 2026/04/07</div></summary>
+                        <div class="update-tag"><span class="update-date">2026/04/07:</span>
+                        <span class="update-content">表示順を変更する機能と図鑑完成に不要なポケモンを非表示にする機能を追加。</br>作品別の色違い制限（詳しくは「作品別の色違い制限について」へ）を追加し、カントー図鑑 (赤緑青ピFRLG)を(赤緑青ピ)と(FRLG)に分割。</br>色違いカウンターの分母が0のときカウンターが非表示になるよう変更。</br>アンノーンの!と?の初登場地方を修正し、初登場地方にカントー (FRLG)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/03:</span>
                         <span class="update-content">メガマギアナ(500ねんまえのいろ)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/01:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にミミッキュを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/27:</span>
-                        <span class="update-content">一括操作の不具合とガラルヤドキングの出身地方を修正。全国図鑑 (Pokémon GO)にスナヘビ系統を追加。全国図鑑 (Pokémon GO)にノノクラゲ系統の色違いを追加。</span></div>
+                        <span class="update-content">一括操作の不具合とガラルヤドキングの出身地方を修正。全国図鑑 (Pokémon GO)にスナヘビ系統を追加。</br>全国図鑑 (Pokémon GO)にノノクラゲ系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/09:</span>
                         <span class="update-content">Pokémon GOモードを削除し、図鑑タブに全国図鑑 (Pokémon GO)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/04:</span>
@@ -1193,7 +1270,7 @@
                 'g1': {
                     h1: 'カントー図鑑コンプ率チェッカー',
                     title: '【なぞって簡単】カントー図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
-                    description: '赤・緑・青・ピカチュウとファイアレッド・リーフグリーン(FRLG)のカントー図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                    description: '赤・緑・青・ピカチュウのカントー図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
                 },
                 'g2': {
                     h1: 'ジョウト図鑑コンプ率チェッカー',
@@ -1204,6 +1281,11 @@
                     h1: 'ホウエン図鑑コンプ率チェッカー',
                     title: '【なぞって簡単】ホウエン図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
                     description: 'ルビー・サファイア・エメラルド(RSE)のホウエン図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
+                },
+                'g3-1': {
+                    h1: 'カントー図鑑コンプ率チェッカー',
+                    title: '【なぞって簡単】カントー図鑑コンプ率チェッカー | 登録不要・スマホで使える無料の図鑑埋めサポートツール',
+                    description: 'ファイアレッド・リーフグリーン(FRLG)のカントー図鑑に対応した捕獲管理チェッカー。PCでもスマホでも、なぞるだけで簡単一括チェック。'
                 },
                 'g4': {
                     h1: 'シンオウ図鑑コンプ率チェッカー',
@@ -1382,9 +1464,10 @@
             const modeSettings = {
                 "all": { base: ["all"], origins: [], ranges: []},
                 "go": { base: ["all"], origins: [], ranges: [], onlyGo: true, suffix: "（Pokémon GO）"},
-                "g1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]], suffix: "（赤緑青ピカチュウ、FRLG）"},
+                "g1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]], suffix: "（赤緑青ピカチュウ）"},
                 "g2": { base: ["g2"], origins: [], ranges: [], suffix: "（金銀クリスタル）"},
                 "g3": { base: ["g3"], origins: [], ranges: [], suffix: "（RSE）"},
+                "g3-1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]], suffix: "（FRLG）"},
                 "g4": { base: ["g4"], origins: [], ranges: [], suffix: "（DP、DBSP）"},
                 "g4-1": { base: ["g4-1"], origins: [], ranges: [], suffix: "（プラチナ）"},
                 "g4-2": { base: ["g4-2"], origins: [], ranges: [], suffix: "（HGSS）"},
@@ -1469,6 +1552,8 @@
         			// 【追加】姿違いの除外（ONで非表示）// noForm が true の個体を、チェックONの時に取り除く// 1. 現在のモード（地方図鑑）を取得
         			const currentMode = modeSelect.value;
 
+                    
+
         			// 2. 判定に使うIDを特定
         			let targetId;
         			if (currentMode === "all") {
@@ -1503,9 +1588,15 @@
                     const isShinyCaught = shinyList.some(id => String(id) === String(p.id));
                     const matchHideShinyCaught = !hideShinyCaught || !isShinyCaught;
                     const matchSearch = !searchInput.value || p.name.includes(searchInput.value);
+                    // --- 【追加】図鑑完成に不要なポケモンの「除外」ロジック ---
+                    const hideNotNeed = document.getElementById('notNeedFilter').checked;
+                    // このポケモンが、現在のモードにおいて「不要(notNeed)」の配列に含まれているか
+                    const isNotNeedHere = p.notNeed && p.notNeed.includes(currentMode);
+                    // チェックON(除外する) ＋ その作品で不要なポケモン なら非表示(false)
+                    const matchNotNeed = !hideNotNeed || !isNotNeedHere;
 
 
-        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch;
+        			return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch && matchNotNeed;
         		})
                 .map(p => {
                     const bases = Array.isArray(config.base) ? config.base : [config.base];
@@ -1530,21 +1621,35 @@
         		}
 
         		// ③ 並び替え（rangesの掲載順優先 ＋ 同じ範囲内なら番号順）
-        		displayData.sort((a, b) => {
-        			const getRangeIndex = (pokemon) => {
-        				if (config.ranges.length === 0) return 0;
-        				return config.ranges.findIndex(([targetBase, start, end]) => {
-        					const num = (targetBase === "all") ? pokemon.id : (pokemon.localNos ? pokemon.localNos[targetBase] : null);
-        					return num !== null && num >= start && num <= (end || start);
-        				});
-        			};
+                const sortValue = document.getElementById('sortSelect').value;
 
-        			const indexA = getRangeIndex(a);
-        			const indexB = getRangeIndex(b);
+                displayData.sort((a, b) => {
+                    if (sortValue === 'national') {
+                        // 【全国図鑑順】 id を数値として比較
+                        return Number(a.id) - Number(b.id);
+                    } 
+                    else if (sortValue === 'aiueo') {
+                        // 【あいうえお順】 日本語（カタカナ）として比較
+                        return a.name.localeCompare(b.name, 'ja');
+                    } 
+                    else {
+                        // 【地方図鑑順（デフォルト）】 
+                        // 既存の ranges の掲載順優先 ＋ 番号順 のロジックを使用
+                        const getRangeIndex = (pokemon) => {
+                            if (config.ranges.length === 0) return 0;
+                            return config.ranges.findIndex(([targetBase, start, end]) => {
+                                const num = (targetBase === "all") ? pokemon.id : (pokemon.localNos ? pokemon.localNos[targetBase] : null);
+                                return num !== null && num >= start && num <= (end || start);
+                            });
+                        };
 
-        			if (indexA !== indexB) return indexA - indexB; // rangesの順序を優先
-        			return a.currentNo - b.currentNo; // 同じ範囲内なら現在の番号順
-        		});
+                        const indexA = getRangeIndex(a);
+                        const indexB = getRangeIndex(b);
+
+                        if (indexA !== indexB) return indexA - indexB; // 範囲の順序を優先
+                        return a.currentNo - b.currentNo; // 同じ範囲内なら現在の番号順
+                    }
+                });
 
         		// ④ 名前検索フィルタ
         		if (searchInput.value) {
@@ -1567,7 +1672,7 @@
 
 
         			// --- 表示番号(displayNo)の決定ロジック ---
-        			    let displayNo;
+        			let displayNo;
 
                     if (config.startAt === 0 || config.startAt === 1) {
                       // 0番や1番から連番を振るモードの場合
@@ -1587,13 +1692,15 @@
                     .replace(/(.{6})(?=.)/g, '$1<wbr>'); // 4文字ごとに改行候補を隠し入れる
 
         			// ① フィルタ条件の判定（チェックボックスがON または GOモードが選択中）
+                    const currentMode = document.getElementById('pokedexType').value;
         		    const isNotInGoActive = isGoMode;
 
         			// ② 判定用のフラグ（現在チェックされているか）
         			const isShinyActive = shinyList.some(id => String(id) === String(p.id));
+                    const isShinyLockedHere = p.shinyLocked && p.shinyLocked.includes(currentMode);
 
         			// 「フィルタがON」 または 「JSONのnotInGoShinyがtrue」 なら非表示
-        		    const shinyBtnHtml = !(isNotInGoActive && p.notInGoShiny|| p.noShiny) 
+        		    const shinyBtnHtml = !(isNotInGoActive && p.notInGoShiny || p.noShiny || isShinyLockedHere) 
         		    ? `<button class="mini-btn shiny-btn ${isShinyActive ? 'shiny-on' : ''}" title="色違い">★</button>` 
         		    : '';
 
@@ -1733,8 +1840,13 @@
                 
                 const shinyCounterElement = document.getElementById('shiny-counter');
                 if (shinyCounterElement) {
-                    // 分母を totalShinyPossible に差し替え
-                    shinyCounterElement.innerText = `★色違い: ${shinyCount} / ${totalShinyPossible} (${shinyPercent}%)`;
+                    // 【追加】色違い対象が0匹の時は、カウンター自体を隠す！
+                    if (totalShinyPossible === 0) {
+                        shinyCounterElement.style.display = 'none';
+                    } else {
+                        shinyCounterElement.style.display = 'block'; // （元に戻す用）
+                        shinyCounterElement.innerText = `★色違い: ${shinyCount} / ${totalShinyPossible} (${shinyPercent}%)`;
+                    }
                 }
             }
 
@@ -1772,12 +1884,17 @@
                 if (!confirm(`現在表示されているポケモンの★色違いをすべて${action}にしますか？\n（※色違いボタンが表示されていない個体は無視されます）`)) return;
             
                 // 現在表示されているポケモンのうち、色違いボタンが存在するものだけを対象にする
+                const modeSelect = document.getElementById('pokedexType'); // modeSelectを定義
+                const currentMode = modeSelect.value;
                 const config = modeSettings[modeSelect.value] || modeSettings["all"];
                 const isGoMode = config.onlyGo === true;
                 const isNotInGoActive = isGoMode;
                 const targets = getCurrentlyDisplayedTargets().filter(p => {
-                    // ボタンが表示される条件を再現
-                    return !(p.noShiny || (isNotInGoActive && p.notInGoShiny));
+                    // --- 【修正】shinyLocked の判定を追加 ---
+                    const isShinyLockedHere = p.shinyLocked && p.shinyLocked.includes(currentMode);
+                    
+                    // 「JSONの基本設定(noShiny)」「GOモード制限」「作品別ブロック(shinyLocked)」のどれにも当てはまらない場合のみ対象
+                    return !(p.noShiny || (isNotInGoActive && p.notInGoShiny) || isShinyLockedHere);
                 });
             
                 const targetIds = targets.map(p => String(p.id));
@@ -1839,8 +1956,14 @@
                     const isShinyCaught = shinyList.some(id => String(id) === String(p.id));
                     const matchHideShinyCaught = !hideShinyCaught || !isShinyCaught;
                     const matchSearch = !searchInput.value || p.name.includes(searchInput.value);
+                    // --- 【追加】図鑑完成に不要なポケモンの「除外」ロジック ---
+                    const hideNotNeed = document.getElementById('notNeedFilter').checked;
+                    // このポケモンが、現在のモードにおいて「不要(notNeed)」の配列に含まれているか
+                    const isNotNeedHere = p.notNeed && p.notNeed.includes(currentMode);
+                    // チェックON(除外する) ＋ その作品で不要なポケモン なら非表示(false)
+                    const matchNotNeed = !hideNotNeed || !isNotNeedHere;
             
-                    return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch;
+                    return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch && matchNotNeed;
                 });
             }
             
@@ -2119,7 +2242,12 @@
                 const config = modeSettings[modeSelect.value] || modeSettings["all"];
                 const isGoMode = config.onlyGo === true; // プルダウンがGOモードかどうか
                 const isNotInGoActive = isGoMode; // どちらかがONなら true
-                const shinyPossibleTargets = currentTargets.filter(p => !(p.noShiny || (isNotInGoActive && p.notInGoShiny)));
+                const currentMode = modeSelect.value;
+                const shinyPossibleTargets = currentTargets.filter(p => {
+                    // 【追加】shinyLockedの判定（画面のカウンターと一致させるため）
+                    const isShinyLockedHere = p.shinyLocked && p.shinyLocked.includes(currentMode);
+                    return !(p.noShiny || (isNotInGoActive && p.notInGoShiny) || isShinyLockedHere);
+                });
                 const totalShiny = shinyPossibleTargets.length;
                 const shiny = currentTargets.filter(p => 
                     shinyList.some(id => String(id) === String(p.id))
@@ -2132,17 +2260,20 @@
                 const siteUrl = window.location.href;
                 let title = config.suffix || "";
             
-                const text = `【ポケモン図鑑コンプ率チェッカー】\n` +
+                let text = `【ポケモン図鑑コンプ率チェッカー】\n` +
                              `${configName}${title}\n` +
-                             `捕獲済み: ${caught} / ${total} (${caughtPer}%)\n` +
-                             `色違い: ${shiny} / ${totalShiny} (${shinyPer}%)\n` +
-                             `${siteUrl}`;
+                             `捕獲済み: ${caught} / ${total} (${caughtPer}%)\n`;
+                if (totalShiny > 0) {
+                    const shinyPer = Math.round((shiny / totalShiny) * 1000) / 10;
+                    text += `★色違い: ${shiny} / ${totalShiny} (${shinyPer}%)\n`;
+                }
+                text += `${siteUrl}`;
             
-            // ② 実行部分
-            const isMobile = /iPhone|Android/i.test(navigator.userAgent);
-            const protocol = isMobile ? "twitter://post?message=" : "https://x.com/intent/post?text=";
+                // ② 実行部分
+                const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+                const protocol = isMobile ? "twitter://post?message=" : "https://x.com/intent/post?text=";
                 const xUrl = protocol + encodeURIComponent(text);
-            window.open(xUrl, '_blank');
+                window.open(xUrl, '_blank');
             }
 
             // リスト操作の共通関数
