@@ -944,23 +944,23 @@
             
                 <div style="width: 100%; display: block; clear: both;">
                     <div class="filter-group">
-            	        <span class="nowrap"><label><input type="checkbox" id="noFormFilter"> 姿違いを非表示</label></span>
-                        <span class="nowrap"><label><input type="checkbox" id="hasFemaleFilter"> メスのすがたを表示</label></span>
-            	        <span class="nowrap"><label><input type="checkbox" id="notNeedFilter" onchange="render()">図鑑完成に不要なポケモンを非表示</label></span>
-                        <span class="nowrap"><label><input type="checkbox" id="eventOnlyFilter"> 配布限定を表示</label></span>
-            	        <span class="nowrap"><label><input type="checkbox" id="more869Filter"> マホイップの姿違いを全て表示</label></span>
+            	        <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
+                        <span class="nowrap" id="hasFemaleFilterContainer"><input type="checkbox" id="hasFemaleFilter"><label for="hasFemaleFilter"> メスのすがたを表示</label></span>
+            	        <span class="nowrap" id="notNeedFilterContainer"><input type="checkbox" id="notNeedFilter" onchange="render()"><label for="notNeedFilter" id="notNeedFilterLabel">図鑑完成に不要なポケモンを非表示</label></span>
+                        <span class="nowrap" id="eventOnlyFilterContainer"><input type="checkbox" id="eventOnlyFilter"><label for="eventOnlyFilter"> 配布限定を表示</label></span>
+            	        <span class="nowrap" id="more869FilterContainer"><input type="checkbox" id="more869Filter"><label for="more869Filter"> マホイップの姿違いを全て表示</label></span>
                     </div>
                 </div>
                 <div style="width: 100%; display: block; clear: both;">
                     <div class="filter-group">
-                        <label><input type="checkbox" id="hideCaughtFilter"> 捕獲済みを非表示</label>
-                        <label><input type="checkbox" id="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label>
+                        <input type="checkbox" id="hideCaughtFilter"><label for="hideCaughtFilter"> 捕獲済みを非表示</label>
+                        <input type="checkbox" id="hideShinyCaughtFilter"><label for="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label>
                     </div>
                 </div>
                 <div style="width: 100%; display: block; clear: both;">
                     <div class="filter-group">
-                    	<label><input type="checkbox" id="MegaFilter"> メガシンカ一覧</label>
-                    	<label><input type="checkbox" id="GmaxFilter"> キョダイマックス一覧</label>
+                    	<span class="nowrap" id="MegaFilterContainer"><input type="checkbox" id="MegaFilter"><label for="MegaFilter"> メガシンカ一覧</label></span>
+                    	<span class="nowrap" id="GmaxFilterContainer"><input type="checkbox" id="GmaxFilter"><label for="GmaxFilter"> キョダイマックス一覧</label></span>
                     </div>
                 </div>
             
@@ -1117,7 +1117,9 @@
                 
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新: 2026/04/11</div></summary>
+                        <summary><div class="update-tag">最終更新: 2026/04/17</div></summary>
+                        <div class="update-tag"><span class="update-date">2026/04/17:</span>
+                        <span class="update-content">各地方図鑑で不必要な絞り込みが非表示になるように変更。</br>「図鑑完成に不要なポケモンを非表示」が全国図鑑で「幻のポケモンを非表示」に、全国図鑑 (Pokémon GO)では「HOMEに送れないポケモンと幻のポケモンを非表示」になるように変更。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/11:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にミミズズを追加。全国図鑑 (Pokémon GO)にミミズズとブロロン系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/07:</span>
@@ -1507,6 +1509,7 @@
         	const modeSelect = document.getElementById('pokedexType'); 
         	const originsFilter = document.getElementById('originsFilter');
         	const hasFemaleFilter = document.getElementById('hasFemaleFilter');
+        	const notNeedFilter = document.getElementById('notNeedFilter');
         	const eventOnlyFilter = document.getElementById('eventOnlyFilter');
         	const noFormFilter = document.getElementById('noFormFilter');
         	const more869Filter = document.getElementById('more869Filter');
@@ -1514,6 +1517,92 @@
         	const GmaxFilter = document.getElementById('GmaxFilter');
 
 
+            function updateFilterUI() {
+                const currentMode = document.getElementById('pokedexType').value;
+
+                // --- 1. 非表示にするモードの定義（if文で使う配列） ---
+                const hidenoForm    = ['g1', 'g3-1'];
+                const hidehasFemale = ['g1', 'g2', 'g3', 'g3-1'];
+                const showeventOnly = ['all'];
+                const showmore869   = ['all', 'g8', 'g9b'];
+                const hideMega      = ['g1', 'g2', 'g3', 'g3-1', 'g4', 'g4-1', 'g4-2', 'g5', 'g5-1', 'g8', 'g8y', 'g8k', 'g8-1', 'g9','g9k', 'g9b',];
+                const showGmax      = ['all', 'go', 'g8', 'g8y', 'g8k'];
+
+                // --- 2. 各フィルタの要素を取得 ---
+                const noFormCon = document.getElementById('noFormFilterContainer');
+                const hasFemaleCon = document.getElementById('hasFemaleFilterContainer');
+                const eventOnlyCon = document.getElementById('eventOnlyFilterContainer');
+                const more869Con = document.getElementById('more869FilterContainer');
+                const megaCon   = document.getElementById('MegaFilterContainer');
+                const gmaxCon   = document.getElementById('GmaxFilterContainer');
+                
+                // 姿違い
+                if (hidenoForm.includes(currentMode)) {
+                    noFormCon.style.display = 'none';
+                    document.getElementById('noFormFilter').checked = false; // 隠す時はOFFにする
+                } 
+                else {
+                    noFormCon.style.display = '';
+                }
+                
+                // メスのすがた
+                if (hidehasFemale.includes(currentMode)) {
+                    hasFemaleCon.style.display = 'none';
+                    document.getElementById('hasFemaleFilter').checked = false; // 隠す時はOFFにする
+                } 
+                else {
+                    hasFemaleCon.style.display = '';
+                }
+                
+                // 配布限定
+                if (showeventOnly.includes(currentMode)) {
+                    eventOnlyCon.style.display = '';
+                } 
+                else {
+                    eventOnlyCon.style.display = 'none';
+                    document.getElementById('eventOnlyFilter').checked = false;
+                }
+                
+                // マホイップの姿違い
+                if (showmore869.includes(currentMode)) {
+                    more869Con.style.display = '';
+                } 
+                else {
+                    more869Con.style.display = 'none';
+                    document.getElementById('more869Filter').checked = false;
+                }
+                
+                // メガシンカ
+                if (hideMega.includes(currentMode)) {
+                    megaCon.style.display = 'none';
+                    document.getElementById('MegaFilter').checked = false;
+                } 
+                else {
+                    megaCon.style.display = '';
+                }
+                
+                // キョダイマックス
+                if (showGmax.includes(currentMode)) {
+                    gmaxCon.style.display = '';
+                } 
+                else {
+                    gmaxCon.style.display = 'none';
+                    document.getElementById('GmaxFilter').checked = false;
+                }
+                
+                const notNeedLabel = document.getElementById('notNeedFilterLabel');
+                
+                if (currentMode === 'all') {
+                    notNeedLabel.textContent = '幻のポケモンを非表示';
+                } 
+                else if (currentMode === 'go') {
+                    notNeedLabel.textContent = 'HOMEに送れないポケモンと幻のポケモンを非表示';
+                } 
+                else {
+                    notNeedLabel.textContent = '図鑑完成に不要なポケモンを非表示';
+                }
+                }
+                    
             // 保存用リストの読み込み
             let caughtList = JSON.parse(localStorage.getItem('caughtPokemon')) || [];
             let shinyList = JSON.parse(localStorage.getItem('shinyPokemon')) || [];
@@ -1554,7 +1643,7 @@
         			// 【追加】姿違いの除外（ONで非表示）// noForm が true の個体を、チェックONの時に取り除く// 1. 現在のモード（地方図鑑）を取得
         			const currentMode = modeSelect.value;
 
-                    
+
 
         			// 2. 判定に使うIDを特定
         			let targetId;
@@ -1819,11 +1908,11 @@
                 // 2. ★色違いの「表示されている総数」を計算（ここがポイント！）
                 // render内のボタン非表示ロジック（!p.noShiny && !(isNotInGoActive && p.notInGoShiny)など）と同じ条件で絞り込む
                 const isNotInGoActive = isGoMode; // フィルタの状態を取得
-                
+                const currentMode = document.getElementById('pokedexType').value;
                 const totalShinyPossible = displayData.filter(p => {
                     // ボタンが表示される条件：(noShinyがtrueでない) かつ (GO未実装フィルタONかつnotInGoShinyがtrue)ではない
                     // つまり render内の shinyBtnHtml が空文字にならない条件
-                    return !(p.noShiny || (isNotInGoActive && p.notInGoShiny));
+                    return !p.noShiny && !(p.shinyLocked && p.shinyLocked.includes(currentMode)) && !(isNotInGoActive && p.notInGoShiny);
                 }).length;
                 
                 // 3. 色違いの捕獲集計
@@ -2290,20 +2379,38 @@
                 localStorage.setItem(storageKey, JSON.stringify(list));
             }
 
-            modeSelect.onchange = render;
-            document.querySelectorAll('.origin-check').forEach(cb => {
-                cb.addEventListener('change', render);
+            document.addEventListener('DOMContentLoaded', () => {
+    
+                // --- 1. 初期化処理 ---
+                // ページを開いた瞬間に、今のモードに合わせてボタンの表示・非表示を整える
+                updateFilterUI(); 
+
+                // --- 2. 各要素へのイベント登録（今のコードをここに入れる） ---
+                modeSelect.onchange = () => {
+                    updateFilterUI(); // モードが変わるたびにボタンの表示を更新
+                    render();         // その後、図鑑を描画
+                };
+            
+                document.querySelectorAll('.origin-check').forEach(cb => {
+                    cb.addEventListener('change', render);
+                });
+
+                document.getElementById('hideCaughtFilter').onchange = render;
+                document.getElementById('hideShinyCaughtFilter').onchange = render;
+                searchInput.oninput = render;
+    
+                // フィルタ類の変更時は再描画（render）を呼ぶ
+                hasFemaleFilter.onchange = render;
+                eventOnlyFilter.onchange = render;
+                notNeedFilter.onchange = render;
+                noFormFilter.onchange = render;
+                more869Filter.onchange = render;
+                GmaxFilter.onchange = render;
+                MegaFilter.onchange = render;
+            
+                // --- 3. 最初の描画 ---
+                render();
             });
-            document.getElementById('hideCaughtFilter').onchange = render;
-            document.getElementById('hideShinyCaughtFilter').onchange = render;
-            searchInput.oninput = render;
-            hasFemaleFilter.onchange = render;
-            eventOnlyFilter.onchange = render;
-            noFormFilter.onchange = render;
-            more869Filter.onchange = render;
-            GmaxFilter.onchange = render;
-            MegaFilter.onchange = render;
-            render();
         </script>
         <!-- スクロールナビゲーションボタン -->
         <div id="scroll-nav">
