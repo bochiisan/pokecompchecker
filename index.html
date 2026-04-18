@@ -2400,9 +2400,6 @@
             document.addEventListener('DOMContentLoaded', () => {
     
                 // --- 1. 初期化処理 ---
-                // ページを開いた瞬間に、今のモードに合わせてボタンの表示・非表示を整える
-                updateFilterUI(); 
-
                 const urlParams = new URLSearchParams(window.location.search);
                 const modeFromUrl = urlParams.get('mode'); // ?mode=〇〇 の 〇〇 を取得
 
@@ -2413,6 +2410,10 @@
                         modeSelect.value = modeFromUrl;
                     }
                 }
+
+                // ページを開いた瞬間に、今のモードに合わせてボタンの表示・非表示を整える
+                updateFilterUI(); 
+                updateUrlAndCanonical();
 
                 // --- 2. 各要素へのイベント登録（今のコードをここに入れる） ---
                 modeSelect.onchange = () => {
