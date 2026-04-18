@@ -18,6 +18,7 @@
         <link rel="apple-touch-icon" href="icon.png">
         <link rel="preload" href="/pokemon.json" as="fetch" crossorigin="anonymous">
         <link rel="modulepreload" href="./items.js">
+        <link rel="canonical" id="canonicalUrl" href="https://pokecompchecker.vercel.app/">
         <style>
         	body { 
         		font-family: Arial, sans-serif;
@@ -1516,6 +1517,23 @@
         	const MegaFilter = document.getElementById('MegaFilter');
         	const GmaxFilter = document.getElementById('GmaxFilter');
 
+            function updateUrlAndCanonical() {
+                const currentMode = document.getElementById('pokedexType').value;
+
+                // 1. 新しいURLを作る（例: https://example.com/?mode=g9）
+                // window.location.origin は "https://example.com"
+                // window.location.pathname は "/" や "/pokecomp/" など
+                const newUrl = window.location.origin + window.location.pathname + "?mode=" + currentMode;
+
+                // 2. ブラウザのURLバーを書き換える（ページのリロードは発生しません）
+                window.history.replaceState(null, '', newUrl);
+
+                // 3. Canonicalタグを新しいURLに書き換える
+                const canonicalTag = document.getElementById('canonicalUrl');
+                if (canonicalTag) {
+                    canonicalTag.href = newUrl;
+                }
+            }
 
             function updateFilterUI() {
                 const currentMode = document.getElementById('pokedexType').value;
@@ -2385,9 +2403,21 @@
                 // ページを開いた瞬間に、今のモードに合わせてボタンの表示・非表示を整える
                 updateFilterUI(); 
 
+                const urlParams = new URLSearchParams(window.location.search);
+                const modeFromUrl = urlParams.get('mode'); // ?mode=〇〇 の 〇〇 を取得
+
+                if (modeFromUrl) {
+                    const modeSelect = document.getElementById('pokedexType');
+                    // もしURLで指定されたモードが、プルダウンの選択肢に存在すればセットする
+                    if ([...modeSelect.options].some(opt => opt.value === modeFromUrl)) {
+                        modeSelect.value = modeFromUrl;
+                    }
+                }
+
                 // --- 2. 各要素へのイベント登録（今のコードをここに入れる） ---
                 modeSelect.onchange = () => {
                     updateFilterUI(); // モードが変わるたびにボタンの表示を更新
+                    updateUrlAndCanonical();
                     render();         // その後、図鑑を描画
                 };
             
