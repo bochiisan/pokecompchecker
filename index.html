@@ -1005,67 +1005,43 @@
             <div class="info-section">
                 <div class="info-card">
                     
-                    <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
-                        <p style="font-size: 11px; color: #000; margin-bottom: 8px;">SNSで進捗を報告する</p>
+                    <div style="text-align: center;">
+                        <p style="font-size: 12px; color: #000; margin-bottom: 8px;">SNSで進捗を報告する</p>
                         <button onclick="shareProgress()" style="padding: 8px 20px; background: #1565c0; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
                             Twitter(X)でシェア
                         </button>
                     </div>
-                    <h2>当サイトについて</h2>
-                    <div class="content">
-                        <p>当サイトはポケモン収集の進捗管理や、捕獲状況の記録、図鑑埋めの手助け等を目的としたファンサイトで、PC・スマホの両方で利用可能です。</p>
-                        <p>全国図鑑と「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOに対応しております。</p>
-                        <p>色違いの捕獲状況、メガシンカやキョダイマックスも管理できます。</p>
-                        <p>姿違いはリージョンフォームはもちろん、アンノーンやビビヨン、メスのすがたに加え、配布限定やマホイップの全通りにまで対応しています。</p>
-                    </div>
-                
-                    <h2>使い方ガイド</h2>
-                    <ul class="info-list">
-                        <li><strong>捕獲チェック:</strong> マス目を直接クリックすると「捕獲済み」になります。再度クリックで解除できます。</li>
-                        <li><strong>ドラッグ・なぞり:</strong> マス目をドラッグ、もしくはなぞることで、一括操作ができます。</li>
-                        <li><strong>色違い:</strong> マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。</li>
-                        <li><strong>絞り込み:</strong> 地方チェックボックスや検索窓を使って、特定のポケモンだけを表示できます。</li>
-                        <li><strong>全国図鑑 (Pokémon GO):</strong> Pokémon GOに実装済み（実装発表済み）のポケモンと色違いだけを表示するモードです。</li>
-                        <li><strong>一括操作:</strong> 「一括捕獲/解除」ボタンで、現在見えている範囲を一気に埋める/解除することができます。</li>
-                    </ul>
-                
-                    <h2>詳細・データの扱い</h2>
+
+                    <h2>データのバックアップ・復元・初期化</h2>
+                    <div style="text-align: center;">
+                        <p style="font-size: 12px; color: #000; margin-bottom: 8px;">データのバックアップ・復元</p>
+                        
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+                            <button onclick="exportToTextarea()" style="padding: 6px 12px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                バックアップ
+                            </button>
+                            <button onclick="importFromTextarea()" style="padding: 6px 12px; background: #607D8B; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                データの復元
+                            </button>
+                        </div>
+                        
+                        <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます" style="width: 90%; height: 80px; font-size: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                        
+                        <p style="font-size: 10px; color: #5f5f5f; margin-top: 5px;">※復元時はテキストを貼り付けてからボタンを押してください</p>
+                        </div>
                     
-                    <!-- 開閉リスト -->
                     <details class="accordion">
-                        <summary>対応タイトル一覧</summary>
+                        <summary>データの初期化</summary>
                         <div class="content">
-                            <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
-                            <div class="minicontent">
-                                <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
-                            </div>
+                            <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消すことができます。</p>
+                            <button onclick="resetAllData()" style="padding: 8px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; opacity: 0.7;">
+                                データ初期化ボタン
+                            </button>
                         </div>
                     </details>
-                
+
                     <details class="accordion">
-                        <summary>記載していないポケモンについて</summary>
-                        <div class="content">
-                            <p>以下のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
-                            <div class="minicontent">
-                                <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
-                            </div>
-                        </div>
-                    </details>
-                    <details class="accordion">
-                        <summary>作品別の色違い制限について</summary>
-                        <div class="content">
-                            <p>地方図鑑において、ブロックルーチンなどでその作品内で色違いが入手できないポケモンは、該当する地方図鑑で色違いボタンが表示されません。また、色違いが存在しない赤・緑・青・ピカチュウも、対応する地方図鑑で色違いボタンが表示されません。</p>
-                        </div>
-                    </details>
-                    <details class="accordion">
-                        <summary>図鑑完成に不要なポケモンを非表示について</summary>
-                        <div class="content">
-                            <p>地方図鑑完成（賞状の授与）に不必要なポケモンが非表示になります。賞状のないZAの図鑑はHOME図鑑を参照しています。</p>
-                        </div>
-                    </details>
-                
-                    <details class="accordion">
-                        <summary>データの保存場所とバックアップについて</summary>
+                        <summary>データの保存場所とバックアップ・復元の使い方</summary>
                         <div class="content">
                             <p>データはブラウザの「ローカルストレージ」に自動保存されます。サーバーにデータは送信されず、あなたのPCやスマホ内にのみ保存されます。</p>
                             <p>ブラウザのキャッシュを削除するとデータが消えてしまいます。データの消失を防ぐのに、以下のバックアップ機能をご利用ください。</p>
@@ -1081,63 +1057,116 @@
                                 <li>以下の入力枠に、テキストを貼り付けます。</li>
                                 <li><strong>「データの復元」</strong>ボタンを押すと、以前の記録が復元されます。</li>
                             </ol>
-                            <p style="color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされるのでご注意ください。</p>
+                            <p style="color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされます。</p>
                         </div>
-                        
-                        <div style="border-top: 1px dashed #ddd; padding-top: 15px; text-align: center;">
-                            <p style="font-size: 11px; color: #000; margin-bottom: 8px;">データのバックアップ・復元</p>
-                        
-                            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
-                                <button onclick="exportToTextarea()" style="padding: 6px 12px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
-                                    バックアップ
-                                </button>
-                                <button onclick="importFromTextarea()" style="padding: 6px 12px; background: #607D8B; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
-                                    データの復元
-                                </button>
-                            </div>
-                        
-                            <!-- 入力・出力用のテキストエリア -->
-                            <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます" 
-                                style="width: 90%; height: 80px; font-size: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
-                            
-                            <p style="font-size: 10px; color: #999; margin-top: 5px;">※復元時はテキストを貼り付けてからボタンを押してください</p>
+                    </details>
+
+                    <h2>サイトの概要</h2>
+                    <details class="accordion">
+                        <summary>当サイトについて</summary>
+                        <div class="content">
+                            <p>ポケモン図鑑コンプ率チェッカーは、ポケモン収集の進捗管理、捕獲状況の記録、図鑑埋めの手助け等を目的としたファンサイトです。PC・スマホの両方で利用可能となっています。</p>
+                            <p>基本となる全国図鑑をはじめ、「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOの図鑑にも対応しております。</p>
+                            <p>通常の捕獲状況だけでなく、色違い、メガシンカ、キョダイマックスの収集・登録状況も個別に記録可能です。</p>
+                            <p>また当サイトは「すがたちがい」にも対応しています。Pokémon HOMEに預けることのできるすべてのすがたに対応しており、メスのすがた、サトシゲッコウガのような配布限定、マホイップの全通りなどにも対応しています。</p>
+                            <p>なお、非公式のリーク情報を扱うことは絶対にありません。ネタバレや未解禁情報に触れたくない方でも、いつでも安心してご利用いただけます。</p>
+                            <p>入力されたデータは、お使いのブラウザ内部の安全な領域（ローカルストレージ機能）に自動でリアルタイム保存されます。そのため、作業の途中でページを閉じたり、再読み込みしたりしても、前回のチェック状態から再開することができます。</p>
                         </div>
-                    
                     </details>
                 
                     <details class="accordion">
-                        <summary>データの初期化について</summary>
+                        <summary>使い方ガイド</summary>
                         <div class="content">
-                            <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消すことができます。</p>
-                            <button onclick="resetAllData()" style="padding: 8px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; opacity: 0.7;">
-                                データ初期化ボタン
-                            </button>
+                            <p><strong>捕獲チェック</strong><br>並んでいる各ポケモンのマスをクリック（タップ）すると「捕獲済み」になります。再度クリック（タップ）で解除できます。マスをドラッグする（なぞる）ことで、一度に複数のポケモンを捕獲/解除できます。</p>
+                            <p><strong>色違い</strong><br>マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。こちらもドラッグする（なぞる）ことで、一度に複数の色違いを捕獲/解除できます。</p>
+                            <p><strong>絞り込み・検索機能</strong><br>絞り込み機能を使って、特定条件下のポケモンだけを表示、もしくは非表示にできます。また検索機能を使って目当てのポケモンを絞り込むことができ、名称に使われているひらがな・カタカナ・記号で検索できます。</p>
+                            <p><strong>一括捕獲・一括解除</strong><br>「一括捕獲/一括解除」ボタンで、現在表示されているポケモンや色違いを一気に捕獲、もしくは解除することができます。</p>
+                            <p><strong>バックアップ・復元・初期化</strong><br>バックアップ/復元機能を使うことでデータの完全消失を防ぐことができます。また初期化機能でデータを完全に消すこともできます。</p>
                         </div>
                     </details>
+                    
+                    <details class="accordion">
+                    <summary>その他詳細</summary>
+                        <details class="accordion">
+                            <summary>対応タイトル一覧</summary>
+                            <div class="content">
+                                <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
+                                <div class="minicontent">
+                                    <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <details class="accordion">
+                            <summary>記載していないポケモンについて</summary>
+                            <div class="content">
+                                <p>以下のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
+                                <div class="minicontent">
+                                    <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>作品別の色違い制限について</summary>
+                            <div class="content">
+                                <p>地方図鑑において、ブロックルーチンなどでその作品内で色違いが入手できないポケモンは、該当する地方図鑑で色違いボタンが表示されません。また、色違いが存在しない赤・緑・青・ピカチュウも、対応する地方図鑑で色違いボタンが表示されません。Pokémon GOも同様に色違い未実装のポケモンには表示されませんが、実装された際には色違いボタンが表示されるよう更新します。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>図鑑完成に不要なポケモンの非表示機能について</summary>
+                            <div class="content">
+                                <p>地方図鑑完成（賞状の授与）に不必要なポケモンが非表示になります。賞状のないZAの図鑑はHOME図鑑を参照しています。また図鑑によっては名称が変わります。全国図鑑では「幻のポケモンを非表示」に、全国図鑑 (Pokémon GO)では「HOMEに送れないポケモンと幻のポケモンを非表示」に変わり、前者では幻のポケモンが非表示に、後者では幻のポケモンとPokémon HOMEに送れないポケモン（パッチールやジガルデなど）が非表示になります。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>配布限定ポケモンについて</summary>
+                            <div class="content">
+                                <p>当サイトでは配布限定ポケモンを「配布以外の入手方法がない特別な姿のポケモン」と定義しています。例を挙げるとサトシゲッコウガやビビヨン（ボールのもよう）のようなポケモンです。テツノイサハやウネルミナモなどのような「現状配布以外の入手方法はないが特別な姿ではないポケモン」はこれに当てはまりません。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>全国図鑑 (Pokémon GO)について</summary>
+                            <div class="content">
+                                <p>全国図鑑 (Pokémon GO)は、Pokémon GOに既に実装されている（または公式から実装が発表されている）ポケモンと、その色違いのみを表示する機能です。公式から未実装のポケモンや色違いの実装が発表された場合、サイトも適宜更新します。サイトが更新されるのは公式による実装発表時に限ります。リーク等の非公式情報や、公式PV等で登場しただけなどでは更新はされません。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>最新作のデータの反映について</summary>
+                            <div class="content">
+                                <p>サイト運営者もポケモンファンの一人です。最新作をネタバレを踏まずにやりたいので、データの反映がクリア後になる可能性が高く、最新作のデータの反映に時間がかかる場合がございます。</p>
+                            </div>
+                        </details>
+                    </details>
+                
                 
                     <h2>免責事項・プライバシーポリシー</h2>
                     <details class="accordion">
                         <summary>免責事項</summary>
                         <div class="content">
-                            <p style="font-size: 0.95rem;">ポケットモンスター・ポケモン・Pokémonは任天堂・クリーチャーズ・ゲームフリークの登録商標です。当サイトは個人が制作・運営している非公式のファンサイトであり、任天堂株式会社、株式会社クリーチャーズ、株式会社ゲームフリーク、および株式会社ポケモンとは一切関係がありません。</p>
-                            <p style="font-size: 0.95rem;">当サイトに掲載されている各種情報は、慎重に確認し作成しておりますが、公式の情報や実際のゲーム内仕様と異なる可能性がございます。当サイトの利用により発生したデータの消失、システムの不具合、その他いかなる損害・トラブルについても、製作者は一切の責任を負いかねますのであらかじめご了承ください。最新の正確な情報については、公式の発表等をご確認いただきますようお願い申し上げます。</p>
-                            <p style="font-size: 0.95rem;">また、当サイトはAmazonアソシエイト・プログラムおよび楽天アフィリエイト・プログラムの参加者です。掲載情報をもとに商品をご購入される際は、必ず各販売店にて最新の情報をご確認ください。商品の購入や利用による損害等についても、当サイトは一切の責任を負いません。</p>
+                            <p>ポケットモンスター・ポケモン・Pokémonは任天堂・クリーチャーズ・ゲームフリークの登録商標です。当サイトは個人が制作・運営している非公式のファンサイトであり、任天堂株式会社、株式会社クリーチャーズ、株式会社ゲームフリーク、および株式会社ポケモンとは一切関係がありません。</p>
+                            <p>当サイトに掲載されている各種情報は、慎重に確認し作成しておりますが、公式の情報や実際のゲーム内仕様と異なる可能性がございます。当サイトの利用により発生したデータの消失、システムの不具合、その他いかなる損害・トラブルについても、製作者は一切の責任を負いかねますのであらかじめご了承ください。最新の正確な情報については、公式の発表等をご確認いただきますようお願い申し上げます。</p>
+                            <p>また、当サイトはAmazonアソシエイト・プログラムおよび楽天アフィリエイト・プログラムの参加者です。掲載情報をもとに商品をご購入される際は、必ず各販売店にて最新の情報をご確認ください。商品の購入や利用による損害等についても、当サイトは一切の責任を負いません。</p>
                         </div>
                     </details>
 
                     <details class="accordion">
                         <summary>プライバシーポリシー</summary>
                         <div class="content">
-                            <p style="font-size: 0.95rem;">当サイトに入力されたデータは、すべてお使いのブラウザ内部（ローカルストレージ機能）にのみ保存されます。アカウント登録やログインは不要で、データが外部のサーバーに送信・蓄積されることは一切ありません。</p>
-                            <p style="font-size: 0.95rem;">当サイトでは、サイトの利用状況を把握し機能改善に役立てるためのアクセス解析ツール「Googleアナリティクス」、および広告配信サービス「Google AdSense」を利用、または今後利用する予定です。これに伴い、トラフィックデータの収集や効果的な広告表示を目的として、お使いのブラウザにCookie（クッキー）を使用することがあります。</p>
-                            <p style="font-size: 0.95rem;">このCookieによって収集されるデータは匿名であり、氏名、住所、メールアドレス、電話番号といった個人を特定する情報は一切含まれません。ユーザーは、お使いのブラウザの設定によりCookieを無効にすることで、これらの収集を拒否することが可能です。詳細な設定方法やGoogleのポリシーに関しては、「Googleポリシーと規約」のページ等をご確認ください。</p>
+                            <p>当サイトに入力されたデータは、すべてお使いのブラウザ内部（ローカルストレージ機能）にのみ保存されます。アカウント登録やログインは不要で、データが外部のサーバーに送信・蓄積されることは一切ありません。</p>
+                            <p>当サイトでは、サイトの利用状況を把握し機能改善に役立てるためのアクセス解析ツール「Googleアナリティクス」、および広告配信サービス「Google AdSense」を利用、または今後利用する予定です。これに伴い、トラフィックデータの収集や効果的な広告表示を目的として、お使いのブラウザにCookie（クッキー）を使用することがあります。</p>
+                            <p>このCookieによって収集されるデータは匿名であり、氏名、住所、メールアドレス、電話番号といった個人を特定する情報は一切含まれません。ユーザーは、お使いのブラウザの設定によりCookieを無効にすることで、これらの収集を拒否することが可能です。詳細な設定方法やGoogleのポリシーに関しては、「Googleポリシーと規約」のページ等をご確認ください。</p>
                         </div>
                     </details>
 
-                    <h2>関連リンク</h2>
+                    <h2>関連リンク・問い合わせ</h2>
                     <div class="content">
-                        <p>公式Twitter（現X）アカウント：<a href="https://x.com/pokeche0342" style="color: #1565c0; text-decoration: underline;" class="seo-tag">@pokeche0342</a>（最新のアップデート情報などを発信しています）</p>
-                        <p>データミスのご指摘、表示不具合の報告、新機能のご意見やご要望などは、こちらの専用窓口よりお気軽にお寄せください：<a href="https://forms.gle/a2hXUwiJi8g8TkxV7" style="color: #1565c0; text-decoration: underline;" class="seo-tag">意見・要望・ミス・不具合報告用フォーム</a></p>
+                        <p>公式Twitter（現X）アカウント：<a href="https://x.com/pokeche0342" style="color: #1565c0; text-decoration: underline;" class="seo-tag" target="_blank" rel="noopener">@pokeche0342</a></p>
+                        <p>問い合わせフォーム：<a href="https://forms.gle/a2hXUwiJi8g8TkxV7" style="color: #1565c0; text-decoration: underline;" class="seo-tag" target="_blank" rel="noopener">意見・要望・ミス・不具合報告用フォーム</a></p>
                     </div>
 
                     <h2>更新情報</h2>
