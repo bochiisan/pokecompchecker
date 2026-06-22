@@ -1532,7 +1532,9 @@
             
                 // URLの書き換え処理（以下略）
                 if (!isInitialLoad) {
-                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?mode=' + mode;
+                    const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    // modeが'all'の時はbaseUrlそのまま、それ以外の時は'?mode='をつける
+                    const newUrl = (mode === 'all') ? baseUrl : baseUrl + '?mode=' + mode;
                     window.history.replaceState({ path: newUrl }, '', newUrl);
                 }
             }
@@ -1590,11 +1592,18 @@
 
             function updateUrlAndCanonical() {
                 const currentMode = document.getElementById('pokedexType').value;
+                const baseUrl = window.location.origin + window.location.pathname;
 
                 // 1. 新しいURLを作る（例: https://example.com/?mode=g9）
                 // window.location.origin は "https://example.com"
                 // window.location.pathname は "/" や "/pokecomp/" など
-                const newUrl = window.location.origin + window.location.pathname + "?mode=" + currentMode;
+                let newUrl;
+                if (currentMode === 'all') {
+                    newUrl = baseUrl;
+                } 
+                else {
+                    newUrl = baseUrl + "?mode=" + currentMode;
+                }
 
                 // 2. ブラウザのURLバーを書き換える（ページのリロードは発生しません）
                 window.history.replaceState(null, '', newUrl);
@@ -1605,6 +1614,7 @@
                     canonicalTag.href = newUrl;
                 }
             }
+            
 
             function updateFilterUI() {
                 const currentMode = document.getElementById('pokedexType').value;
