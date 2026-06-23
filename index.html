@@ -1150,7 +1150,6 @@
                         <div class="content">
                             <p>ポケットモンスター・ポケモン・Pokémonは任天堂・クリーチャーズ・ゲームフリークの登録商標です。当サイトは個人が制作・運営している非公式のファンサイトであり、任天堂株式会社、株式会社クリーチャーズ、株式会社ゲームフリーク、および株式会社ポケモンとは一切関係がありません。</p>
                             <p>当サイトに掲載されている各種情報は、慎重に確認し作成しておりますが、公式の情報や実際のゲーム内仕様と異なる可能性がございます。当サイトの利用により発生したデータの消失、システムの不具合、その他いかなる損害・トラブルについても、製作者は一切の責任を負いかねますのであらかじめご了承ください。最新の正確な情報については、公式の発表等をご確認いただきますようお願い申し上げます。</p>
-                            <p>また、当サイトはAmazonアソシエイト・プログラムおよび楽天アフィリエイト・プログラムの参加者です。掲載情報をもとに商品をご購入される際は、必ず各販売店にて最新の情報をご確認ください。商品の購入や利用による損害等についても、当サイトは一切の責任を負いません。</p>
                         </div>
                     </details>
 
@@ -1214,69 +1213,6 @@
                         <span class="update-content">公開</span></div>
                     </details>
                 
-                    <div id="random-recommend-container" class="recommend-card-container" style="min-height: 120px;"></div>
-                
-                    <script type="module">
-                        import { itemList } from './items.js';
-                    
-                        function displayRandomItems() {
-                            const container = document.getElementById('random-recommend-container');
-                            if (!container || !itemList || itemList.length === 0) return;
-                        
-                            // --- 画面幅によって表示数を変えるロジック ---
-                            const width = window.innerWidth;
-                            let displayCount = 4; // デフォルト（1025px以上）は3つ
-                        
-                            if (width <= 593) {
-                                displayCount = 1;
-                            }
-                            else if (width <= 825) {
-                                displayCount = 2;
-                            }
-                            else if (width <= 1057) {
-                                displayCount = 3;
-                            } 
-                        
-                            // 1. 配列をシャッフル
-                            const shuffled = [...itemList].sort(() => 0.5 - Math.random());
-                        
-                            // 2. 決定した数だけ抽出
-                            const selectedItems = shuffled.slice(0, displayCount);
-                        
-                            // 3. HTML生成
-                            const html = selectedItems.map(item => {
-                                // --- ここで画像が配列かチェックし、ランダムに1枚選ぶ ---
-                                const displayImg = Array.isArray(item.img) 
-                                    ? item.img[Math.floor(Math.random() * item.img.length)] 
-                                    : item.img;
-                            
-                                return `
-                                    <div class="product-recommend-card">
-                                        <div class="product-image">
-                                            <a href="${item.rakuten}" target="_blank" rel="noopener sponsored">
-                                                <img src="${displayImg}" alt="${item.title}" width="150" height="150" loading="lazy">
-                                            </a>
-                                        </div>
-                                        <div class="product-content">
-                                            <p class="product-title">${item.title}</p>
-                                            <div class="shop-button-group">
-                                                <a href="${item.rakuten}" class="btn-shop btn-rakuten" target="_blank" rel="noopener sponsored">楽天</a>
-                                                <a href="${item.amazon}" class="btn-shop btn-amazon" target="_blank" rel="noopener">Amazon</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('');
-                        
-                            container.innerHTML = html;
-                        }
-                    
-                        // 実行
-                        displayRandomItems();
-                    
-                        // 画面サイズが変更されたら再実行して表示数を調整
-                        window.addEventListener('resize', displayRandomItems);
-                    </script>
                 </div>
                 
             </div>
