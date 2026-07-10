@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>このサイトについて | ポケモン図鑑コンプ率チェッカー</title>
+        <meta name="description" content="ポケモン図鑑コンプ率チェッカーの説明用ページ">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9Z24ZP83E"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-E9Z24ZP83E');
+        </script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1924167223511522" crossorigin="anonymous"></script>
+        <meta name="google-site-verification" content="5c9R3aFrfz1n8qUdnFnts9T_lbN4yB94VZwp5CxdHRU" />
+        <meta property="og:type" content="website">
+        <link rel="icon" href="icon.png" type="image/png">
+        <link rel="icon" href="favicon.ico" sizes="any">
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="apple-touch-icon" href="icon.png">
+        <link rel="canonical" href="https://pokecompchecker.vercel.app/about.html">
+        <style>
+            /* ヘッダー */
+            /* ヘッダー全体 */
+            header {
+                background-color: #f8f9fa; 
+                padding: 0px 0px;
+                border-bottom: 1px solid #dee2e6;
+                margin-top: 0px;
+            }
+            
+            /* ヘッダーの枠 */
+            .header-container {
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column; /* スマホでは縦並び */
+                align-items: center;
+            }
+
+            /* ヘッダーの枠h1 */
+            .header-container h1 {
+                font-size: 25px;
+                text-align: center;
+                margin: 15px 0;
+            }
+
+            /* ヘッダーの枠a */
+            .header-container a {
+                color: #000000;
+                text-decoration: none;
+            }
+            
+            /* ヘッダーの枠aにマウスオーバーしたとき */
+            .header-container a:hover {
+                text-decoration: none;
+            }
+
+        	main { 
+                flex: 1;
+	        }
+
+        	body { 
+        		font-family: Arial, sans-serif;
+		        text-align: center; 
+        		background: #eef2f5; 
+		        margin: 0;
+        		padding: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+	        }
+
+            /* サブページ */
+            /* サブページ全体のレイアウト */
+            .subpage {
+                max-width: 900px;
+                margin: 40px auto 0;
+                text-align: left;
+            }
+
+            /* カードのデザイン */
+            .subpage-container {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                border: 1px solid #cccccc;
+                padding: 10px;
+            }
+
+            /* サブページのh2のレイアウト */
+            .subpage-container h2 {
+                margin-top: 0;
+                color: #437c59;
+                border-bottom: 2px solid #437c59;
+                padding: 0 10px;
+            }
+
+            /* サブページのh2のレイアウト */
+            .subpage-container h3 {
+                margin: 0 0 10px;
+                padding: 0px;
+            }
+
+            /* 説明ゾーンのcontentのレイアウト */
+            .subpage-content {
+                line-height: 1.2;
+                padding: 0 10px 10px;
+            }
+
+            /*折りたたみ */
+            .accordion {
+                margin-bottom: 10px;
+                border: 1px solid #eee;
+                border-radius: 8px;
+                overflow: hidden;
+                transition: 0.3s;
+            }
+
+            /* 折りたたみの開いている時 */
+            .accordion[open] {
+                box-shadow: 0 4px 12px #000000;
+                border-color: #437c59;
+            }
+
+            /*折りたたみのタイトル */
+            .accordion summary {
+                padding: 12px 15px;
+                background: #f9fbff;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                list-style: none; /* デフォルトの三角形を消す（任意） */
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: #222222;
+            }
+
+            /*折りたたみの三角の部分 */
+            .accordion summary::after {
+                content: '▼';
+                font-size: 10px;
+                color: #222222;
+                transition: 0.3s;
+            }
+
+            /*折りたたみを開いたときの三角の部分 */
+            .accordion[open] summary::after {
+                transform: rotate(180deg);
+            }
+
+            /* 折りたたみをマウスオーバーしたとき */
+            .accordion summary:hover {
+                background: #edf2f7;
+            }
+
+            /*折りたたみのcontent */
+            .accordion .content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 15px;
+                font-size: 16px;
+                line-height: 1.6;
+                background: white;
+                border-top: 1px solid #eee;
+                color: #000000;
+            }
+
+            /*折りたたみのcontentのp */
+            .accordion .content p {
+                margin: 0;
+            }
+
+            /*折りたたみのminicontent */
+            .accordion .minicontent {
+                padding: 10px;
+                font-size: 12px;
+                line-height: 1.6;
+                border-top: 1px solid #eee;
+                color: #000000;
+            }
+
+            /* ラベル */
+            /* 単語の途中での改行禁止 */
+            .nowrap {
+                display: inline-block; /* これで囲った部分が「1つの塊」として扱われます */
+            }
+
+            /* 端まで移動するやつ */
+            /* 端まで移動するやつ全体 */
+            #scroll-nav {
+                position: fixed;
+                top: 20px;       /* 上からの位置（右上） */
+                right: 15px;     /* 右からの位置 */
+                z-index: 9999;   /* 他の要素より手前に表示 */
+                display: flex;
+                flex-direction: column;
+                opacity: 0.4;    /* うっすら表示（40%） */
+                transition: opacity 0.3s; /* マウスを乗せた時にふわっと濃くする */
+            }
+
+            /* 端まで移動するやつにマウスオーバーしたとき */
+            #scroll-nav:hover {
+                opacity: 1.0;
+            }
+
+            /* 端まで移動するボタン */
+            #scroll-nav button {
+                width: 40px;
+                height: 40px;
+                background-color: #333;
+                color: white;
+                border: none;
+                border-radius: 50%; /* まん丸のボタン */
+                cursor: pointer;
+                font-size: 18px;
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* リンク */
+            /* リンク */
+            .seo-tag {
+                color: #001b38; /* リンクとわかる青色 */
+                text-decoration: none; /* ★下線を最初から消す */
+            }
+
+            /* リンクにマウスオーバーしたとき */
+            .seo-tag:hover {
+                color: #001831; /* 少し濃い青にする */
+                text-decoration: none; /* ★触った時だけ下線を出す */
+            }
+
+
+            /* フッター */
+            /* フッター全体 */
+            footer {
+                background-color: #f8f9fa;
+                padding: 10px 10px;
+                border-top: 1px solid #dee2e6;
+                margin-top: 40px; /* ツール本体との間に程よい余白を */
+            }
+            
+            /* フッターのナビの枠組み */
+            .footer-navicontainer {
+                margin: 0 auto 10px;
+                border-bottom: 1px solid #cccccc;
+            }
+
+            /* フッターのナビ */
+            .footer-navi {
+                width: 100%;
+                max-width: 900px;
+                padding: 0 0 10px;
+                margin: auto;
+                font-size: 14px;
+            }
+
+            /* フッターのナビol */
+            .footer-navi ol {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            /* フッターのナビli */
+            .footer-navi li {
+                color: #6c757d; /* 現在のページの文字色（グレー系） */
+            }
+
+            /* フッターのナビliのa */
+            .footer-navi li a {
+                color: #418ce0; /* リンクの色（お使いのテーマカラーに合わせて変更してください） */
+                text-decoration: none;
+            }
+
+            /* フッターのナビliのaをマウスオーバーしたとき */
+            .footer-navi li a:hover {
+                text-decoration: underline;
+            }
+
+            /* 「>」を入れるコード */
+            .footer-navi li + li::before {
+                content: ">";
+                padding: 0 8px;
+                color: #6c757d;
+            }
+            
+            /* フッターの枠 */
+            .footer-container {
+                max-width: 800px; /* メインコンテンツの幅に合わせる */
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column; /* スマホでは縦並び */
+                align-items: center;
+                gap: 10px;
+            }
+            
+            /* フッターのリンクゾーン */
+            .footer-links {
+                list-style: none;
+                font-size: 14px;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                column-gap: 5px;
+            }
+            
+            /* フッターのリンクゾーンのaの設定 */
+            .footer-links a {
+                color: #418ce0;
+                text-decoration: none;
+            }
+            
+            /* フッターのリンクゾーンのaにマウスオーバーしたとき */
+            .footer-links a:hover {
+                text-decoration: underline;
+            }
+
+            /* フッターのコピーライトゾーン */
+            .copyright-container {
+                color: #35393d;
+                font-size: 12px;
+                padding: 0;
+                margin: 0;
+                margin-block-start: 0;
+                margin-block-end: 0;
+            }
+
+            /* フッターのコピーライトゾーンのpの設定 */
+            .copyright-container p {
+                margin-block-start: 0;
+                margin-block-end: 0;
+            }
+
+            /* コピーライト */
+            .copyright {
+                padding: 5px;
+            }
+
+            @media screen and (max-width: 644px) {
+                /* ヘッダーの枠h1 */
+                .header-container h1 {
+                    font-size: 23px;
+                }
+
+                /* サブページ */
+                /* サブページのh2のレイアウト */
+                .subpage-container h2 {
+                    font-size: 20px;
+                }
+
+                /* サブページのh3のレイアウト */
+                .subpage-container h3 {
+                    font-size: 16px;
+                }
+
+                /* サブページのcontentのレイアウト */
+                .subpage-container .content {
+                    font-size: 14px;
+                }
+                
+                /* サブページの一つ一つの枠組みのp */
+                .subpage-container p {
+                    font-size: 14px;
+                }
+
+                /*折りたたみのタイトル */
+                .accordion summary {
+                    font-size: 16px;
+                }
+
+                /*折りたたみのcontent */
+                .accordion .content {
+                    font-size: 14px;
+                }
+
+                /*折りたたみのminicontent */
+                .accordion .minicontent {
+                    font-size: 10px;
+                }
+                    
+                /* フッターのナビ */
+                .footer-navi {
+                    font-size: 12px;
+                }
+
+            }
+
+            @media screen and (max-width: 589px) {
+                /* フッターのリンクゾーン */
+                .footer-links {
+                    font-size: 12px;
+                }
+
+                /* フッターのコピーライトゾーン */
+                .copyright-container {
+                    font-size: 10px;
+                }
+            }
+
+            @media screen and (max-width: 526px) {
+                /* フッターのリンクゾーン */
+                .footer-links {
+                    font-size: 10px;
+                }
+
+                /* フッターのコピーライトゾーン */
+                .copyright-container {
+                    font-size: 8px;
+                }
+            }
+
+            @media screen and (max-width: 486px) {
+                /* ヘッダーの枠h1 */
+                .header-container h1 {
+                    font-size: 20px;
+                }
+
+                /* サブページ */
+                /* サブページのh2のレイアウト */
+                .subpage-container h2 {
+                    font-size: 16px;
+                }
+
+                /* サブページのh3のレイアウト */
+                .subpage-container h3 {
+                    font-size: 14px;
+                }
+                
+                /* サブページの一つ一つの枠組みのp */
+                .subpage-container p {
+                    font-size: 12px;
+                }
+
+                /*折りたたみのタイトル */
+                .accordion summary {
+                    font-size: 14px;
+                }
+
+                /*折りたたみのcontent */
+                .accordion .content {
+                    font-size: 12px;
+                }
+
+                /*折りたたみのminicontent */
+                .accordion .minicontent {
+                    font-size: 10px;
+                }
+                    
+                /* フッターのナビ */
+                .footer-navi {
+                    font-size: 10px;
+                }
+
+            }
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <h1><a href="/">ポケモン図鑑コンプ率チェッカー</a></h1>
+            </div>
+        </header>
+        <main>
+            <div class="subpage">
+                <div class="subpage-container">
+                    <h2>このサイトについて</h2>
+                    <div class="subpage-content">
+                        <p>ポケモン図鑑コンプ率チェッカーは、ポケモン収集の進捗管理、捕獲状況の記録、図鑑埋めの手助け等を目的としたファンサイトです。PC・スマホの両方で利用可能となっています。</p>
+                        <p>全国図鑑をはじめ、「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOにも対応しております。</p>
+                        <p>通常の捕獲状況だけでなく、色違い、メガシンカ、キョダイマックスの収集・登録状況も個別に記録可能です。</p>
+                        <p>また当サイトはPokémon HOMEに預けることのできるすべてのすがたに対応しており、メスのすがた、サトシゲッコウガのような配布限定、マホイップの全通りなどにも対応しています。</p>
+                        <p>なお、<strong>非公式のリーク情報を扱うことは絶対にありません。</strong>ネタバレや未解禁情報に触れたくない方でも、いつでも安心してご利用いただけます。</p>
+                        <p>入力されたデータは、お使いのブラウザ内部（ローカルストレージ機能）に自動で保存されます。そのため、作業の途中でページを閉じたり、再読み込みしたりしても、前回の状態から再開することができます。</p>
+                    </div>
+
+                    <h2>データの概要</h2>
+                    <div class="subpage-content">
+                        <details class="accordion">
+                            <summary>記載していないポケモンとその条件</summary>
+                            <div class="content">
+                                <p>以下に記載されているいるポケモン、すがたは当サイトに記載しておりません。</p>
+                                <p>条件としてはPokémon HOMEに預けることができないポケモン、すがたが不記載となります。</p>
+                                <p>具体例を出すと、ギザみみピチューのようなそもそもHOMEに送ることができないポケモン、ポワルンのようなHOMEに送るとすがたが基本のフォルムに変化するポケモン、ディアルガ(オリジンフォルム)のような道具を持たないとフォルムチェンジできないポケモン、ヒヒダルマ(ダルマモード)のようなフォルムチェンジできない個体を送ってもHOME図鑑に登録できるポケモンなどです。</p>
+                                <p>メガシンカは持ち物依存かつ戦闘中のみのすがたで、メガシンカをしたことがない個体を送ってもHOME図鑑に登録されますが、Z-Aのメガシンカ図鑑などから例外的に記載しています。</p>
+                                <p>逆にサトシゲッコウガやキョダイマックスのような、戦闘中のみのすがたではあるが特定の個体を送らないとHOME図鑑に登録されないポケモンは記載しています。</p>
+                                <div class="minicontent">
+                                    <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>作品別の色違い制限</summary>
+                            <div class="content">
+                                <p>地方図鑑において、ブロックルーチンなどでその作品内で色違いが入手できないポケモンは、該当する地方図鑑で色違いボタンが表示されません。また、表示されない色違いの数だけ色違いカウンターの総数も減少します。</p>
+                                <p>この仕様から色違いが存在しない赤・緑・青・ピカチュウにおいては、色違いボタンと色違いカウンターは表示されません。また、絞り込みなどで色違いがいなくなった場合でも色違いカウンターは非表示になります。</p>
+                                <p>Pokémon GOも同様に色違い未実装のポケモンには表示されませんが、実装された場合データ更新によって色違いボタンが表示されるようになります。</p>
+                                <p>全国図鑑では、過去一度も色違いが登場していないポケモンはボタンが非表示になります。こちらも登場した場合は更新によって表示されるようになります。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>図鑑完成に不要なポケモンの非表示機能</summary>
+                            <div class="content">
+                                <p>地方図鑑完成（賞状の授与）に不必要なポケモンが非表示になります。賞状のないZAの図鑑はHOME図鑑を参照しています。</p>
+                                <p>図鑑によっては名称が変わります。全国図鑑では「幻のポケモンを非表示」に、全国図鑑 (Pokémon GO)では「HOMEに送れないポケモンと幻のポケモンを非表示」に変わり、前者では幻のポケモンが非表示に、後者では幻のポケモンとPokémon HOMEに送れないポケモン（パッチールやジガルデなど）が非表示になります。</p>
+                                <p>プラチナのシンオウ図鑑では非表示機能にマナフィが含まれていません。これはシンオウ図鑑が「みつけたかず」に全てのポケモンが登録されていれば完成とみなされ、プラチナ版のみマナフィがそこに含まれているからです。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>配布限定ポケモンの定義</summary>
+                            <div class="content">
+                                <p>当サイトでは配布限定ポケモンを、サトシゲッコウガやビビヨン（ボールのもよう）のような「配布以外の入手方法がない特別な姿のポケモン」と定義しています。</p>
+                                <p>テツノイサハやウネルミナモ、一部の幻のポケモンなどのような「現状配布以外の入手方法はないが特別な姿ではないポケモン」はこれに当てはまりません。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>全国図鑑 (Pokémon GO)とデータの反映</summary>
+                            <div class="content">
+                                <p>全国図鑑 (Pokémon GO)は、Pokémon GOに既に実装されている（または公式から実装が発表されている）ポケモンと、その色違いのみを表示する機能です。</p>
+                                <p>最新情報（ポケモンや色違いの新規実装）の反映は、公式による実装発表時に限ります。リーク等の非公式情報や、公式PV等で登場しただけなどでは更新されません。</p>
+                            </div>
+                        </details>
+
+                        <details class="accordion">
+                            <summary>最新作のデータの反映</summary>
+                            <div class="content">
+                                <p>最新作をネタバレを踏まずにやりたいので、最新作のデータの反映に時間がかかる場合がございます。</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <h2>免責事項・プライバシーポリシーについて</h2>
+                    <div class="subpage-content">
+                        <p><a href="/privacy.html">免責事項・プライバシーポリシー</a>のページをご確認ください</p>
+                    </div>
+
+                    <h2>管理人について</h2>
+                    <div class="subpage-content">
+                        <p>当サイトは個人が運営しているサイトです。ページ制作含む諸々はすべて一人でAIに多少相談しながら行っています。サイト制作等は今回が初めてなので粗いところもあるかもしれません。</p>
+                        <h3>管理人のポケモン歴</h3>
+                        <p>ポケモン歴（ゲーム本編）</br>2012年末あたりから。初プレイはブラック2で以降Z-AのM次元ラッシュまでプレイ済みだが外伝作品は未プレイ多め。クリア後は図鑑埋めやポケモン収集がメインで対戦はあまりしない。</p>
+                        <p>ポケモン歴（アニメ）</br>おそらくダイパからサンムーンまで。初映画は「ディアルガVSパルキアVSダークライ」。</p>
+                        <p>Pokémon GO歴</br>2019年3月から。Pokémon GO Plus +利用者でだいたいのポケモンは捕獲済み。こちらも図鑑埋めやポケモン収集がメインで対戦はあまりしない。</p>
+                        <p>好きなポケモン</br><strong>シザリガー</strong>。他にはシャンデラとかミカルゲとかシンボラーとか好きなポケモンが多い。好きなタイプはゴースト、はがね、みず。</p>
+                    </div>
+                    
+                    <h2>関連リンク</h2>
+                    <div class="subpage-content">
+                        <p>お問い合わせ：<a href="https://forms.gle/a2hXUwiJi8g8TkxV7" class="seo-tag" target="_blank" rel="noopener">意見・要望・不具合報告用フォーム</a></p>
+                        <p>公式ツイッター（X）：<a href="https://x.com/pokeche0342" class="seo-tag" target="_blank" rel="noopener">＠pokeche0342</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-navicontainer">
+                <nav class="footer-navi">
+                    <ol>
+                        <li><a href="/">ポケモン図鑑コンプ率チェッカー</a></li>
+                        <li>このサイトについて</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li><a href="/about.html">このサイトについて</a></li>
+                    <li><a href="/privacy.html">免責事項・プライバシーポリシー</a></li>
+                    <li><a href="https://forms.gle/a2hXUwiJi8g8TkxV7" class="seo-tag" target="_blank" rel="noopener">お問い合わせ</a></li>
+                    <li><a href="https://x.com/pokeche0342" class="seo-tag" target="_blank" rel="noopener">公式ツイッター（X）</a></li>
+                </ul>
+                <div class="copyright-container">
+                    <p><span class="nowrap">ポケットモンスター・ポケモン・Pokémonは</span><span class="nowrap">任天堂・クリーチャーズ・ゲームフリークの登録商標です。</span></p>
+                    <p><span class="nowrap">当サイトは個人ファンサイトであり、</span><span class="nowrap">株式会社ポケモンおよび関連企業様とは一切関係ありません。</span></p>
+                    <p class="copyright">&copy; 2026 ポケモン図鑑コンプ率チェッカー</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- スクロールナビゲーションボタン -->
+        <div id="scroll-nav">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="一番上へ">▲</button>
+            <div style="height: 5px;"></div> <!-- ボタン間の隙間 -->
+            <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" title="一番下へ">▼</button>
+        </div>
+    </body>
+</html>

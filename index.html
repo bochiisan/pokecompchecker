@@ -26,62 +26,360 @@
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="icon.png">
         <link rel="preload" href="/pokemon.json" as="fetch" crossorigin="anonymous">
-        <link rel="modulepreload" href="./items.js">
         <link rel="canonical" id="canonicalUrl" href="https://pokecompchecker.vercel.app/">
         <style>
+            /* ヘッダー */
+            /* ヘッダー全体 */
+            header {
+                background-color: #f8f9fa; 
+                padding: 0px 0px;
+                border-bottom: 1px solid #dee2e6;
+                margin-top: 0px;
+            }
+            
+            /* ヘッダーの枠 */
+            .header-container {
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column; /* スマホでは縦並び */
+                align-items: center;
+            }
+
+            /* ヘッダーの枠h1 */
+            .header-container h1 {
+                font-size: 25px;
+                text-align: center;
+                margin: 15px 0;
+            }
+
+        	main { 
+                flex: 1;
+	        }
+
         	body { 
         		font-family: Arial, sans-serif;
 		        text-align: center; 
         		background: #eef2f5; 
 		        margin: 0;
-        		padding: 20px;
+        		padding: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
 	        }
 
-	        /* 操作パネルの固定 */
+	        /* 操作パネル */
+	        /* 操作パネルゾーン */
         	.controls { 
 	        	position: sticky; 
 		        top: 0; 
         		background: #f4f7f9; 
-        		padding: 15px; 
+        		padding: 0 10px 10px; 
         		z-index: 100; 
         		border-bottom: 1px solid #ddd; 
+                display: flex;
+                justify-content: center;
+                align-items: center; /* これで上下の中央が揃います */
+                gap: 10px;
+                flex-wrap: wrap; /* スマホで入り切らない時に折り返す */
          	}
         	
-            input, select { 
+	        /* 操作パネル全体 */
+            .controls-container {
+                width: 100%;
+                display: block;
+                clear: both;
+            }
+
+	        /* カウンター全体 */
+            .counter-container {
+                display: flex; 
+                justify-content: center; 
+                gap: 10px; 
+                margin: 10px 0 5px; 
+                font-weight: bold; 
+                font-size: 16px;
+            }
+
+	        /* プルダウン */
+            select { 
 		        padding: 8px; 
         		border-radius: 5px; 
 		        border: 1px solid #ccc; 
         		margin: 5px; 
             }
 
-            /* マス目の設定（1マスのサイズを完全に固定） */
+	        /* 操作パネルのプルダウンエリア */
+            .filter-row {
+                display: flex;
+                justify-content: center;
+                align-items: center; /* これで上下の中央が揃います */
+                gap: 5px 15px;
+                margin: 0 auto 5px;
+                flex-wrap: wrap; /* スマホで入り切らない時に折り返す */
+            }
+
+	        /* プルダウンエリアのp */
+            .filter-row p {
+                padding: 0 5px;
+                font-size: 14px;
+        		margin: 0; 
+            }
+
+	        /* プルダウンエリアのlabel */
+            .filter-row label {
+                display: block;
+                padding: 0px 0px;
+                font-size: 14px;
+                white-space: nowrap;
+                cursor: pointer;
+            }
+
+            /* 図鑑プルダウン */
+            #pokedexType {
+                height: 38px; /* 標準的なセレクトボックスの高さ */
+                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
+                line-height: 36px;    /* 文字の位置を中央に寄せる */
+                width: 180px;
+                padding: 5px; /* 右側に矢印用の余白 */
+                margin: 0;            /* ブラウザ特有の余白を消す */
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px; /* 標準的なセレクトボックスのサイズ */
+                background: #fff;
+                cursor: pointer;
+                box-sizing: border-box;
+                position: relative;
+                color: #000;
+                text-align: left;
+                padding-top: 0;
+                padding-bottom: 0;
+                display: flex;       /* ボタン内の文字も中央寄せにする */
+                vertical-align: middle; /* Flexが効かない環境への保険 */
+                align-items: center;
+            }
+
+
+            /* 浮き出るメニュー（プルダウンの中身と同じ挙動） */
+            .dropdown-button-container { position: relative; }
+
+            /* 地方プルダウン */
+            .dropdown-button {
+                height: 38px; /* 標準的なセレクトボックスの高さ */
+                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
+                line-height: 36px;    /* 文字の位置を中央に寄せる */
+                width: 160px;
+                padding: 0 5px 0 10px;
+                margin: 0;            /* ブラウザ特有の余白を消す */
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px; /* 標準的なセレクトボックスのサイズ */
+                background: #fff;
+                cursor: pointer;
+                box-sizing: border-box;
+                position: relative;
+                color: #000;
+                text-align: left;
+                padding-top: 0;
+                padding-bottom: 0;
+                display: flex;       /* ボタン内の文字も中央寄せにする */
+                vertical-align: middle; /* Flexが効かない環境への保険 */
+                align-items: center;
+            }
+
+            /* チェック式プルダウンの三角 */
+            .dropdown-button::after {
+                content: "";
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #000; /* 下向き矢印 */
+                pointer-events: none;
+            }
+
+            /* チェック式プルダウンを開いたときに出る箱 */
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                z-index: 1000;
+                background: white;
+                border: 1px solid #ccc;
+                border-top: none;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                width: 160px;
+                overflow-y: auto;
+                padding: 0;
+                text-align: left; 
+            }
+
+            /* チェック式プルダウンのチェックボックス */
+            .origin-check {
+            	margin: 0 5px 0 0; 
+                aspect-ratio: 1;
+                width: 14px;
+            }
+
+            /* チェック式プルダウンを開いたときに出る内容一つ一つ */
+            .dropdown-menu label {
+                display: flex;
+                padding: 0 3px;
+                font-size: 14px;
+                white-space: nowrap;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            /* チェック式プルダウンを開いたときに出る内容をマウスオーバーしたとき */
+            .dropdown-menu label:hover { background-color: #f0f0f0; }
+
+            /* 表示順プルダウン */
+            #sortSelect {
+                height: 38px; /* 標準的なセレクトボックスの高さ */
+                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
+                line-height: 36px;    /* 文字の位置を中央に寄せる */
+                width: 110px;
+                padding: 5px; /* 右側に矢印用の余白 */
+                margin: 0;            /* ブラウザ特有の余白を消す */
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px; /* 標準的なセレクトボックスのサイズ */
+                background: #fff;
+                cursor: pointer;
+                box-sizing: border-box;
+                position: relative;
+                color: #000;
+                text-align: left;
+                padding-top: 0;
+                padding-bottom: 0;
+                display: flex;       /* ボタン内の文字も中央寄せにする */
+                vertical-align: middle; /* Flexが効かない環境への保険 */
+                align-items: center;
+            }
+
+            /* 検索欄 */
+            #searchInput {
+                height: 38px;         /* 高さを固定値で統一 */
+                line-height: 36px;    /* 文字の位置を中央に寄せる */
+                width: 130px;
+                padding: 0 0 0 10px;
+                margin: 0;            /* ブラウザ特有の余白を消す */
+                vertical-align: middle; /* Flexが効かない環境への保険 */
+                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
+        		border-radius: 5px; 
+		        border: 1px solid #ccc; 
+            }
+
+
+	        /* 操作パネルのチェック */
+            .filter-group {
+                font-size: 14px;
+                margin: 0px auto 5px;
+                max-width: 809px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px 10px;
+            }
+
+	        /* 操作パネルのチェックのspan */
+            .filter-group span {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                line-height: 1;
+            }
+
+	        /* 操作パネルのチェックのチェックボックス */
+            .filter-group input[type="checkbox" i] { 
+        		margin: 0 5px 0 0; 
+                aspect-ratio: 1;
+                width: 14px;
+            }
+
+	        /* 一括操作ボックス */
+            .bulk-container {
+                border: 1px solid #ccc; 
+                border-radius: 8px; 
+                overflow: hidden; 
+                background: #fff; 
+                max-width: 500px; 
+                margin: 0 auto;
+            }
+
+	        /* 一括操作ボックスタイトル */
+            .bulk-title {
+                padding: 10px; 
+                background: #f8f9fa; 
+                cursor: pointer; 
+                font-size: 14px; 
+                font-weight: bold; 
+                color: #000000; 
+                list-style: none;
+            }
+
+	        /* 一括操作ボックスの中 */
+            .bulk-menu {
+                padding: 10px; 
+                background: white;
+            }
+
+	        /* 一括操作ボックスのボタンエリア */
+            .bulk-btncontainer {
+                display: flex; 
+                align-items: center;
+                justify-content: center; 
+                gap: 10px; 
+                padding: 5px 0;
+            }
+
+	        /* 一括操作ボックスのボタンエリアのp */
+            .bulk-btncontainer p {
+                font-size: 14px; 
+                font-weight: bold; 
+                margin: 0; 
+                color: #000; 
+                width: 80px; 
+                text-align: right;
+            }
+
+            /* ボタンをきれいに並べるための共通スタイル */
+            .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange {
+                height: 30px;
+                width: 80px;
+                border: none;
+                border-radius: 5px;
+                color: rgb(0, 0, 0);
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ボタンの色 */
+            .bulk-btn-green { background: #7fffb0; }
+            .bulk-btn-red { background: #ff8279; }
+            .bulk-btn-orange { background: #ffd364; }
+
+
+            /* マス */
+            /* マス全体の設定 */
             .grid { 
                 display: grid; 
                 grid-template-columns: repeat(auto-fill, 100px); 
                 gap: 12px; 
-                max-width: 1000px; 
+                padding: 20px; 
                 margin: 0 auto; 
                 justify-content: center;
+                justify-items: center;
             }
 
             /* 1つ1つのマスのデザイン */
-            .name {
-                display: block;
-                font-size: 11px;
-                font-weight: bold;
-                color: #333; 
-                width: 100%;
-                text-align: center;
-                white-space: normal;
-                overflow: visible;
-                line-height: 1.2;
-                word-break: normal; 
-                overflow-wrap: anywhere; 
-                margin-top: 4px; 
-                pointer-events: none;
-            }
-
-            /* 2. マスの設定（名前が2行になっても耐えられるようにする） */
             .pokemon {
                 position: relative; 
                 background: white;
@@ -89,6 +387,7 @@
                 min-height: 85px;
                 height: auto;
                 padding: 22px 4px 10px; 
+                font-size: 11px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center; 
@@ -102,13 +401,30 @@
                 contain-intrinsic-size: 100px 85px;
             }
 
-            /* 捕まえた時のデザイン（半透明＋緑の枠） */
+            /* 名前の設定 */
+            .name {
+                display: block;
+                font-weight: bold;
+                color: #333; 
+                width: 100%;
+                text-align: center;
+                white-space: normal;
+                overflow: visible;
+                line-height: 1.2;
+                word-break: normal; 
+                overflow-wrap: anywhere; 
+                margin-top: 4px; 
+                pointer-events: none;
+            }
+
+            /* 捕まえた時のデザイン */
             .caught { 
                 border: 2px solid #437c59;
                 background: #e1f5fe; 
                 box-shadow: 0 0 10px rgba(0, 210, 255, 0.5); 
             }
-            /* ボタンの共通設定（共通の大きさにする） */
+
+            /* ミニボタンの設定 */
             .mini-btn {
                 position: absolute;
                 top: 5px;
@@ -125,7 +441,7 @@
                 pointer-events: auto;
             }
 
-            /* 左上：色違いボタン（星型） */
+            /* 色違いボタン（星型） */
             .shiny-btn {
                 left: 5px;
                 background: #000000;
@@ -138,13 +454,13 @@
                 border: none;
             }
 
-
+            /* 図鑑ナンバーの枠 */
             .container {
                 position: absolute; 
                 top: 5px;           
                 left: 0;
                 width: 100%;
-                height: 22px;
+                height: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -152,86 +468,153 @@
                 z-index: 5;
             }
 
+            /* 図鑑ナンバー */
             .number {
-                font-size: 11px;
                 font-weight: bold;
                 color: #333;
                 padding: 0 4px;
                 border-radius: 4px;
                 pointer-events: none;
             }
+            
+            /* 読み込み中だけ高さを確保するクラス */
+            #pokedex.is-loading {
+                min-height: 80vh; /* 画面の8割程度の高さを仮置き */
+                background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* 補助線（任意） */
+                background-size: 100% 40px;
+            }
+
+            /* 説明ゾーン */
             /* 説明ゾーン全体のレイアウト */
             .info-section {
                 max-width: 1000px;
                 margin: 40px auto;
-                padding: 0 20px;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                padding: 0 10px;
+                display: flex;
                 gap: 20px;
                 text-align: left;
             }
 
-            /* 各カードのデザイン */
+            /* カードのデザイン */
             .info-card {
                 background: white;
-                padding: 20px;
+                padding: 10px;
                 border-radius: 12px;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.05);
                 border: 1px solid #cccccc;
             }
 
+            /* 説明ゾーンのh2のレイアウト */
             .info-card h2 {
                 background: white;
-                font-size: 18px;
                 margin-top: 0;
                 color: #437c59;
                 border-bottom: 2px solid #437c59;
-                padding-bottom: 8px;
+                padding: 0 10px;
             }
 
+            /* 説明ゾーンのcontentのレイアウト */
             .info-card .content {
-                background: white;
-                font-size: 15px;
+                font-size: 16px;
                 line-height: 1.2;
+                color: #000000;
+                padding: 0 20px;
+            }
+
+            /* 説明ゾーンの一つ一つの枠組み */
+            .info-card-container {
+                text-align: center; 
+                padding: 10px 20px 20px;
+            }
+
+            /* 説明ゾーンの一つ一つの枠組みのp */
+            .info-card-container p {
+                font-size: 16px; 
+                margin: 0px 8px;
+            }
+
+            /* 説明ゾーンの一つ一つの枠組みのtextarea */
+            .info-card-container textarea {
+                width: 90%; 
+                height: 80px; 
+                font-size: 16px; 
+                padding: 8px; 
+                border: 1px solid #ccc; 
+                border-radius: 4px; 
+                font-family: monospace; 
+                resize: vertical;
+            }
+
+            /* ツイートボタン */
+            .twitter-button {
+                padding: 8px 20px; 
+                background: #419aff; 
+                color: rgb(0, 0, 0); 
+                border: none; 
+                border-radius: 20px; 
+                cursor: pointer; 
+                font-size: 16px; 
+                font-weight: bold; 
+                display: inline-flex; 
+                align-items: center; 
+                gap: 8px;
+            }
+
+            /* バックアップゾーン */
+            .backup-container {
+                display: flex; 
+                gap: 10px; 
+                justify-content: center; 
+                margin-bottom: 10px;
+            }
+
+            /* バックアップボタン */
+            .buckup-button {
+                padding: 6px 12px; 
+                color: rgb(0, 0, 0); 
+                border: none; 
+                border-radius: 4px; 
+                cursor: pointer; 
+                font-size: 16px; 
+                font-weight: bold;
+            }
+
+            /* バックアップゾーン下の文章 */
+            .buckup-message {
+                color: #574f4f; 
+            }
+
+            /* バックアップの説明 */
+            .howtobackup-container {
+                padding: 0px 20px
+            }
+
+            /* バックアップの説明のh3 */
+            .howtobackup-container h3 {
+                margin: 0 0 10px;
                 color: #000000;
                 padding: 0px;
             }
 
-            .info-list {
-                list-style: none;
-                padding: 0;
-                font-size: 15px;
-                line-height: 1.8;
-                color: #000000;
+            /* バックアップの説明のp,ol */
+            .howtobackup-container p, .howtobackup-container ol {
+                font-size: 16px;
+                margin: 0 0 10px;
             }
 
-            .info-list li::before {
-                content: "・";
-                color: #437c59;
-                font-weight: bold;
-                margin-right: 5px;
+            /* 初期化ボタン */
+            .reset-button {
+                padding: 8px 20px; 
+                background: #353535; 
+                color: white; 
+                border: none; 
+                border-radius: 5px; 
+                cursor: pointer; 
+                font-size: 16px; 
+                opacity: 0.7;
             }
 
-            .update-tag {
-                display: flex;   
-                align-items: baseline; 
-                padding: 4px 10px;
-                border-radius: 1px;
-                font-size: 12px;
-                color: #000000;
-                margin-top: 3px;
-            }
-
-            .update-date {
-                flex-shrink: 0;     
-                width: 75px;       
-            }
-            
-            .update-content {
-                flex-grow: 1;       
-                line-height: 1.5;   
-            }
-
+            /*折りたたみ */
             .accordion {
                 margin-bottom: 10px;
                 border: 1px solid #eee;
@@ -240,10 +623,17 @@
                 transition: 0.3s;
             }
 
+            /* 折りたたみの開いている時 */
+            .accordion[open] {
+                box-shadow: 0 4px 12px #000000;
+                border-color: #437c59;
+            }
+
+            /*折りたたみのタイトル */
             .accordion summary {
                 padding: 12px 15px;
                 background: #f9fbff;
-                font-size: 14px;
+                font-size: 18px;
                 font-weight: bold;
                 cursor: pointer;
                 list-style: none; /* デフォルトの三角形を消す（任意） */
@@ -254,6 +644,7 @@
                 color: #222222;
             }
 
+            /*折りたたみの三角の部分 */
             .accordion summary::after {
                 content: '▼';
                 font-size: 10px;
@@ -261,153 +652,73 @@
                 transition: 0.3s;
             }
 
+            /*折りたたみを開いたときの三角の部分 */
             .accordion[open] summary::after {
                 transform: rotate(180deg);
             }
 
+            /* 折りたたみをマウスオーバーしたとき */
             .accordion summary:hover {
                 background: #edf2f7;
             }
 
+            /*折りたたみのcontent */
             .accordion .content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
                 padding: 15px;
-                font-size: 13px;
+                font-size: 16px;
                 line-height: 1.6;
                 background: white;
                 border-top: 1px solid #eee;
                 color: #000000;
             }
+
+            /*折りたたみのcontentのp */
+            .accordion .content p {
+                margin: 0;
+            }
+
+            /*折りたたみのminicontent */
             .accordion .minicontent {
                 padding: 10px;
-                font-size: 10px;
+                font-size: 12px;
                 line-height: 1.6;
                 border-top: 1px solid #eee;
                 color: #000000;
             }
 
-            /* 開いている時に少し影をつける */
-            .accordion[open] {
-                box-shadow: 0 4px 12px #000000;
-                border-color: #437c59;
+            /* 一つ一つの更新情報の枠 */
+            .update-tag {
+                display: flex;   
+                align-items: baseline; 
+                padding: 4px 10px;
+                border-radius: 1px;
+                font-size: 16px;
+                color: #000000;
+                margin-top: 3px;
             }
-            /* 単語の途中での改行を禁止するクラス */
+
+            /*更新情報の日時 */
+            .update-date {
+                flex-shrink: 0;
+            }
+            
+            /*更新情報の内容 */
+            .update-content {
+                flex-grow: 1;       
+                line-height: 1.5;   
+            }
+
+            /* ラベル */
+            /* 単語の途中での改行禁止 */
             .nowrap {
                 display: inline-block; /* これで囲った部分が「1つの塊」として扱われます */
             }
-            .filter-row {
-                display: flex;
-                justify-content: center;
-                align-items: center; /* これで上下の中央が揃います */
-                gap: 15px;
-                flex-wrap: wrap; /* スマホで入り切らない時に折り返す */
-                width: 100%;
-            }
-            .filter-row label {
-                display: block;
-                padding: 0px 0px;
-                font-size: 15px;
-                white-space: nowrap;
-                cursor: pointer;
-            }
 
-            /* プルダウンとボタンの共通スタイル */
-            #pokedexType, #sortSelect, .dropdown-button {
-                height: 35px; /* 標準的なセレクトボックスの高さ */
-                padding: 0 30px 0 10px; /* 右側に矢印用の余白 */
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 13.3px; /* 標準的なセレクトボックスのサイズ */
-                background: #fff;
-                cursor: pointer;
-                box-sizing: border-box;
-                position: relative;
-                color: #000;
-                min-width: 160px;
-                text-align: left;
-                padding-top: 0;
-                padding-bottom: 0;
-                display: flex;       /* ボタン内の文字も中央寄せにする */
-                align-items: center;
-            }
-
-            /* プルダウン特有の矢印（▼）を再現 */
-            .dropdown-button::after {
-                content: "";
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-top: 5px solid #000; /* 下向き矢印 */
-                pointer-events: none;
-            }
-
-            /* 浮き出るメニュー（プルダウンの中身と同じ挙動） */
-            .custom-select-container { position: relative; }
-
-            .dropdown-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                z-index: 1000;
-                background: white;
-                border: 1px solid #ccc;
-                border-top: none;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                min-width: 160px;
-                max-height: 250px;
-                overflow-y: auto;
-                padding: 5px 0;
-                text-align: left; 
-            }
-
-            .dropdown-menu label {
-                display: block;
-                padding: 8px 12px;
-                font-size: 13px;
-                white-space: nowrap;
-                cursor: pointer;
-            }
-
-            .dropdown-menu label:hover { background-color: #f0f0f0; }
-
-
-            /* 親要素：すべての要素を垂直方向の中央で揃える */
-            .search-bar-row, .controls {
-                display: flex;
-                justify-content: center;
-                align-items: center; /* これで上下の中央が揃います */
-                gap: 10px;
-                flex-wrap: wrap; /* スマホで入り切らない時に折り返す */
-            }
-
-            /* プルダウン・入力欄・自作ボタンの高さを完全に統一 */
-            #pokedexType, #sortSelect, #searchInput, .dropdown-button {
-                height: 38px;         /* 高さを固定値で統一 */
-                line-height: 36px;    /* 文字の位置を中央に寄せる */
-                margin: 0;            /* ブラウザ特有の余白を消す */
-                vertical-align: middle; /* Flexが効かない環境への保険 */
-                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
-            }
-            /* ボタンをきれいに並べるための共通スタイル */
-            .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange {
-                height: 30px;
-                border: none;
-                border-radius: 5px;
-                color: white;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 11px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .bulk-btn-green { background: #437c59; }
-            .bulk-btn-red { background: #f44336; }
-            .bulk-btn-orange { background: #fbc02d; }
-
+            /* 端まで移動するやつ */
+            /* 端まで移動するやつ全体 */
             #scroll-nav {
                 position: fixed;
                 top: 20px;       /* 上からの位置（右上） */
@@ -419,11 +730,12 @@
                 transition: opacity 0.3s; /* マウスを乗せた時にふわっと濃くする */
             }
 
-            /* マウスを乗せた時、またはスマホで触れた時に濃くする */
+            /* 端まで移動するやつにマウスオーバーしたとき */
             #scroll-nav:hover {
                 opacity: 1.0;
             }
 
+            /* 端まで移動するボタン */
             #scroll-nav button {
                 width: 40px;
                 height: 40px;
@@ -440,428 +752,606 @@
                 justify-content: center;
             }
 
+            /* リンク */
+            /* リンク */
             .seo-tag {
                 color: #001b38; /* リンクとわかる青色 */
                 text-decoration: none; /* ★下線を最初から消す */
             }
 
-            /* マウスを乗せた時（スマホでタップした瞬間）の動き */
+            /* リンクにマウスオーバーしたとき */
             .seo-tag:hover {
                 color: #001831; /* 少し濃い青にする */
                 text-decoration: none; /* ★触った時だけ下線を出す */
             }
-            
-            /* --- 親枠：隙間なく並べるための設定 --- */
-            .recommend-card-container {
-                display: flex;
-                flex-wrap: wrap; /* 端まで行ったら折り返す */
-                gap: 12px;       /* カード同士の隙間 */
-                justify-content: center; /* 中央寄せ */
-                width: 100%;     /* 親の幅いっぱいに広げる */
-                box-sizing: border-box; /* パディングを含めて計算 */
-                padding: 0 10px; /* 画面端との最低限の余白 */
-            }                
 
-            /* --- カード本体：はみ出し防止のキモ --- */
-            .product-recommend-card {
-                display: flex;
-                align-items: center;
-                background-color: #ffffff;
-                border: 1px solid #e0e0e0;
-                border-radius: 8px;
-                padding: 12px;
-                
-                /* ↓ ここが重要！ ↓ */
-                box-sizing: border-box;
-                flex: 1 1 220px;  /* 300pxを基準にしつつ、画面に合わせて伸び縮みする */
-                max-width: 100%;  /* 親要素（画面幅）より絶対にはみ出さない */
-                min-width: 0;     /* 中身の文字による突き抜けを防止 */
-                /* ↑↑↑↑↑↑↑↑↑↑↑↑ */
-                
-                gap: 12px;
-            }
-                                
-            /* 画像が潰れないように設定 */
-            .product-image {
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
+
+            /* フッター */
+            /* フッター全体 */
+            footer {
+                background-color: #f8f9fa;
+                padding: 20px 10px 10px;
+                border-top: 1px solid #dee2e6;
+                margin-top: 40px; /* ツール本体との間に程よい余白を */
             }
             
-            .product-image img {
-                width: 64px;
-                height: auto;
-                display: block;
+            /* フッターのナビの枠組み */
+            .footer-navicontainer {
+                margin: 0 auto 10px;
+                border-bottom: 1px solid #cccccc;
             }
-                
-            /* テキストエリア */
-            .product-content {
-                flex-grow: 1;
-                min-width: 0; /* 文字が長すぎてもカードを突き破らないようにする */
-            }
-                
-            /* 商品名の省略設定 */
-            .product-title {
-                font-size: 13px;
-                color: #252525;
-                margin: 0 0 8px 0;
-                line-height: 1.4em;
-                font-weight: bold;
-                height: 4.2em; /* 2行分の高さを確保 */
 
-                /* --- 修正ポイント：標準プロパティも追加 --- */
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 3; /* 以前からのWebkit用 */
-                line-clamp: 3;         /* これが標準プロパティ */
+            /* フッターのナビ */
+            .footer-navi {
+                width: 100%;
+                max-width: 900px;
+                padding: 0 0 10px;
+                margin: auto;
+                font-size: 14px;
             }
-                
-            /* ボタン */
-            .shop-button-group {
+
+            /* フッターのナビol */
+            .footer-navi ol {
+                list-style: none;
+                padding: 0;
+                margin: 0;
                 display: flex;
-                gap: 8px;
+                flex-wrap: wrap;
             }
 
-            .btn-shop {
-                flex: 1;
-                display: flex;             /* ボタン自身もFlexboxにする */
-                justify-content: center;   /* 横方向のど真ん中 */
-                align-items: center;       /* 縦方向のど真ん中（これがズレを直します！） */
-                height: 32px;              /* 高さをピクセルでカッチリ固定する */
-                line-height: 1;            /* 文字特有の上下の謎の隙間を無効化 */
-                padding: 0;                /* 以前の上下paddingは不要になるので0にする */
-                font-size: 11px;
-                border-radius: 4px;
+            /* フッターのナビli */
+            .footer-navi li {
+                color: #6c757d; /* 現在のページの文字色（グレー系） */
+            }
+
+            /* フッターのナビliのa */
+            .footer-navi li a {
+                color: #418ce0; /* リンクの色（お使いのテーマカラーに合わせて変更してください） */
                 text-decoration: none;
-                font-weight: bold;
-                box-sizing: border-box;
-            }
-                
-            .btn-rakuten { background-color: #bf0000; color: #fff; }
-            .btn-amazon { background-color: #f3a847; color: #000; }
-
-            /* 読み込み中だけ高さを確保するクラス */
-            #pokedex.is-loading {
-                min-height: 80vh; /* 画面の8割程度の高さを仮置き */
-                background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* 補助線（任意） */
-                background-size: 100% 40px;
             }
 
-            @media screen and (max-width: 587px) {
-                #pokedex {
-                    display: flex !important;
-                    flex-wrap: wrap !important;
-                    justify-content: flex-start !important;
-                    padding: 2px !important; /* 画面端の極小の余白のみ */
-                    gap: 0 !important; /* 隙間をゼロにする */
-                    padding-left: 12px !important;  /* 左側のゆとり */
-                    padding-right: 12px !important; /* 右側のゆとり */
-                    justify-content: center !important; /* 中央に寄せる */
-                    box-sizing: border-box !important;
-                }
-                .pokemon {
-                    width: calc(20% - 2px) !important; 
-                    min-height: 10px !important; 
-                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
-                    height: auto !important; 
-                    
-                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
-                    margin: 1px !important; 
-                    
-                    box-sizing: border-box !important; /* 枠線を含めたサイズ計算 */
-                    contain-intrinsic-size: 100px 85px;
-                }
+            /* フッターのナビliのaをマウスオーバーしたとき */
+            .footer-navi li a:hover {
+                text-decoration: underline;
+            }
+
+            /* 「>」を入れるコード */
+            .footer-navi li + li::before {
+                content: ">";
+                padding: 0 8px;
+                color: #6c757d;
+            }
             
-
+            /* フッターの枠 */
+            .footer-container {
+                max-width: 800px; /* メインコンテンツの幅に合わせる */
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column; /* スマホでは縦並び */
+                align-items: center;
+                gap: 10px;
             }
-
-            @media screen and (max-width: 555px) {
-                #pokedex {
-                    display: flex !important;
-                    flex-wrap: wrap !important;
-                    justify-content: flex-start !important;
-                    padding: 2px !important; /* 画面端の極小の余白のみ */
-                    gap: 0 !important; /* 隙間をゼロにする */
-                    padding-left: 12px !important;  /* 左側のゆとり */
-                    padding-right: 12px !important; /* 右側のゆとり */
-                    justify-content: center !important; /* 中央に寄せる */
-                    box-sizing: border-box !important;
-                }
-                .pokemon {
-                    width: calc(20% - 2px) !important; 
-                    min-height: 10px !important; 
-                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
-                    height: auto !important; 
-                    
-                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
-                    margin: 1px !important; 
-                    
-                    box-sizing: border-box !important; /* 枠線を含めたサイズ計算 */
-                    contain-intrinsic-size: 100px 85px;
-                }
             
-                .number {
-                    font-size: 13px !important;
-                    padding: 0 0px !important;
-                    top: 0px !important;
-                }
-
-                .name {
-                    font-size: 10px !important;
-                    bottom: 6px !important;
-                    line-height: 1.1;
-                    font-weight: bold; /* 名前をはっきりさせる */
-                }
-
+            /* フッターのリンクゾーン */
+            .footer-links {
+                list-style: none;
+                font-size: 14px;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                column-gap: 5px;
             }
-            @media screen and (max-width: 517px) {
-                #pokedex {
-                    display: flex !important;
-                    flex-wrap: wrap !important;
-                    justify-content: flex-start !important;
-                    padding: 2px !important; /* 画面端の極小の余白のみ */
-                    gap: 0 !important; /* 隙間をゼロにする */
-                    padding-left: 12px !important;  /* 左側のゆとり */
-                    padding-right: 12px !important; /* 右側のゆとり */
-                    justify-content: center !important; /* 中央に寄せる */
-                    box-sizing: border-box !important;
-                }
-                .pokemon {
-                    width: calc(20% - 2px) !important; 
-                    min-height: 10px !important; 
-                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
-                    height: auto !important; 
-                    
-                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
-                    margin: 1px !important; 
-                    
-                    box-sizing: border-box !important; /* 枠線を含めたサイズ計算 */
-                    contain-intrinsic-size: 100px 85px;
-                }
             
-                .number {
-                    font-size: 12px !important;
-                    padding: 0 0px !important;
-                    top: 0px !important;
-                }
-
-                .name {
-                    font-size: 9px !important;
-                    bottom: 6px !important;
-                    line-height: 1.1;
-                    font-weight: bold; /* 名前をはっきりさせる */
-                }
-                /* 3. ミニボタン（★や♀）を押しやすく大きくする */
-                .mini-btn {
-                    top: 3px;
-                    width: 16px !important;  /* 面積を広げる */
-                    border-width: 2px !important;
-                }
-
+            /* フッターのリンクゾーンのaの設定 */
+            .footer-links a {
+                color: #418ce0;
+                text-decoration: none;
+            }
+            
+            /* フッターのリンクゾーンのaにマウスオーバーしたとき */
+            .footer-links a:hover {
+                text-decoration: underline;
             }
 
-            @media screen and (max-width: 478px) {
-                /* 1. タイトル（h1）をスリムにする */
-                h1 {
-                    font-size: 18px !important;  
-                    margin: 10px 0 5px 0 !important; 
-                    letter-spacing: 0.05em;     
+            /* フッターのコピーライトゾーン */
+            .copyright-container {
+                color: #35393d;
+                font-size: 12px;
+                padding: 0;
+                margin: 0;
+                margin-block-start: 0;
+                margin-block-end: 0;
+            }
+
+            /* フッターのコピーライトゾーンのpの設定 */
+            .copyright-container p {
+                margin-block-start: 0;
+                margin-block-end: 0;
+            }
+
+            /* コピーライト */
+            .copyright {
+                padding: 5px;
+            }
+
+
+            @media screen and (max-width: 802px) {
+	            /* 操作パネルのチェック */
+                .filter-group {
+                    max-width: 664px;
                 }
-                #pokedex {
-                    display: flex !important;
-                    flex-wrap: wrap !important;
-                    justify-content: flex-start !important;
-                    padding: 2px !important; /* 画面端の極小の余白のみ */
-                    gap: 0 !important; /* 隙間をゼロにする */
-                    padding-left: 12px !important;  /* 左側のゆとり */
-                    padding-right: 12px !important; /* 右側のゆとり */
-                    justify-content: center !important; /* 中央に寄せる */
-                    box-sizing: border-box !important;
-                }
-                .controls {
-                    gap: 3px !important;         /* 要素同士の隙間を狭く */
-                    margin-bottom: 10px !important;
-                }
-                .name {
-                    font-size: 8px !important;
-                    bottom: 6px !important;
-                    line-height: 1.1;
-                }
-                .pokemon {
-                    width: calc(20% - 2px) !important; 
-                    min-height: 10px !important; 
-                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
-                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
-                    margin: 1px !important; 
-                    contain-intrinsic-size: 90px 90px;
-                }
-                .mini-btn {
-                    top: 3px;
-                    width: 14px !important; 
-                    height: 14px !important;
-                    border-width: 2px !important;
-                }
-                
-                .shiny-btn {
-                    left: 3px !important;
-                }
-                
-                .container {
-                    height: 10px;       /* ボタンの高さと同じ */
-                }
-                .number {
-                    font-size: 8px !important;
-                    padding: 0 0px !important;
-                    top: 0px !important;
-                }
-                
-                .info-card h2 {
-                    font-size: 15px;
-                }
-    
-                .info-card .content {
-                    font-size: 12px;
-                    line-height: 1.6;
-                }
-    
-                .info-list {
-                    font-size: 12px;
+            }
+
+            @media screen and (max-width: 644px) {
+                /* ヘッダーの枠h1 */
+                .header-container h1 {
+                    font-size: 23px;
                 }
 
-                .accordion summary {
-                    font-size: 11px;
-                    padding: 5px !important;
+    	        /* カウンター全体 */
+                .counter-container {
+                    font-size: 14px;
                 }
-                /* 中身のコンテンツ */
-                .accordion .content {
-                    font-size: 10px;
+
+	            /* 操作パネルのプルダウンエリア */
+                .filter-row {
+                    max-width: 617px;
+                    gap: 5px 10px;
                 }
-                .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange, .bulk-btn-pink {
-                    padding: 8px 13px !important; /* 一括ボタンを巨大化 */
-                    flex: 1 1 45%; /* スマホでは2列に並ぶように */
-                }
-                #scroll-nav {
-                    top: 15px;   /* スマホでは少し位置を詰める */
-                    right: 10px;
-                }
-                #scroll-nav button {
-                    width: 35px; /* スマホでは一回り小さく */
-                    height: 35px;
-                    font-size: 16px;
-                }
-                /* 4. 全体の一括操作メニューなどの文字サイズアップ */
-                #counter, #shiny-counter {
-                    font-size: 12px !important; /* 進捗をドーンと見せる */
-                }
-                
-                .filter-row label {
-                    display: block;
-                    padding: 0px 3px;
-                    font-size: 12px;
-                    white-space: nowrap;
-                    cursor: pointer;
-                }
-                /* 4. プルダウン（図鑑選択）や検索窓自体のサイズも微調整 */
-                #pokedexType, #sortSelect, .dropdown-button{
-                    width: calc(30% - 2px) !important;  /* 横幅を自由に調整してください */
-                    max-width: 300px;       /* 大きなスマホでも広がりすぎないように */
-                    font-size: 11px !important;
-                    height: 24px !important;
-                    padding: 2px 8px !important;
-                }
-                /* 4. プルダウン（図鑑選択）や検索窓自体のサイズも微調整 */
-                #searchInput{
-                    width: calc(30% - 2px) !important;  /* 横幅を自由に調整してください */
-                    max-width: 300px;       /* 大きなスマホでも広がりすぎないように */
-                    min-width: 150px;       /* 大きなスマホでも広がりすぎないように */
-                    font-size: 11px !important;
-                    height: 24px !important;
-                    padding: 2px 8px !important;
-                }
-                
+
+	            /* プルダウンエリアのnowrap */
                 .filter-row .nowrap {
                     display: inline-block; /* これで囲った部分が「1つの塊」として扱われます */
                     display: flex;
                     align-items: center;
                     justify-content: center; /* 縦並びになった時、このspan自体が中央を向くようにする */
                 }
-            
-                /* 2. チェックボックスのラベル（地方名など） */
-                .filter-group label, .origin-filter label {
-                    font-size: 8px !important;  /* 最小クラスの文字サイズ */
-                    margin-right: 3px !important;
-                    line-height: 1.2 !important;
+
+	            /* プルダウンエリアのp */
+                .filter-row p {
+                    font-size: 12px;
                 }
-            
-                /* 3. チェックボックス自体の大きさ（小さくして文字と合わせる） */
-                input[type="checkbox"] {
-                    transform: scale(0.7); /* 80%の大きさに縮小 */
-                    margin: 0 2px 0 0 !important;
-                    vertical-align: middle;
+
+	            /* プルダウン系のサイズ */
+                #pokedexType, .dropdown-button, #sortSelect, #searchInput {
+                    font-size: 12px;
+                    height: 26px;
+                    line-height: 24px;
                 }
-            
-                /* 4. 絞り込みエリア全体の隙間を詰める */
-                .controls, .filter-row {
-                    gap: 3px !important;
-                    margin-bottom: 3px !important;
-                    padding: 0 3px !important;
+
+                /* 図鑑プルダウン */
+                #pokedexType {
+                    width: 160px;
                 }
-                .filter-group {
-                    gap: 0px !important;
-                    margin-bottom: 0px !important;
-                    padding: 0 0px !important;
+
+                /* 地方プルダウン */
+                .dropdown-button {
+                    width: 140px;
+                }
+
+                /* チェック式プルダウンを開いたときに出る箱 */
+                .dropdown-menu {
+                    width: 140px;
+                }
+
+	            /* チェック式プルダウンを開いたときに出る内容一つ一つ */
+                .dropdown-menu label {
+                    font-size: 12px;
                 }
                 
-    
+                /* チェック式プルダウンのチェックボックス */
+                .origin-check {
+                    width: 12px;
+                }
+
+                /* 表示順プルダウン */
+                #sortSelect {
+                    width: 100px;
+                }
+
+	            /* 操作パネルのチェック */
+                .filter-group {
+                    font-size: 12px;
+                    max-width: 589px;
+                }
+
+	            /* 操作パネルのチェックのチェックボックス */
+                .filter-group input[type="checkbox" i] { 
+                    width: 12px;
+                }
+
+                /* 一括操作ボックスタイトル */
+                .bulk-title {
+                    padding: 5px; 
+                    font-size: 12px; 
+                }
+
+                /* 一括操作ボックスのボタンエリアのp */
+                .bulk-btncontainer p {
+                    font-size: 12px; 
+                }
+
+                /* ボタンをきれいに並べるための共通スタイル */
+                .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange {
+                    font-size: 12px;
+                }
+                    
+                /* マス */
+                /* マス全体の設定 */
+                .grid { 
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 5px; 
+                }
+
+                /* 1つ1つのマスのデザイン */
+                .pokemon {
+                    width: 85px;
+                    min-height: 80px;
+                    padding: 17px 2px 5px;
+                    font-size: 9px;
+                    contain-intrinsic-size: 85px 80px;
+                }
+
+                /* 名前の設定 */
+                .name {
+                    margin-top: 0px; 
+                }
+
+                /* ミニボタンの設定 */
+                .mini-btn {
+                    top: 6px;
+                    width: 16px; 
+                    height: 16px; 
+                }
+
+                /* 図鑑ナンバーの枠 */
+                .container {
+                    height: 16px;
+                }
+
+                /* 説明ゾーン */
+                /* 説明ゾーンのh2のレイアウト */
+                .info-card h2 {
+                    font-size: 20px;
+                }
+
+                /* 説明ゾーンのcontentのレイアウト */
+                .info-card .content {
+                    font-size: 14px;
+                }
+                
+                /* 説明ゾーンの一つ一つの枠組みのp */
+                .info-card-container p {
+                    font-size: 14px;
+                }
+
+                /* 説明ゾーンの一つ一つの枠組みのtextarea */
+                .info-card-container textarea {
+                    font-size: 14px; 
+                }
+
+                /* ツイートボタン */
+                .twitter-button {
+                    font-size: 14px;
+                }
+
+                /* バックアップボタン */
+                .buckup-button {
+                    font-size: 14px; 
+                }
+
+                /* バックアップの説明のh3 */
+                .howtobackup-container h3 {
+                    font-size: 16px;
+                }
+
+                /* バックアップの説明のp,ol */
+                .howtobackup-container p, .howtobackup-container ol {
+                    font-size: 14px;
+                }
+
+                /* 初期化ボタン */
+                .reset-button {
+                    font-size: 14px; 
+                }
+
+                /*折りたたみのタイトル */
+                .accordion summary {
+                    font-size: 16px;
+                }
+
+                /*折りたたみのcontent */
+                .accordion .content {
+                    font-size: 14px;
+                }
+
+                /*折りたたみのminicontent */
+                .accordion .minicontent {
+                    font-size: 10px;
+                }
+
+                /* 一つ一つの更新情報の枠 */
+                .update-tag {
+                    font-size: 14px;
+                }
+                    
+                /* フッターのナビ */
+                .footer-navi {
+                    font-size: 12px;
+                }
+
             }
 
-            
-            @media screen and (max-width: 391px) {
-                /* 1. ポケモンカード本体を大きくする */
+            @media screen and (max-width: 589px) {
+                /* フッターのリンクゾーン */
+                .footer-links {
+                    font-size: 12px;
+                }
+
+                /* フッターのコピーライトゾーン */
+                .copyright-container {
+                    font-size: 10px;
+                }
+            }
+
+            @media screen and (max-width: 526px) {
+                /* フッターのリンクゾーン */
+                .footer-links {
+                    font-size: 10px;
+                }
+
+                /* フッターのコピーライトゾーン */
+                .copyright-container {
+                    font-size: 8px;
+                }
+            }
+
+            @media screen and (max-width: 486px) {
+                /* ヘッダーの枠h1 */
+                .header-container h1 {
+                    font-size: 20px;
+                }
+                    
+                /* カウンター全体 */
+                .counter-container {
+                    font-size: 12px;
+                }
+
+
+	            /* プルダウンエリアのp */
+                .filter-row p {
+                    font-size: 10px;
+                }
+
+	            /* プルダウン系のサイズ */
+                #pokedexType, .dropdown-button, #sortSelect, #searchInput {
+                    font-size: 10px;
+                    height: 22px;
+                    line-height: 20px;
+                }
+
+                /* 図鑑プルダウン */
+                #pokedexType {
+                    width: 140px;
+                }
+
+                /* 地方プルダウン */
+                .dropdown-button {
+                    width: 130px;
+                }
+
+                /* チェック式プルダウンを開いたときに出る箱 */
+                .dropdown-menu {
+                    width: 130px;
+                }
+
+	            /* チェック式プルダウンを開いたときに出る内容一つ一つ */
+                .dropdown-menu label {
+                    font-size: 10px;
+                }
+                
+                /* チェック式プルダウンのチェックボックス */
+                .origin-check {
+                    width: 10px;
+                }
+
+                /* 表示順プルダウン */
+                #sortSelect {
+                    width: 90px;
+                }
+                    
+                /* 検索欄 */
+                #searchInput {
+                    width: 110px;
+                }
+
+	            /* 操作パネルのチェック */
+                .filter-group {
+                    font-size: 10px;
+                }
+
+                /* 操作パネルのチェックのチェックボックス */
+                .filter-group input[type="checkbox" i] { 
+                    width: 10px;
+                }
+
+                /* 一括操作ボックスタイトル */
+                .bulk-title {
+                    font-size: 10px; 
+                }
+
+                /* 一括操作ボックスのボタンエリアのp */
+                .bulk-btncontainer p {
+                    font-size: 10px; 
+                }
+
+                /* ボタンをきれいに並べるための共通スタイル */
+                .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange {
+                    height: 25px;
+                    font-size: 10px;
+                }
+                    
+                /* マス */
+                /* マス全体の設定 */
+                .grid { 
+                    padding: 10px;
+                    gap: 2px; 
+                }
+
+                /* 1つ1つのマスのデザイン */
                 .pokemon {
-                    /* 画面の25%から、マージン分(2px)を引いたサイズ */
-                    width: calc(25% - 2px) !important; 
-                            min-height: 10px !important; 
-                    aspect-ratio: 1 / 1 !important; /* 正方形を強制 */
-                    height: auto !important; 
-                    
-                    /* 隣との隙間を「1px」にする（上下左右合わせて2px） */
-                    margin: 1px !important; 
-                    
-                    box-sizing: border-box !important; /* 枠線を含めたサイズ計算 */
+                    width: 65px;
+                    min-height: 65px;
+                    padding: 13px 2px 0px;
+                    font-size: 8px;
+                    contain-intrinsic-size: 65px;
                 }
-                /* 捕まえた時のデザイン（半透明＋緑の枠） */
-                .caught { 
-                    border: 0px solid #437c59; /* 捕まえたら緑の枠を表示 */
-                    background: #d1f0ff; /* 背景を薄い水色に */
-                    box-shadow: 0 0 0px rgba(0, 210, 255, 0.5); /* ほんのり光るエフェクト */
+
+                /* 名前の設定 */
+                .name {
+                    line-height: 1;
                 }
+
+                /* ミニボタンの設定 */
+                .mini-btn {
+                    top: 3px;
+                    left: 3px;
+                    width: 14px; 
+                    height: 14px; 
+                }
+
+                /* 図鑑ナンバーの枠 */
+                .container {
+                    top: 2px;
+                }
+
+                /* 説明ゾーン */
+                /* 説明ゾーンのh2のレイアウト */
+                .info-card h2 {
+                    font-size: 16px;
+                }
+
+                /* 説明ゾーンのcontentのレイアウト */
+                .info-card .content {
+                    font-size: 12px;
+                }
+                
+                /* 説明ゾーンの一つ一つの枠組みのp */
+                .info-card-container p {
+                    font-size: 12px;
+                }
+
+                /* 説明ゾーンの一つ一つの枠組みのtextarea */
+                .info-card-container textarea {
+                    font-size: 12px; 
+                }
+
+                /* ツイートボタン */
+                .twitter-button {
+                    font-size: 12px;
+                }
+
+                /* バックアップボタン */
+                .buckup-button {
+                    font-size: 12px; 
+                }
+
+                /* バックアップの説明のh3 */
+                .howtobackup-container h3 {
+                    font-size: 14px;
+                }
+
+                /* バックアップの説明のp,ol */
+                .howtobackup-container p, .howtobackup-container ol {
+                    font-size: 12px;
+                }
+
+                /* 初期化ボタン */
+                .reset-button {
+                    font-size: 12px; 
+                }
+
+                /*折りたたみのタイトル */
+                .accordion summary {
+                    font-size: 14px;
+                }
+
+                /*折りたたみのcontent */
+                .accordion .content {
+                    font-size: 12px;
+                }
+
+                /*折りたたみのminicontent */
+                .accordion .minicontent {
+                    font-size: 8px;
+                }
+
+                /* 一つ一つの更新情報の枠 */
+                .update-tag {
+                    font-size: 12px;
+                }
+                    
+                /* フッターのナビ */
+                .footer-navi {
+                    font-size: 10px;
+                }
+
+            }
+
+            @media screen and (max-width: 429px) {
+	            /* 操作パネルのプルダウンエリア */
+                .filter-row {
+                    max-width: 329px;
+                }
+
+            }
+
+            @media screen and (max-width: 380px) {
+	            /* 操作パネルのチェック */
+                .filter-group {
+                    gap: 0px 5px;
+                }
+
+            }
+
+            @media screen and (max-width: 364px) {
+	            /* 操作パネルのチェック */
+                .filter-group {
+                    font-size: 8px;
+                }
+
+                /* 操作パネルのチェックのチェックボックス */
+                .filter-group input[type="checkbox" i] { 
+                    width: 8px;
+                }
+
             }
 
         </style>
     </head>
     <body>
         <header>
-            <h1 id="main-title" style="font-size: 25px; text-align: center; margin: 15px 0;">ポケモン図鑑コンプ率チェッカー</h1>
+            <div class="header-container">
+                <h1>ポケモン図鑑コンプ率チェッカー</h1>
+            </div>
         </header>
         <main>
+	        <!-- 操作パネル -->
             <div class="controls">
+                <div class="controls-container">
                 <!-- カウンター表示用 -->
-                <div style="width: 100%; display: block; clear: both; margin: 5px 0;">
-                    <div style="display: flex; justify-content: center; gap: 10px; font-weight: bold; font-size: 16px;">
+                    <div class="counter-container">
                         <div id="counter" style="color: #000;">進捗: 0 / 0 (0%)</div>
                         <div id="shiny-counter" style="color: #000;">★色違い: 0 / 0 (0%)</div>
                     </div>
-                </div>
             
-                <div style="width: 100%; display: block; clear: both;">
+                    <!-- プルダウン系 -->
                     <div class="filter-row">
-                        <!-- 既存の図鑑タイプ選択 -->
                         <span class="nowrap">
-                            <label for="filter-row">表示中の図鑑</label>
+                            <p>表示中の図鑑</p>
                             <select id="pokedexType" aria-label="表示する図鑑を選択">
                                 <option value="all">全国図鑑</option>
                                 <option value="go">全国図鑑 (Pokémon GO)</option>
@@ -901,26 +1391,12 @@
                             </select>
                         </span>
 
-                        <span class="nowrap">
-                            <label for="filter-row">表示順</label>
-                            <select id="sortSelect" onchange="render()" aria-label="表示する順番を選択">
-                                <option value="regional">地方図鑑順</option>
-                                <option value="national">全国図鑑順</option>
-                                <option value="aiueo">あいうえお順</option>
-                            </select>
-                        </span>
-                    
-                    </div>
-                </div>
-
-                <div style="width: 100%; display: block; clear: both;">
-                    <div class="filter-row">
                         <!-- 地方選択（プルダウンに見えるボタン） -->
-                        <div class="custom-select-container">
+                        <div class="dropdown-button-container">
                             <span class="nowrap">
-                                <label for="filter-row"> 初登場地方</label>
+                                <p> 初登場地方</p>
                                 <button type="button" id="originDropdownBtn" class="dropdown-button">
-                                    全地方<span class="arrow"></span>
+                                    地方を選択 (複数可)<span class="arrow"></span>
                                 </button>
                                 
                                 <div id="originDropdownMenu" class="dropdown-menu">
@@ -943,240 +1419,158 @@
                         </div>
                     
                         <span class="nowrap">
-                            <label for="filter-row"> 検索欄</label>
+                            <p>表示順</p>
+                            <select id="sortSelect" onchange="render()" aria-label="表示する順番を選択">
+                                <option value="regional">地方図鑑順</option>
+                                <option value="national">全国図鑑順</option>
+                                <option value="aiueo">あいうえお順</option>
+                            </select>
+                        </span>
+                    
+                        <span class="nowrap">
+                            <p> 検索欄</p>
                             <input type="text" id="searchInput" placeholder="名前での検索...">
                         </span>
                     </div>
                     
-                </div>
 
             
             
-                <div style="width: 100%; display: block; clear: both;">
+                    <!-- チェック系 -->
                     <div class="filter-group">
             	        <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
                         <span class="nowrap" id="hasFemaleFilterContainer"><input type="checkbox" id="hasFemaleFilter"><label for="hasFemaleFilter"> メスのすがたを表示</label></span>
             	        <span class="nowrap" id="notNeedFilterContainer"><input type="checkbox" id="notNeedFilter" onchange="render()"><label for="notNeedFilter" id="notNeedFilterLabel">図鑑完成に不要なポケモンを非表示</label></span>
                         <span class="nowrap" id="eventOnlyFilterContainer"><input type="checkbox" id="eventOnlyFilter"><label for="eventOnlyFilter"> 配布限定を表示</label></span>
             	        <span class="nowrap" id="more869FilterContainer"><input type="checkbox" id="more869Filter"><label for="more869Filter"> マホイップの姿違いを全て表示</label></span>
-                    </div>
-                </div>
-                <div style="width: 100%; display: block; clear: both;">
-                    <div class="filter-group">
-                        <input type="checkbox" id="hideCaughtFilter"><label for="hideCaughtFilter"> 捕獲済みを非表示</label>
-                        <input type="checkbox" id="hideShinyCaughtFilter"><label for="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label>
-                    </div>
-                </div>
-                <div style="width: 100%; display: block; clear: both;">
-                    <div class="filter-group">
+                        <span class="nowrap"><input type="checkbox" id="hideCaughtFilter"><label for="hideCaughtFilter"> 捕獲済みを非表示</label></span>
+                        <span class="nowrap"><input type="checkbox" id="hideShinyCaughtFilter"><label for="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label></span>
                     	<span class="nowrap" id="MegaFilterContainer"><input type="checkbox" id="MegaFilter"><label for="MegaFilter"> メガシンカ一覧</label></span>
                     	<span class="nowrap" id="GmaxFilterContainer"><input type="checkbox" id="GmaxFilter"><label for="GmaxFilter"> キョダイマックス一覧</label></span>
                     </div>
-                </div>
             
-                <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
-                <div style="width: 100%; display: block; clear: both;">
-                    <details style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background: #fff; max-width: 500px; margin: 0 auto;">
-                        <summary style="padding: 10px; background: #f8f9fa; cursor: pointer; font-size: 13px; font-weight: bold; color: #000000; list-style: none;">
+                    <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
+                    <details class="bulk-container">
+                        <summary class="bulk-title">
                             一括操作（表示中のみ）
                         </summary>
-                        <div style="padding: 10px; background: white;">
+                        <div class="bulk-menu">
                             <!-- ポケモン行 -->
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
-                                <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">ポケモン</p>
-                                <button onclick="bulkCollectDisplayed(true)" class="bulk-btn-green" style="width: 80px;">一括捕獲</button>
-                                <button onclick="bulkCollectDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                            <div class="bulk-btncontainer">
+                                <p>ポケモン</p>
+                                <button onclick="bulkCollectDisplayed(true)" class="bulk-btn-green">一括捕獲</button>
+                                <button onclick="bulkCollectDisplayed(false)" class="bulk-btn-red">一括解除</button>
                             </div>
                         
                             <!-- ★色違い行 -->
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px 0;">
-                                <p style="font-size: 12px; font-weight: bold; margin: 0; color: #000; width: 100px; text-align: right;">★色違い</p>
-                                <button onclick="bulkShinyDisplayed(true)" class="bulk-btn-orange" style="width: 80px;">一括捕獲</button>
-                                <button onclick="bulkShinyDisplayed(false)" class="bulk-btn-red" style="width: 80px;">一括解除</button>
+                            <div class="bulk-btncontainer">
+                                <p>★色違い</p>
+                                <button onclick="bulkShinyDisplayed(true)" class="bulk-btn-orange">一括捕獲</button>
+                                <button onclick="bulkShinyDisplayed(false)" class="bulk-btn-red">一括解除</button>
                             </div>
                         </div>
                     </details>
                 </div>
             </div>
         
+            <!-- pokemonゾーン -->
             <div class="grid" id="pokedex"></div>
-        
+
             <!-- 説明ゾーン -->
             <div class="info-section">
                 <div class="info-card">
                     
-                    <div style="text-align: center;">
-                        <p style="font-size: 12px; color: #000; margin-bottom: 8px;">SNSで進捗を報告する</p>
-                        <button onclick="shareProgress()" style="padding: 8px 20px; background: #1565c0; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 15px; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                    <div class="info-card-container">
+                        <p>SNSで進捗を報告する</p>
+                        <button onclick="shareProgress()" class="twitter-button">
                             Twitter(X)でシェア
                         </button>
                     </div>
 
                     <h2>データのバックアップ・復元・初期化</h2>
-                    <div style="text-align: center;">
-                        <p style="font-size: 12px; color: #000; margin-bottom: 8px;">データのバックアップ・復元</p>
+                    <div class="info-card-container">
+                        <p>データのバックアップ・復元</p>
                         
-                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
-                            <button onclick="exportToTextarea()" style="padding: 6px 12px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                        <div class="backup-container">
+                            <button onclick="exportToTextarea()" class="buckup-button" style="background: #2ba0ff;">
                                 バックアップ
                             </button>
-                            <button onclick="importFromTextarea()" style="padding: 6px 12px; background: #607D8B; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                            <button onclick="importFromTextarea()" class="buckup-button" style="background: #bdbdbd;">
                                 データの復元
                             </button>
                         </div>
                         
-                        <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます" style="width: 90%; height: 80px; font-size: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                        <textarea id="backupTextarea" placeholder="ここにバックアップテキストが表示・入力されます"></textarea>
                         
-                        <p style="font-size: 10px; color: #5f5f5f; margin-top: 5px;">※復元時はテキストを貼り付けてからボタンを押してください</p>
-                        </div>
+                        <p class="buckup-message">※復元時はテキストを貼り付けてからボタンを押してください</p>
+                    </div>
                     
+
+                    <div class="howtobackup-container">
+                        <p>データはサーバー等に送信されず、ブラウザのローカルストレージに自動保存されます。ブラウザのキャッシュを削除するとデータが消えてしまうため、データの消失を防ぐのにバックアップ機能をご利用ください。</p>
+                        
+                        <h3>バックアップのやり方</h3>
+                        <ol>
+                            <li><strong>バックアップ</strong>ボタンを押してください。下の枠にバックアップ用テキストが表示されます。</li>
+                            <li>枠内のテキストをすべてコピーして、メモ帳などに貼り付けて保存してください。</li>
+                        </ol>
+                    
+                        <h3>復元のやり方</h3>
+                        <ol>
+                            <li>上記の方法で保存しておいたバックアップテキストをコピーします。</li>
+                            <li>上の出入力枠に、テキストを貼り付けます。</li>
+                            <li><strong>データの復元</strong>ボタンを押すと、以前の記録が復元されます。</li>
+                        </ol>
+                        <p style="color: #f44336;">※復元を行うと、現在入力されているデータは上書きされます。</p>
+                    </div>
+
                     <details class="accordion">
-                        <summary>データの初期化</summary>
+                        <summary>データの初期化（保存情報の削除）</summary>
                         <div class="content">
-                            <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消すことができます。</p>
-                            <button onclick="resetAllData()" style="padding: 8px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; opacity: 0.7;">
+                            <p>下の「データ初期化ボタン」を押すことで保存されている情報を全て消し、データを初期化することができます。</p>
+                            <button onclick="resetAllData()" class="reset-button">
                                 データ初期化ボタン
                             </button>
                         </div>
                     </details>
 
-                    <details class="accordion">
-                        <summary>データの保存場所とバックアップ・復元の使い方</summary>
-                        <div class="content">
-                            <p>データはブラウザの「ローカルストレージ」に自動保存されます。サーバーにデータは送信されず、あなたのPCやスマホ内にのみ保存されます。</p>
-                            <p>ブラウザのキャッシュを削除するとデータが消えてしまいます。データの消失を防ぐのに、以下のバックアップ機能をご利用ください。</p>
-                            <p><strong>【バックアップ】</strong></p>
-                            <ol>
-                                <li><strong>「バックアップ」</strong>ボタンを押すと、下の枠にバックアップ用テキストが表示されます。</li>
-                                <li>枠内のテキストをすべてコピーして、メモ帳などに貼り付けて保存してください。</li>
-                            </ol>
-                        
-                            <p style="margin-top: 15px;"><strong>【復元】</strong></p>
-                            <ol>
-                                <li>保存しておいたバックアップテキストをコピーします。</li>
-                                <li>以下の入力枠に、テキストを貼り付けます。</li>
-                                <li><strong>「データの復元」</strong>ボタンを押すと、以前の記録が復元されます。</li>
-                            </ol>
-                            <p style="color: #f44336; margin-top: 10px;">※復元を行うと、現在入力されているデータは上書きされます。</p>
-                        </div>
-                    </details>
-
                     <h2>サイトの概要</h2>
                     <details class="accordion">
-                        <summary>当サイトについて</summary>
-                        <div class="content">
-                            <p>ポケモン図鑑コンプ率チェッカーは、ポケモン収集の進捗管理、捕獲状況の記録、図鑑埋めの手助け等を目的としたファンサイトです。PC・スマホの両方で利用可能となっています。</p>
-                            <p>基本となる全国図鑑をはじめ、「Pokémon LEGENDS Z-A M次元ラッシュ」までの地方図鑑、そしてPokémon GOの図鑑にも対応しております。</p>
-                            <p>通常の捕獲状況だけでなく、色違い、メガシンカ、キョダイマックスの収集・登録状況も個別に記録可能です。</p>
-                            <p>また当サイトは「すがたちがい」にも対応しています。Pokémon HOMEに預けることのできるすべてのすがたに対応しており、メスのすがた、サトシゲッコウガのような配布限定、マホイップの全通りなどにも対応しています。</p>
-                            <p>なお、非公式のリーク情報を扱うことは絶対にありません。ネタバレや未解禁情報に触れたくない方でも、いつでも安心してご利用いただけます。</p>
-                            <p>入力されたデータは、お使いのブラウザ内部の安全な領域（ローカルストレージ機能）に自動でリアルタイム保存されます。そのため、作業の途中でページを閉じたり、再読み込みしたりしても、前回のチェック状態から再開することができます。</p>
-                        </div>
-                    </details>
-                
-                    <details class="accordion">
-                        <summary>使い方ガイド</summary>
+                        <summary>機能紹介</summary>
                         <div class="content">
                             <p><strong>捕獲チェック</strong><br>並んでいる各ポケモンのマスをクリック（タップ）すると「捕獲済み」になります。再度クリック（タップ）で解除できます。マスをドラッグする（なぞる）ことで、一度に複数のポケモンを捕獲/解除できます。</p>
                             <p><strong>色違い</strong><br>マス内の <span style="color: #fbc02d;">★</span> ボタンで個別に記録できます。こちらもドラッグする（なぞる）ことで、一度に複数の色違いを捕獲/解除できます。</p>
-                            <p><strong>絞り込み・検索機能</strong><br>絞り込み機能を使って、特定条件下のポケモンだけを表示、もしくは非表示にできます。また検索機能を使って目当てのポケモンを絞り込むことができ、名称に使われているひらがな・カタカナ・記号で検索できます。</p>
-                            <p><strong>一括捕獲・一括解除</strong><br>「一括捕獲/一括解除」ボタンで、現在表示されているポケモンや色違いを一気に捕獲、もしくは解除することができます。</p>
+                            <p><strong>絞り込み・検索機能</strong><br>絞り込み機能を使って、特定条件下のポケモンだけを表示、もしくは非表示にできます。また検索機能を使って目当てのポケモンを絞り込むことができます。名称に使われているひらがな・カタカナ・英数字・記号で検索でき、ローマ字検索等には対応していません。</p>
+                            <p><strong>一括捕獲・一括解除</strong><br>一括操作タブの中にある「一括捕獲/一括解除」ボタンで、現在表示されているポケモンや色違いを一気に捕獲、もしくは解除することができます。</p>
                             <p><strong>バックアップ・復元・初期化</strong><br>バックアップ/復元機能を使うことでデータの完全消失を防ぐことができます。また初期化機能でデータを完全に消すこともできます。</p>
                         </div>
                     </details>
 
                     <details class="accordion">
-                    <summary>その他詳細</summary>
-                        <details class="accordion">
-                            <summary>対応タイトル一覧</summary>
-                            <div class="content">
-                                <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
-                                <div class="minicontent">
-                                    <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
-                                </div>
+                        <summary>対応タイトル一覧</summary>
+                        <div class="content">
+                            <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
+                            <div class="minicontent">
+                                <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
                             </div>
-                        </details>
-                        
-                        <details class="accordion">
-                            <summary>記載していないポケモン</summary>
-                            <div class="content">
-                                <p>メガシンカ以外のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
-                                <div class="minicontent">
-                                    <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
-                                </div>
-                            </div>
-                        </details>
-
-                        <details class="accordion">
-                            <summary>作品別の色違い制限について</summary>
-                            <div class="content">
-                                <p>地方図鑑において、ブロックルーチンなどでその作品内で色違いが入手できないポケモンは、該当する地方図鑑で色違いボタンが表示されません。また、色違いが存在しない赤・緑・青・ピカチュウにおいては、色違いボタンは表示されません。</p>
-                                <p>Pokémon GOも同様に色違い未実装のポケモンには表示されませんが、実装された場合データ更新によって色違いボタンが表示されるようになります。</p>
-                                <p>全国図鑑では、過去一度も色違いが登場していないポケモンはボタンが非表示になります</p>
-                            </div>
-                        </details>
-
-                        <details class="accordion">
-                            <summary>図鑑完成に不要なポケモンの非表示機能について</summary>
-                            <div class="content">
-                                <p>地方図鑑完成（賞状の授与）に不必要なポケモンが非表示になります。賞状のないZAの図鑑はHOME図鑑を参照しています。</p>
-                                <p>図鑑によっては名称が変わります。全国図鑑では「幻のポケモンを非表示」に、全国図鑑 (Pokémon GO)では「HOMEに送れないポケモンと幻のポケモンを非表示」に変わり、前者では幻のポケモンが非表示に、後者では幻のポケモンとPokémon HOMEに送れないポケモン（パッチールやジガルデなど）が非表示になります。</p>
-                            </div>
-                        </details>
-
-                        <details class="accordion">
-                            <summary>配布限定ポケモンについて</summary>
-                            <div class="content">
-                                <p>当サイトでは配布限定ポケモンを、サトシゲッコウガやビビヨン（ボールのもよう）のような「配布以外の入手方法がない特別な姿のポケモン」と定義しています。テツノイサハやウネルミナモなどのような「現状配布以外の入手方法はないが特別な姿ではないポケモン」はこれに当てはまりません。</p>
-                            </div>
-                        </details>
-
-                        <details class="accordion">
-                            <summary>全国図鑑 (Pokémon GO)について</summary>
-                            <div class="content">
-                                <p>全国図鑑 (Pokémon GO)は、Pokémon GOに既に実装されている（または公式から実装が発表されている）ポケモンと、その色違いのみを表示する機能です。</p>
-                                <p>公式から未実装のポケモンや色違いの実装が発表された場合は当サイトも適宜更新しますが、更新されるのは公式による実装発表時に限ります。リーク等の非公式情報や、公式PV等で登場しただけなどでは更新されません。</p>
-                            </div>
-                        </details>
-
-                        <details class="accordion">
-                            <summary>最新作のデータの反映について</summary>
-                            <div class="content">
-                                <p>サイト管理人が最新作をネタバレを踏まずにやりたいがために、最新作のデータの反映に時間がかかる場合がございます。</p>
-                            </div>
-                        </details>
-
-                        <details class="accordion">
-                            <summary>運営プロフィール</summary>
-                            <div class="content">
-                                <p>ポケモン歴（ゲーム）：2012年末あたりから。初プレイはブラック2で以降最新作までプレイ済みだが外伝作品は未プレイ多め。</p>
-                                <p>ポケモン歴（アニメ）：おそらくダイパからサンムーンまで。初映画は「ディアルガVSパルキアVSダークライ」。</p>
-                                <p>Pokémon GO歴：2019年3月から。だいたいのポケモンは捕獲済み。</p>
-                                <p>その他：とうちゃんザルードとビビヨン（ボールのもよう）以外のポケモンはすべて持っていることが自慢。ココを見に行かなかったことを少し後悔している。</p>
-                            </div>
-                        </details>
+                        </div>
                     </details>
-                
-                    <h2>免責事項・プライバシーポリシー</h2>
-                        <h3>免責事項</h3>
+                    
+                    <details class="accordion">
+                        <summary>記載していないポケモン</summary>
                         <div class="content">
-                            <p>ポケットモンスター・ポケモン・Pokémonは任天堂・クリーチャーズ・ゲームフリークの登録商標です。当サイトは個人が制作・運営している非公式のファンサイトであり、任天堂株式会社、株式会社クリーチャーズ、株式会社ゲームフリーク、および株式会社ポケモンとは一切関係がありません。</p>
-                            <p>当サイトに掲載されている各種情報は、慎重に確認し作成しておりますが、公式の情報や実際のゲーム内仕様と異なる可能性がございます。当サイトの利用により発生したデータの消失、システムの不具合、その他いかなる損害・トラブルについても、製作者は一切の責任を負いかねますのであらかじめご了承ください。最新の正確な情報については、公式の発表等をご確認いただきますようお願い申し上げます。</p>
+                            <p>メガシンカ以外のPokémon HOMEに預けることができないポケモン、すがたは記載しておりません。</p>
+                            <div class="minicontent">
+                                <p><span class="nowrap">ギザみみピチュー、</span><span class="nowrap">お着替えピカチュウ、</span><span class="nowrap">相棒ポケモン、</span><span class="nowrap">ポワルン(たいようのすがた)、</span><span class="nowrap">ポワルン(あまみずのすがた)、</span><span class="nowrap">ポワルン(ゆきぐものすがた)、</span><span class="nowrap">チェリム(ポジフォルム)、</span><span class="nowrap">ディアルガ(オリジンフォルム)、</span><span class="nowrap">パルキア(オリジンフォルム)、</span><span class="nowrap">ギラティナ(オリジンフォルム)、</span><span class="nowrap">アルセウス(各タイプの姿)、</span><span class="nowrap">ヒヒダルマ(ダルマモード)、</span><span class="nowrap">ヒヒダルマ(ガラルのすがた・ダルマモード)、</span><span class="nowrap">ホワイトキュレム、</span><span class="nowrap">ブラックキュレム、</span><span class="nowrap">メロエッタ(ステップフォルム)、</span><span class="nowrap">ゲノセクト(各カセットの姿)、</span><span class="nowrap">ギルガルド(ブレードフォルム)、</span><span class="nowrap">ヨワシ(むれたすがた)、</span><span class="nowrap">シルヴァディ(各タイプの姿)、</span><span class="nowrap">ミミッキュ(ばれたすがた)、</span><span class="nowrap">ネクロズマ(たそがれのたてがみ)、</span><span class="nowrap">ネクロズマ(あかつきのつばさ)、</span><span class="nowrap">ウルトラネクロズマ、</span><span class="nowrap">ウッウ(うのみのすがた)、</span><span class="nowrap">ウッウ(まるのみのすがた)、</span><span class="nowrap">コオリッポ(ナイスフェイス)、</span><span class="nowrap">モルペコ(はらぺこもよう)、</span><span class="nowrap">ザシアン(けんのおう)、</span><span class="nowrap">ザマゼンタ(たてのおう)、</span><span class="nowrap">ムゲンダイナ(ムゲンダイマックス)、</span><span class="nowrap">バドレックス(はくばじょうのすがた)、</span><span class="nowrap">バドレックス(こくばじょうのすがた)、</span><span class="nowrap">イルカマン(マイティフォルム)、</span><span class="nowrap">オーガポン(いどのめん)、</span><span class="nowrap">オーガポン(かまどのめん)、</span><span class="nowrap">オーガポン(いしずえのめん)、</span><span class="nowrap">テラパゴス(テラスタルフォルム)、</span><span class="nowrap">テラパゴス(ステラフォルム)</span></p>
+                            </div>
                         </div>
+                    </details>
 
-                        <h3>プライバシーポリシー</h3>
-                        <div class="content">
-                            <p>当サイトに入力されたデータは、すべてお使いのブラウザ内部（ローカルストレージ機能）にのみ保存されます。アカウント登録やログインは不要で、データが外部のサーバーに送信・蓄積されることは一切ありません。</p>
-                            <p>当サイトでは、サイトの利用状況を把握し機能改善に役立てるためのアクセス解析ツール「Googleアナリティクス」、および広告配信サービス「Google AdSense」を利用、または今後利用する予定です。これに伴い、トラフィックデータの収集や効果的な広告表示を目的として、お使いのブラウザにCookie（クッキー）を使用することがあります。</p>
-                            <p>このCookieによって収集されるデータは匿名であり、氏名、住所、メールアドレス、電話番号といった個人を特定する情報は一切含まれません。ユーザーは、お使いのブラウザの設定によりCookieを無効にすることで、これらの収集を拒否することが可能です。詳細な設定方法やGoogleのポリシーに関しては、「Googleポリシーと規約」のページ等をご確認ください。</p>
-                        </div>
-
-                    <h2>関連リンク・問い合わせ</h2>
+                    <h2>関連リンク</h2>
                     <div class="content">
-                        <p>公式Twitter（現X）アカウント：<a href="https://x.com/pokeche0342" style="color: #1565c0; text-decoration: underline;" class="seo-tag" target="_blank" rel="noopener">@pokeche0342</a></p>
-                        <p>問い合わせフォーム：<a href="https://forms.gle/a2hXUwiJi8g8TkxV7" style="color: #1565c0; text-decoration: underline;" class="seo-tag" target="_blank" rel="noopener">意見・要望・ミス・不具合報告用フォーム</a></p>
+                        <p>お問い合わせ：<a href="https://forms.gle/a2hXUwiJi8g8TkxV7" class="seo-tag" target="_blank" rel="noopener">意見・要望・不具合報告用フォーム</a></p>
+                        <p>公式ツイッター（X）：<a href="https://x.com/pokeche0342" class="seo-tag" target="_blank" rel="noopener">＠pokeche0342</a></p>
                     </div>
-
                     <h2>更新情報</h2>
                     <details class="accordion">
                         <summary><div class="update-tag">最終更新:2026/06/25</div></summary>
@@ -1229,6 +1623,29 @@
             </div>
         </main>
 
+        <footer>
+            <div class="footer-navicontainer">
+                <nav class="footer-navi">
+                    <ol>
+                        <li><a href="/">ポケモン図鑑コンプ率チェッカー</a></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li><a href="/about.html">このサイトについて</a></li>
+                    <li><a href="/privacy.html">免責事項・プライバシーポリシー</a></li>
+                    <li><a href="https://forms.gle/a2hXUwiJi8g8TkxV7" class="seo-tag" target="_blank" rel="noopener">お問い合わせ</a></li>
+                    <li><a href="https://x.com/pokeche0342" class="seo-tag" target="_blank" rel="noopener">公式ツイッター（X）</a></li>
+                </ul>
+                <div class="copyright-container">
+                    <p><span class="nowrap">ポケットモンスター・ポケモン・Pokémonは</span><span class="nowrap">任天堂・クリーチャーズ・ゲームフリークの登録商標です。</span></p>
+                    <p><span class="nowrap">当サイトは個人ファンサイトであり、</span><span class="nowrap">株式会社ポケモンおよび関連企業様とは一切関係ありません。</span></p>
+                    <p class="copyright">&copy; 2026 ポケモン図鑑コンプ率チェッカー</p>
+                </div>
+            </div>
+        </footer>
+
         <script>
 
             // グローバル変数として定義
@@ -1239,7 +1656,7 @@
                 try {
                     // 【追加】URLパラメータから初期モードを決定
                     const urlParams = new URLSearchParams(window.location.search);
-                   const targetMode = urlParams.get('mode');
+                    const targetMode = urlParams.get('mode');
                     const select = document.getElementById('pokedexType');
 
                     if (targetMode && select.querySelector(`option[value="${targetMode}"]`)) {
