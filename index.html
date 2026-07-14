@@ -1573,7 +1573,9 @@
                     </div>
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新:2026/06/25</div></summary>
+                        <summary><div class="update-tag">最終更新:2026/07/14</div></summary>
+                        <div class="update-tag"><span class="update-date">2026/7/14:</span>
+                        <span class="update-content">全国図鑑 (Pokémon GO)にクスネ系統の色違いとウッウ、サシカマス系統を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/06/25:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にソルガレオとメッソン系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/06/16:</span>
@@ -1583,7 +1585,7 @@
                         <div class="update-tag"><span class="update-date">2026/06/06:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にメガエアームドとその色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/05/28:</span>
-                        <span class="update-content">全国図鑑 (Pokémon GO)にウォッシュロトムとケンタロス（パルデアのすがた）のコンバット種、ブレイズ種、ウォーター種の色違いを追加。</span></div>
+                        <span class="update-content">全国図鑑 (Pokémon GO)にウォッシュロトムとケンタロス（パルデアのすがた）系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/05/19:</span>
                         <span class="update-content">意見・要望・ミス・不具合報告用フォームを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/29:</span>
@@ -1958,9 +1960,7 @@
                 const currentMode = document.getElementById('pokedexType').value;
                 const baseUrl = window.location.origin + window.location.pathname;
 
-                // 1. 新しいURLを作る（例: https://example.com/?mode=g9）
-                // window.location.origin は "https://example.com"
-                // window.location.pathname は "/" や "/pokecomp/" など
+                // 1. 新しいURLを作る
                 let newUrl;
                 if (currentMode === 'all') {
                     newUrl = baseUrl;
