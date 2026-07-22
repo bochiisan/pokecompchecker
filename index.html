@@ -767,7 +767,7 @@
 
             .ad-container {
                 text-align: center; /* 広告を中央寄せにする */
-                margin: 30px 0;     /* 誤タップ防止のため、上下に十分な余白を取る */
+                margin: 30px 0 0;     /* 誤タップ防止のため、上下に十分な余白を取る */
             }
 
             .ad-sp {
@@ -784,7 +784,6 @@
                 background-color: #f8f9fa;
                 padding: 20px 10px 10px;
                 border-top: 1px solid #dee2e6;
-                margin-top: 40px; /* ツール本体との間に程よい余白を */
             }
             
             /* フッターのナビの枠組み */
@@ -888,20 +887,19 @@
                 padding: 5px;
             }
 
-
-            @media screen and (max-width: 802px) {
-	            /* 操作パネルのチェック */
-                .filter-group {
-                    max-width: 664px;
-                }
-            }
-
             @media screen and (min-width: 768px) {
                 .ad-sp {
                     display: none;    /* スマホ用を隠す */
                 }
                 .ad-pc {
                     display: block;   /* PC用を表示 */
+                }
+            }
+
+            @media screen and (max-width: 802px) {
+	            /* 操作パネルのチェック */
+                .filter-group {
+                    max-width: 664px;
                 }
             }
 
