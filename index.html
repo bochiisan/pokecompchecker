@@ -753,15 +753,27 @@
 
             /* リンク */
             /* リンク */
+            .seotag-title {
+                color: #000000; /* リンクとわかる青色 */
+                text-decoration: none; /* ★下線を最初から消す */
+            }
+
+            /* リンクにマウスオーバーしたとき */
+            .seotag-title:hover {
+                color: #000000; /* 少し濃い青にする */
+                text-decoration: none; /* ★触った時だけ下線を出す */
+            }
+
+            /* リンク */
             .seo-tag {
-                color: #001b38; /* リンクとわかる青色 */
+                color: #0068d6; /* リンクとわかる青色 */
                 text-decoration: none; /* ★下線を最初から消す */
             }
 
             /* リンクにマウスオーバーしたとき */
             .seo-tag:hover {
-                color: #001831; /* 少し濃い青にする */
-                text-decoration: none; /* ★触った時だけ下線を出す */
+                color: #004fa3; /* 少し濃い青にする */
+                text-decoration: underline; /* ★触った時だけ下線を出す */
             }
 
             .ad-container {
@@ -811,12 +823,12 @@
 
             /* フッターのナビli */
             .footer-navi li {
-                color: #6c757d; /* 現在のページの文字色（グレー系） */
+                color: #3f3f3f; /* 現在のページの文字色（グレー系） */
             }
 
             /* フッターのナビliのa */
             .footer-navi li a {
-                color: #418ce0; /* リンクの色（お使いのテーマカラーに合わせて変更してください） */
+                color: #0068d6; /* リンクの色（お使いのテーマカラーに合わせて変更してください） */
                 text-decoration: none;
             }
 
@@ -829,7 +841,7 @@
             .footer-navi li + li::before {
                 content: ">";
                 padding: 0 8px;
-                color: #6c757d;
+                color: #3f3f3f;
             }
             
             /* フッターの枠 */
@@ -856,7 +868,7 @@
             
             /* フッターのリンクゾーンのaの設定 */
             .footer-links a {
-                color: #418ce0;
+                color: #0068d6;
                 text-decoration: none;
             }
             
@@ -867,7 +879,7 @@
 
             /* フッターのコピーライトゾーン */
             .copyright-container {
-                color: #35393d;
+                color: #222222;
                 font-size: 12px;
                 padding: 0;
                 margin: 0;
@@ -1451,9 +1463,6 @@
                         </span>
                     </div>
                     
-
-            
-            
                     <!-- チェック系 -->
                     <div class="filter-group">
             	        <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
@@ -1523,7 +1532,6 @@
                         <p class="buckup-message">※復元時はテキストを貼り付けてからボタンを押してください</p>
                     </div>
                     
-
                     <div class="howtobackup-container">
                         <p>データはサーバー等に送信されず、ブラウザのローカルストレージに自動保存されます。ブラウザのキャッシュを削除するとデータが消えてしまうため、データの消失を防ぐのにバックアップ機能をご利用ください。</p>
                         
@@ -1539,7 +1547,7 @@
                             <li>上の出入力枠に、テキストを貼り付けます。</li>
                             <li><strong>データの復元</strong>ボタンを押すと、以前の記録が復元されます。</li>
                         </ol>
-                        <p style="color: #f44336;">※復元を行うと、現在入力されているデータは上書きされます。</p>
+                        <p style="color: #bb1105;">※復元を行うと、現在入力されているデータは上書きされます。</p>
                     </div>
 
                     <details class="accordion">
@@ -1567,9 +1575,9 @@
                     <details class="accordion">
                         <summary>対応タイトル一覧</summary>
                         <div class="content">
-                            <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seo-tag">全国図鑑</a>、<a href="?mode=go" class="seo-tag">Pokémon GO</a>に対応しております。</p>
+                            <p>当サイトは以下の本編タイトル・DLCと<a href="?mode=all" class="seotag-title">全国図鑑</a>、<a href="?mode=go" class="seotag-title">Pokémon GO</a>に対応しております。</p>
                             <div class="minicontent">
-                                <p><a href="?mode=g1" class="seo-tag"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seo-tag"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seo-tag"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seo-tag"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seo-tag"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seo-tag"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seo-tag"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seo-tag"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seo-tag"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seo-tag">セントラルカロス</a>・<a href="?mode=g6k" class="seo-tag">コーストカロス</a>・<a href="?mode=g6m" class="seo-tag">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seo-tag"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seo-tag">サン・ムーン</a> (<a href="?mode=g7m" class="seo-tag">メレメレ</a>・<a href="?mode=g7a" class="seo-tag">アーカラ</a>・<a href="?mode=g7u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7p" class="seo-tag">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seo-tag">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seo-tag">メレメレ</a>・<a href="?mode=g7-1a" class="seo-tag">アーカラ</a>・<a href="?mode=g7-1u" class="seo-tag">ウラウラ</a>・<a href="?mode=g7-1p" class="seo-tag">ポニ</a>)、</span><a href="?mode=g7-2" class="seo-tag"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seo-tag">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seo-tag">鎧の孤島</a>・<a href="?mode=g8k" class="seo-tag">冠の雪原</a>)、</span><a href="?mode=g4" class="seo-tag"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seo-tag"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seo-tag">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seo-tag">碧の仮面</a>・<a href="?mode=g9b" class="seo-tag">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seo-tag">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seo-tag">M次元ラッシュ</a></span></p>
+                                <p><a href="?mode=g1" class="seotag-title"><span class="nowrap">赤・緑、</span><span class="nowrap">青、</span><span class="nowrap">ピカチュウ、</span></a><a href="?mode=g2" class="seotag-title"><span class="nowrap">金・銀、</span><span class="nowrap">クリスタル、</span></a><a href="?mode=g3" class="seotag-title"><span class="nowrap">ルビー・サファイア、</span><span class="nowrap">エメラルド、</span></a><a href="?mode=g3-1" class="seotag-title"><span class="nowrap">ファイアレッド・リーフグリーン、</span></a><a href="?mode=g4" class="seotag-title"><span class="nowrap">ダイヤモンド・パール、</span></a><a href="?mode=g4-1" class="seotag-title"><span class="nowrap">プラチナ、</span></a><a href="?mode=g4-2" class="seotag-title"><span class="nowrap">ハートゴールド・ソウルシルバー、</span></a><a href="?mode=g5" class="seotag-title"><span class="nowrap">ブラック・ホワイト、</span></a><a href="?mode=g5-1" class="seotag-title"><span class="nowrap">ブラック2・ホワイト2、</span></a><span class="nowrap">X・Y (<a href="?mode=g6s" class="seotag-title">セントラルカロス</a>・<a href="?mode=g6k" class="seotag-title">コーストカロス</a>・<a href="?mode=g6m" class="seotag-title">マウンテンカロス</a>)、</span><a href="?mode=g6-1" class="seotag-title"><span class="nowrap">オメガルビー・アルファサファイア、</span></a><span class="nowrap"><a href="?mode=g7" class="seotag-title">サン・ムーン</a> (<a href="?mode=g7m" class="seotag-title">メレメレ</a>・<a href="?mode=g7a" class="seotag-title">アーカラ</a>・<a href="?mode=g7u" class="seotag-title">ウラウラ</a>・<a href="?mode=g7p" class="seotag-title">ポニ</a>)、</span><span class="nowrap"><a href="?mode=g7-1" class="seotag-title">ウルトラサン・ウルトラムーン</a> (<a href="?mode=g7-1m" class="seotag-title">メレメレ</a>・<a href="?mode=g7-1a" class="seotag-title">アーカラ</a>・<a href="?mode=g7-1u" class="seotag-title">ウラウラ</a>・<a href="?mode=g7-1p" class="seotag-title">ポニ</a>)、</span><a href="?mode=g7-2" class="seotag-title"><span class="nowrap">Let's Go! ピカチュウ・Let's Go! イーブイ、</span></a><span class="nowrap"><a href="?mode=g8" class="seotag-title">ソード・シールド</a>・エキスパンションパス (<a href="?mode=g8y" class="seotag-title">鎧の孤島</a>・<a href="?mode=g8k" class="seotag-title">冠の雪原</a>)、</span><a href="?mode=g4" class="seotag-title"><span class="nowrap">ブリリアントダイヤモンド・シャイニングパール、</span></a><a href="?mode=g8-1" class="seotag-title"><span class="nowrap">LEGENDS アルセウス、</span></a><span class="nowrap"><a href="?mode=g9" class="seotag-title">スカーレット・バイオレット</a>・ゼロの秘宝（<a href="?mode=g9k" class="seotag-title">碧の仮面</a>・<a href="?mode=g9b" class="seotag-title">藍の円盤</a>）、</span><span class="nowrap"><a href="?mode=g9-1" class="seotag-title">LEGENDS Z-A</a>・<a href="?mode=g9-1i" class="seotag-title">M次元ラッシュ</a></span></p>
                             </div>
                         </div>
                     </details>
@@ -1648,7 +1656,7 @@
                 <!-- スマホ用タグ（320×50） -->
                 <div class="ad-sp">
                     <div id="im-1bfdaeac00c649df87d8f02996a48ea1">
-                        <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+                        <script defer src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
                         <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594676,asid:1937909,type:"banner",display:"inline",elementid:"im-1bfdaeac00c649df87d8f02996a48ea1"})</script>
                     </div>
                 </div>
@@ -1656,7 +1664,7 @@
                 <!-- PC用タグ（728×90） -->
                 <div class="ad-pc">
                     <div id="im-9d8192e3fb00483d9c26ff4d97baa965">
-                        <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+                        <script defer src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
                         <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594675,asid:1937908,type:"banner",display:"inline",elementid:"im-9d8192e3fb00483d9c26ff4d97baa965"})</script>
                     </div>
                 </div>
