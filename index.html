@@ -372,7 +372,7 @@
                 display: grid; 
                 grid-template-columns: repeat(auto-fill, 100px); 
                 gap: 12px; 
-                padding: 20px; 
+                padding: 20px 10px; 
                 margin: 0 auto; 
                 justify-content: center;
                 justify-items: center;
@@ -776,19 +776,6 @@
                 text-decoration: underline; /* ★触った時だけ下線を出す */
             }
 
-            .ad-container {
-                text-align: center; /* 広告を中央寄せにする */
-                margin: 30px 0 0;     /* 誤タップ防止のため、上下に十分な余白を取る */
-            }
-
-            .ad-sp {
-                display: block;     /* スマホ用は表示 */
-            }
-
-            .ad-pc {
-                display: none;      /* PC用は隠す */
-            }
-
             /* フッター */
             /* フッター全体 */
             footer {
@@ -896,6 +883,78 @@
             /* コピーライト */
             .copyright {
                 padding: 5px;
+            }
+
+            .ad-container {
+                text-align: center; /* 広告を中央寄せにする */
+                margin: 30px 0 0;     /* 誤タップ防止のため、上下に十分な余白を取る */
+            }
+
+            .ad-sp {
+                display: block;     /* スマホ用は表示 */
+            }
+
+            .ad-pc {
+                display: none;      /* PC用は隠す */
+            }
+
+            .ad-center {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .adsp-down {
+                max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .adpc-down {
+                max-width: 728px;
+                margin: 0 auto;
+            }
+
+            .main-layout {
+                display: flex;
+                justify-content: center; /* 中央寄せ */
+                align-items: flex-start; /* 上揃え */
+                gap: 20px; /* 広告とメインコンテンツの隙間 */
+                margin: 0 auto;
+            }
+
+            /* 中央のメインコンテンツ（スマホの時は幅100%） */
+            .content-center {
+                width: 100%;
+                max-width: 1230px;
+            }
+
+            /* サイド広告はスマホ画面では完全に非表示にする */
+            .ad-side {
+                display: none;
+                max-width: 160px; /* 広告の幅に固定 */
+                flex-shrink: 0; /* 画面が縮んでも広告の幅を潰さない */
+                position: sticky;
+                top: 200px;
+                padding: 20px 0;
+            }
+
+            @media (min-width: 1490px) {
+            
+                /* 中央のメインコンテンツの幅を少し広げる（任意） */
+                .content-center {
+                    max-width: unset;
+                }
+
+                /* 非表示にしていた両サイドの広告を表示する */
+                .ad-side {
+                    display: block; 
+                }
+                /* サイド広告はスマホ画面では完全に非表示にする */
+                .ad-left {
+                    left: 20px; /* 上から20pxの位置で固定 */
+                }
+                .ad-right {
+                    right: 20px; /* 上から20pxの位置で固定 */
+                }
             }
 
             @media screen and (min-width: 768px) {
@@ -1500,19 +1559,41 @@
                 </div>
             </div>
         
-            <!-- pokemonゾーン -->
-            <div class="grid" id="pokedex"></div>
+            <div class="main-layout">
+            
+                <!-- 左側の広告枠（160x600） -->
+                <aside class="ad-side ad-left">
+                    <div id="im-442d5be4aa134c39a697ac50973e4f9d">
+                        <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+                        <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594675,asid:1940314,type:"banner",display:"inline",elementid:"im-442d5be4aa134c39a697ac50973e4f9d"})</script>
+                    </div>
+                </aside>
+                
+                <div class="content-center">
+                <!-- pokemonゾーン -->
+                    <div class="grid" id="pokedex"></div>
+                </div>
+
+                <!-- 右側の広告枠（160x600） -->
+                <aside class="ad-side ad-right">
+                    <div id="im-c0270a583bb54891b8c24f06eedde718">
+                        <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+                        <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594675,asid:1940313,type:"banner",display:"inline",elementid:"im-c0270a583bb54891b8c24f06eedde718"})</script>
+                    </div>
+                </aside>
+
+            </div>
 
             <div class="ad-container">
                 <!-- スマホ用タグ（320×50） -->
-                <div class="ad-sp">
+                <div class="ad-sp ad-center">
                     <div id="im-3cc72005d324424a93f694b605dc4d11">
                         <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
                         <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594676,asid:1940035,type:"banner",display:"inline",elementid:"im-3cc72005d324424a93f694b605dc4d11"})</script>
                     </div>
                 </div>
                 <!-- PC用タグ（728×90） -->
-                <div class="ad-pc">
+                <div class="ad-pc ad-center">
                     <div id="im-6ca8a76892624fcd80b209881d9c75c6">
                         <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
                         <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594675,asid:1940040,type:"banner",display:"inline",elementid:"im-6ca8a76892624fcd80b209881d9c75c6"})</script>
@@ -1671,14 +1752,14 @@
                         
             <div class="ad-container">
                 <!-- スマホ用タグ（320×50） -->
-                <div class="ad-sp">
+                <div class="ad-sp adsp-down">
                     <div id="im-1bfdaeac00c649df87d8f02996a48ea1">
                         <script defer src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
                         <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594676,asid:1937909,type:"banner",display:"inline",elementid:"im-1bfdaeac00c649df87d8f02996a48ea1"})</script>
                     </div>
                 </div>
                 <!-- PC用タグ（728×90） -->
-                <div class="ad-pc">
+                <div class="ad-pc adpc-down">
                     <div id="im-9d8192e3fb00483d9c26ff4d97baa965">
                         <script defer src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
                         <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85177,mid:594675,asid:1937908,type:"banner",display:"inline",elementid:"im-9d8192e3fb00483d9c26ff4d97baa965"})</script>
@@ -1686,7 +1767,6 @@
                 </div>
             </div>
         </main>
-
         <footer>
             <div class="footer-navicontainer">
                 <nav class="footer-navi">
