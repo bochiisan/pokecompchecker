@@ -322,18 +322,8 @@
 
 	        /* 一括操作ボックスの中 */
             .bulk-menu {
-                display: flex;
-                padding: 10px;
+                padding: 10px; 
                 background: white;
-                flex-direction: column;
-            }
-
-	        /* 一括操作ボックスの中 */
-            .bulk-menu p {
-                font-size: 14px; 
-                font-weight: bold; 
-                margin: 5px 0; 
-                color: #000; 
             }
 
 	        /* 一括操作ボックスのボタンエリア */
@@ -1067,10 +1057,6 @@
                     font-size: 12px; 
                 }
 
-                .bulk-menu p {
-                    font-size: 12px; 
-                }
-
                 /* 一括操作ボックスのボタンエリアのp */
                 .bulk-btncontainer p {
                     font-size: 12px; 
@@ -1286,10 +1272,6 @@
                     font-size: 10px; 
                 }
 
-                .bulk-menu p {
-                    font-size: 10px; 
-                }
-
                 /* 一括操作ボックスのボタンエリアのp */
                 .bulk-btncontainer p {
                     font-size: 10px; 
@@ -1497,6 +1479,33 @@
                                 <option value="g9-1i">異次元図鑑</option>
                             </select>
                         </span>
+
+                        <!-- 地方選択（プルダウンに見えるボタン） -->
+                        <div class="dropdown-button-container">
+                            <span class="nowrap">
+                                <p> 初登場地方</p>
+                                <button type="button" id="originDropdownBtn" class="dropdown-button">
+                                    地方を選択 (複数可)<span class="arrow"></span>
+                                </button>
+                                
+                                <div id="originDropdownMenu" class="dropdown-menu">
+                                    <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
+                                    <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
+                                    <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
+                                    <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
+                                    <label><input type="checkbox" class="origin-check" value="3.5"> カントー (FRLG)</label>
+                                    <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
+                                    <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
+                                    <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
+                                    <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
+                                    <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
+                                    <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
+                                    <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
+                                    <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
+                                    <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
+                                </div>
+                            </span>
+                        </div>
                     
                         <span class="nowrap">
                             <p>表示順</p>
@@ -1515,50 +1524,23 @@
                     
                     <!-- チェック系 -->
                     <div class="filter-group">
+            	        <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
+                        <span class="nowrap" id="hasFemaleFilterContainer"><input type="checkbox" id="hasFemaleFilter"><label for="hasFemaleFilter"> メスのすがたを表示</label></span>
+            	        <span class="nowrap" id="notNeedFilterContainer"><input type="checkbox" id="notNeedFilter" onchange="render()"><label for="notNeedFilter" id="notNeedFilterLabel">図鑑完成に不要なポケモンを非表示</label></span>
+                        <span class="nowrap" id="eventOnlyFilterContainer"><input type="checkbox" id="eventOnlyFilter"><label for="eventOnlyFilter"> 配布限定を表示</label></span>
+            	        <span class="nowrap" id="more869FilterContainer"><input type="checkbox" id="more869Filter"><label for="more869Filter"> マホイップの姿違いを全て表示</label></span>
                         <span class="nowrap"><input type="checkbox" id="hideCaughtFilter"><label for="hideCaughtFilter"> 捕獲済みを非表示</label></span>
                         <span class="nowrap"><input type="checkbox" id="hideShinyCaughtFilter"><label for="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label></span>
+                    	<span class="nowrap" id="MegaFilterContainer"><input type="checkbox" id="MegaFilter"><label for="MegaFilter"> メガシンカ一覧</label></span>
+                    	<span class="nowrap" id="GmaxFilterContainer"><input type="checkbox" id="GmaxFilter"><label for="GmaxFilter"> キョダイマックス一覧</label></span>
                     </div>
             
                     <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
                     <details class="bulk-container">
                         <summary class="bulk-title">
-                            詳細検索/一括操作
+                            一括操作（表示中のみ）
                         </summary>
                         <div class="bulk-menu">
-                            <p>初登場地方（複数可）</p>
-                            <div class="filter-group">
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region0" value="0"><label for="region0"> 未確認</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region1" value="1"><label for="region1"> カントー</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region2" value="2"><label for="region2"> ジョウト</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region3" value="3"><label for="region3"> ホウエン</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region3.5" value="3.5"><label for="region3.5"> カントー (FRLG)</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region4" value="4"><label for="region4"> シンオウ</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region5" value="5"><label for="region5"> イッシュ</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region6" value="6"><label for="region6"> カロス</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region6.5" value="6.5"><label for="region6.5"> ホウエン (ORAS)</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region7" value="7"><label for="region7"> アローラ</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region8" value="8"><label for="region8"> ガラル</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region8.5" value="8.5"><label for="region8.5"> ヒスイ</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region9" value="9"><label for="region9"> パルデア</label></span>
-                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region9.5" value="9.5"><label for="region9.5"> ミアレ</label></span>
-                            </div>
-                            <p>要素を表示</p>
-                            <div class="filter-group">
-                                <span class="nowrap" id="hasFemaleFilterContainer"><input type="checkbox" id="hasFemaleFilter"><label for="hasFemaleFilter"> メスのすがたを表示</label></span>
-                                <span class="nowrap" id="eventOnlyFilterContainer"><input type="checkbox" id="eventOnlyFilter"><label for="eventOnlyFilter"> 配布限定を表示</label></span>
-                                <span class="nowrap" id="more869FilterContainer"><input type="checkbox" id="more869Filter"><label for="more869Filter"> マホイップの姿違いを全て表示</label></span>
-                            </div>
-                            <p>要素を非表示</p>
-                            <div class="filter-group">
-                                <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
-                                <span class="nowrap" id="notNeedFilterContainer"><input type="checkbox" id="notNeedFilter" onchange="render()"><label for="notNeedFilter" id="notNeedFilterLabel">図鑑完成に不要なポケモンを非表示</label></span>
-                            </div>
-                            <p>特殊な図鑑に変更</p>
-                            <div class="filter-group">
-                                <span class="nowrap" id="MegaFilterContainer"><input type="checkbox" id="MegaFilter"><label for="MegaFilter"> メガシンカ図鑑</label></span>
-                                <span class="nowrap" id="GmaxFilterContainer"><input type="checkbox" id="GmaxFilter"><label for="GmaxFilter"> キョダイマックス図鑑</label></span>
-                            </div>
-                            <p>一括操作（表示中のみ）</p>
                             <!-- ポケモン行 -->
                             <div class="bulk-btncontainer">
                                 <p>ポケモン</p>
@@ -1707,10 +1689,6 @@
                             </div>
                         </div>
                     </details>
-                    
-                    <div class="content">
-                        <p>その他の詳細は<a href="/about.html" class="seo-tag" target="_blank" rel="noopener">こちら</a></p>
-                    </div>
 
                     <h2>関連リンク</h2>
                     <div class="content">
@@ -1719,9 +1697,7 @@
                     </div>
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新:2026/09/04</div></summary>
-                        <div class="update-tag"><span class="update-date">2026/09/04:</span>
-                        <span class="update-content">詳細検索の配置を変更。</span></div>
+                        <summary><div class="update-tag">最終更新:2026/09/03</div></summary>
                         <div class="update-tag"><span class="update-date">2026/09/03:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にカラミンゴの色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/08/26:</span>
