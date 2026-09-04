@@ -24,7 +24,7 @@
         <link rel="icon" href="favicon.ico" sizes="any">
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="icon.png">
-        <link rel="preload" href="/pokemon.json" as="fetch" crossorigin="anonymous">
+        <link rel="preload" href="pokemon.json" as="fetch" crossorigin="anonymous">
         <link rel="canonical" id="canonicalUrl" href="https://pokecompchecker.vercel.app/">
         <style>
             /* ヘッダー */
@@ -135,84 +135,23 @@
 
             /* 図鑑プルダウン */
             #pokedexType {
-                height: 38px; /* 標準的なセレクトボックスの高さ */
                 box-sizing: border-box; /* 枠線を含めた高さ計算にする */
+                height: 38px; /* 標準的なセレクトボックスの高さ */
                 line-height: 36px;    /* 文字の位置を中央に寄せる */
                 width: 180px;
-                padding: 5px; /* 右側に矢印用の余白 */
+                padding: 0 5px; /* 右側に矢印用の余白 */
                 margin: 0;            /* ブラウザ特有の余白を消す */
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 font-size: 14px; /* 標準的なセレクトボックスのサイズ */
                 background: #fff;
                 cursor: pointer;
-                box-sizing: border-box;
                 position: relative;
                 color: #000;
                 text-align: left;
-                padding-top: 0;
-                padding-bottom: 0;
                 display: flex;       /* ボタン内の文字も中央寄せにする */
                 vertical-align: middle; /* Flexが効かない環境への保険 */
                 align-items: center;
-            }
-
-
-            /* 浮き出るメニュー（プルダウンの中身と同じ挙動） */
-            .dropdown-button-container { position: relative; }
-
-            /* 地方プルダウン */
-            .dropdown-button {
-                height: 38px; /* 標準的なセレクトボックスの高さ */
-                box-sizing: border-box; /* 枠線を含めた高さ計算にする */
-                line-height: 36px;    /* 文字の位置を中央に寄せる */
-                width: 160px;
-                padding: 0 5px 0 10px;
-                margin: 0;            /* ブラウザ特有の余白を消す */
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 14px; /* 標準的なセレクトボックスのサイズ */
-                background: #fff;
-                cursor: pointer;
-                box-sizing: border-box;
-                position: relative;
-                color: #000;
-                text-align: left;
-                padding-top: 0;
-                padding-bottom: 0;
-                display: flex;       /* ボタン内の文字も中央寄せにする */
-                vertical-align: middle; /* Flexが効かない環境への保険 */
-                align-items: center;
-            }
-
-            /* チェック式プルダウンの三角 */
-            .dropdown-button::after {
-                content: "";
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-top: 5px solid #000; /* 下向き矢印 */
-                pointer-events: none;
-            }
-
-            /* チェック式プルダウンを開いたときに出る箱 */
-            .dropdown-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                right: 0;
-                z-index: 1000;
-                background: white;
-                border: 1px solid #ccc;
-                border-top: none;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                width: 160px;
-                overflow-y: auto;
-                padding: 0;
-                text-align: left; 
             }
 
             /* チェック式プルダウンのチェックボックス */
@@ -222,38 +161,22 @@
                 width: 14px;
             }
 
-            /* チェック式プルダウンを開いたときに出る内容一つ一つ */
-            .dropdown-menu label {
-                display: flex;
-                padding: 0 3px;
-                font-size: 14px;
-                white-space: nowrap;
-                align-items: center;
-                cursor: pointer;
-            }
-
-            /* チェック式プルダウンを開いたときに出る内容をマウスオーバーしたとき */
-            .dropdown-menu label:hover { background-color: #f0f0f0; }
-
             /* 表示順プルダウン */
             #sortSelect {
                 height: 38px; /* 標準的なセレクトボックスの高さ */
                 box-sizing: border-box; /* 枠線を含めた高さ計算にする */
                 line-height: 36px;    /* 文字の位置を中央に寄せる */
                 width: 110px;
-                padding: 5px; /* 右側に矢印用の余白 */
+                padding: 0 5px; /* 右側に矢印用の余白 */
                 margin: 0;            /* ブラウザ特有の余白を消す */
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 font-size: 14px; /* 標準的なセレクトボックスのサイズ */
                 background: #fff;
                 cursor: pointer;
-                box-sizing: border-box;
                 position: relative;
                 color: #000;
                 text-align: left;
-                padding-top: 0;
-                padding-bottom: 0;
                 display: flex;       /* ボタン内の文字も中央寄せにする */
                 vertical-align: middle; /* Flexが効かない環境への保険 */
                 align-items: center;
@@ -322,8 +245,18 @@
 
 	        /* 一括操作ボックスの中 */
             .bulk-menu {
-                padding: 10px; 
+                display: flex;
+                padding: 10px;
                 background: white;
+                flex-direction: column;
+            }
+
+	        /* 一括操作ボックスの中 */
+            .bulk-menu p {
+                font-size: 14px; 
+                font-weight: bold; 
+                margin: 5px 0; 
+                color: #000; 
             }
 
 	        /* 一括操作ボックスのボタンエリア */
@@ -396,8 +329,6 @@
                 -webkit-user-select: none;
                 -webkit-touch-callout: none;
                 touch-action: auto; 
-                content-visibility: auto;
-                contain-intrinsic-size: 100px 85px;
             }
 
             /* 名前の設定 */
@@ -1004,7 +935,7 @@
                 }
 
 	            /* プルダウン系のサイズ */
-                #pokedexType, .dropdown-button, #sortSelect, #searchInput {
+                #pokedexType, #sortSelect, #searchInput {
                     font-size: 12px;
                     height: 26px;
                     line-height: 24px;
@@ -1013,21 +944,6 @@
                 /* 図鑑プルダウン */
                 #pokedexType {
                     width: 160px;
-                }
-
-                /* 地方プルダウン */
-                .dropdown-button {
-                    width: 140px;
-                }
-
-                /* チェック式プルダウンを開いたときに出る箱 */
-                .dropdown-menu {
-                    width: 140px;
-                }
-
-	            /* チェック式プルダウンを開いたときに出る内容一つ一つ */
-                .dropdown-menu label {
-                    font-size: 12px;
                 }
                 
                 /* チェック式プルダウンのチェックボックス */
@@ -1057,6 +973,10 @@
                     font-size: 12px; 
                 }
 
+                .bulk-menu p {
+                    font-size: 12px; 
+                }
+
                 /* 一括操作ボックスのボタンエリアのp */
                 .bulk-btncontainer p {
                     font-size: 12px; 
@@ -1081,7 +1001,6 @@
                     min-height: 80px;
                     padding: 17px 2px 5px;
                     font-size: 9px;
-                    contain-intrinsic-size: 85px 80px;
                 }
 
                 /* 名前の設定 */
@@ -1216,7 +1135,7 @@
                 }
 
 	            /* プルダウン系のサイズ */
-                #pokedexType, .dropdown-button, #sortSelect, #searchInput {
+                #pokedexType, #sortSelect, #searchInput {
                     font-size: 10px;
                     height: 22px;
                     line-height: 20px;
@@ -1227,21 +1146,6 @@
                     width: 140px;
                 }
 
-                /* 地方プルダウン */
-                .dropdown-button {
-                    width: 130px;
-                }
-
-                /* チェック式プルダウンを開いたときに出る箱 */
-                .dropdown-menu {
-                    width: 130px;
-                }
-
-	            /* チェック式プルダウンを開いたときに出る内容一つ一つ */
-                .dropdown-menu label {
-                    font-size: 10px;
-                }
-                
                 /* チェック式プルダウンのチェックボックス */
                 .origin-check {
                     width: 10px;
@@ -1272,6 +1176,10 @@
                     font-size: 10px; 
                 }
 
+                .bulk-menu p {
+                    font-size: 10px; 
+                }
+
                 /* 一括操作ボックスのボタンエリアのp */
                 .bulk-btncontainer p {
                     font-size: 10px; 
@@ -1296,7 +1204,6 @@
                     min-height: 65px;
                     padding: 13px 2px 0px;
                     font-size: 8px;
-                    contain-intrinsic-size: 65px;
                 }
 
                 /* 名前の設定 */
@@ -1424,7 +1331,7 @@
     <body>
         <header>
             <div class="header-container">
-                <h1>ポケモン図鑑コンプ率チェッカー</h1>
+                <h1 id="main-title">ポケモン図鑑コンプ率チェッカー</h1>
             </div>
         </header>
         <main>
@@ -1479,33 +1386,6 @@
                                 <option value="g9-1i">異次元図鑑</option>
                             </select>
                         </span>
-
-                        <!-- 地方選択（プルダウンに見えるボタン） -->
-                        <div class="dropdown-button-container">
-                            <span class="nowrap">
-                                <p> 初登場地方</p>
-                                <button type="button" id="originDropdownBtn" class="dropdown-button">
-                                    地方を選択 (複数可)<span class="arrow"></span>
-                                </button>
-                                
-                                <div id="originDropdownMenu" class="dropdown-menu">
-                                    <label><input type="checkbox" class="origin-check" value="0"> 未確認</label>
-                                    <label><input type="checkbox" class="origin-check" value="1"> カントー</label>
-                                    <label><input type="checkbox" class="origin-check" value="2"> ジョウト</label>
-                                    <label><input type="checkbox" class="origin-check" value="3"> ホウエン</label>
-                                    <label><input type="checkbox" class="origin-check" value="3.5"> カントー (FRLG)</label>
-                                    <label><input type="checkbox" class="origin-check" value="4"> シンオウ</label>
-                                    <label><input type="checkbox" class="origin-check" value="5"> イッシュ</label>
-                                    <label><input type="checkbox" class="origin-check" value="6"> カロス</label>
-                                    <label><input type="checkbox" class="origin-check" value="6.5"> ホウエン (ORAS)</label>
-                                    <label><input type="checkbox" class="origin-check" value="7"> アローラ</label>
-                                    <label><input type="checkbox" class="origin-check" value="8"> ガラル</label>
-                                    <label><input type="checkbox" class="origin-check" value="8.5"> ヒスイ</label>
-                                    <label><input type="checkbox" class="origin-check" value="9"> パルデア</label>
-                                    <label><input type="checkbox" class="origin-check" value="9.5"> ミアレ</label>
-                                </div>
-                            </span>
-                        </div>
                     
                         <span class="nowrap">
                             <p>表示順</p>
@@ -1524,23 +1404,50 @@
                     
                     <!-- チェック系 -->
                     <div class="filter-group">
-            	        <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
-                        <span class="nowrap" id="hasFemaleFilterContainer"><input type="checkbox" id="hasFemaleFilter"><label for="hasFemaleFilter"> メスのすがたを表示</label></span>
-            	        <span class="nowrap" id="notNeedFilterContainer"><input type="checkbox" id="notNeedFilter" onchange="render()"><label for="notNeedFilter" id="notNeedFilterLabel">図鑑完成に不要なポケモンを非表示</label></span>
-                        <span class="nowrap" id="eventOnlyFilterContainer"><input type="checkbox" id="eventOnlyFilter"><label for="eventOnlyFilter"> 配布限定を表示</label></span>
-            	        <span class="nowrap" id="more869FilterContainer"><input type="checkbox" id="more869Filter"><label for="more869Filter"> マホイップの姿違いを全て表示</label></span>
                         <span class="nowrap"><input type="checkbox" id="hideCaughtFilter"><label for="hideCaughtFilter"> 捕獲済みを非表示</label></span>
                         <span class="nowrap"><input type="checkbox" id="hideShinyCaughtFilter"><label for="hideShinyCaughtFilter"> 捕獲済みの色違いを非表示</label></span>
-                    	<span class="nowrap" id="MegaFilterContainer"><input type="checkbox" id="MegaFilter"><label for="MegaFilter"> メガシンカ一覧</label></span>
-                    	<span class="nowrap" id="GmaxFilterContainer"><input type="checkbox" id="GmaxFilter"><label for="GmaxFilter"> キョダイマックス一覧</label></span>
                     </div>
             
                     <!-- ② 折りたたみメニュー行（独立したブロックにする） -->
                     <details class="bulk-container">
                         <summary class="bulk-title">
-                            一括操作（表示中のみ）
+                            詳細検索/一括操作
                         </summary>
                         <div class="bulk-menu">
+                            <p>初登場地方（複数可）</p>
+                            <div class="filter-group">
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region0" value="0"><label for="region0"> 未確認</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region1" value="1"><label for="region1"> カントー</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region2" value="2"><label for="region2"> ジョウト</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region3" value="3"><label for="region3"> ホウエン</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region3.5" value="3.5"><label for="region3.5"> カントー (FRLG)</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region4" value="4"><label for="region4"> シンオウ</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region5" value="5"><label for="region5"> イッシュ</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region6" value="6"><label for="region6"> カロス</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region6.5" value="6.5"><label for="region6.5"> ホウエン (ORAS)</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region7" value="7"><label for="region7"> アローラ</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region8" value="8"><label for="region8"> ガラル</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region8.5" value="8.5"><label for="region8.5"> ヒスイ</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region9" value="9"><label for="region9"> パルデア</label></span>
+                            <span class="nowrap"><input type="checkbox" class="origin-check" id="region9.5" value="9.5"><label for="region9.5"> ミアレ</label></span>
+                            </div>
+                            <p>要素を表示</p>
+                            <div class="filter-group">
+                                <span class="nowrap" id="hasFemaleFilterContainer"><input type="checkbox" id="hasFemaleFilter"><label for="hasFemaleFilter"> メスのすがたを表示</label></span>
+                                <span class="nowrap" id="eventOnlyFilterContainer"><input type="checkbox" id="eventOnlyFilter"><label for="eventOnlyFilter"> 配布限定を表示</label></span>
+                                <span class="nowrap" id="more869FilterContainer"><input type="checkbox" id="more869Filter"><label for="more869Filter"> マホイップの姿違いを全て表示</label></span>
+                            </div>
+                            <p>要素を非表示</p>
+                            <div class="filter-group">
+                                <span class="nowrap" id="noFormFilterContainer"><input type="checkbox" id="noFormFilter"><label for="noFormFilter"> 姿違いを非表示</label></span>
+                                <span class="nowrap" id="notNeedFilterContainer"><input type="checkbox" id="notNeedFilter" onchange="render()"><label for="notNeedFilter" id="notNeedFilterLabel">図鑑完成に不要なポケモンを非表示</label></span>
+                            </div>
+                            <p>特殊な図鑑に変更</p>
+                            <div class="filter-group">
+                                <span class="nowrap" id="MegaFilterContainer"><input type="checkbox" id="MegaFilter"><label for="MegaFilter"> メガシンカ図鑑</label></span>
+                                <span class="nowrap" id="GmaxFilterContainer"><input type="checkbox" id="GmaxFilter"><label for="GmaxFilter"> キョダイマックス図鑑</label></span>
+                            </div>
+                            <p>一括操作（表示中のみ）</p>
                             <!-- ポケモン行 -->
                             <div class="bulk-btncontainer">
                                 <p>ポケモン</p>
@@ -1689,6 +1596,10 @@
                             </div>
                         </div>
                     </details>
+                    
+                    <div class="content">
+                        <p>その他の詳細は<a href="about.html" class="seo-tag" target="_blank" rel="noopener">こちら</a></p>
+                    </div>
 
                     <h2>関連リンク</h2>
                     <div class="content">
@@ -1697,7 +1608,9 @@
                     </div>
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新:2026/09/03</div></summary>
+                        <summary><div class="update-tag">最終更新:2026/09/05</div></summary>
+                        <div class="update-tag"><span class="update-date">2026/09/05:</span>
+                        <span class="update-content">詳細検索の配置を変更と細かな修正。（内容の変更は無し）</span></div>
                         <div class="update-tag"><span class="update-date">2026/09/03:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にカラミンゴの色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/08/26:</span>
@@ -1731,25 +1644,25 @@
                         <div class="update-tag"><span class="update-date">2026/04/23:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にヒラヒナ系統を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/17:</span>
-                        <span class="update-content">各地方図鑑で不必要な絞り込みが非表示になるように変更。</br>「図鑑完成に不要なポケモンを非表示」が全国図鑑で「幻のポケモンを非表示」に、全国図鑑 (Pokémon GO)では「HOMEに送れないポケモンと幻のポケモンを非表示」になるように変更。</span></div>
+                        <span class="update-content">各地方図鑑で不必要な絞り込みが非表示になるように変更。<br>「図鑑完成に不要なポケモンを非表示」が全国図鑑で「幻のポケモンを非表示」に、全国図鑑 (Pokémon GO)では「HOMEに送れないポケモンと幻のポケモンを非表示」になるように変更。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/11:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にミミズズを追加。全国図鑑 (Pokémon GO)にミミズズとブロロン系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/07:</span>
-                        <span class="update-content">表示順を変更する機能と図鑑完成に不要なポケモンを非表示にする機能を追加。</br>作品別の色違い制限（詳しくは「作品別の色違い制限について」へ）を追加し、カントー図鑑 (赤緑青ピFRLG)を(赤緑青ピ)と(FRLG)に分割。</br>色違いカウンターの分母が0のときカウンターが非表示になるよう変更。</br>アンノーンの!と?の初登場地方を修正し、初登場地方にカントー (FRLG)を追加。</span></div>
+                        <span class="update-content">表示順を変更する機能と図鑑完成に不要なポケモンを非表示にする機能を追加。<br>作品別の色違い制限（詳しくは「作品別の色違い制限について」へ）を追加し、カントー図鑑 (赤緑青ピFRLG)を(赤緑青ピ)と(FRLG)に分割。<br>色違いカウンターの分母が0のときカウンターが非表示になるよう変更。<br>アンノーンの!と?の初登場地方を修正し、初登場地方にカントー (FRLG)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/03:</span>
                         <span class="update-content">メガマギアナ(500ねんまえのいろ)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/04/01:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にミミッキュを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/27:</span>
-                        <span class="update-content">一括操作の不具合とガラルヤドキングの出身地方を修正。全国図鑑 (Pokémon GO)にスナヘビ系統を追加。</br>全国図鑑 (Pokémon GO)にノノクラゲ系統の色違いを追加。</span></div>
+                        <span class="update-content">一括操作の不具合とガラルヤドキングの出身地方を修正。全国図鑑 (Pokémon GO)にスナヘビ系統を追加。<br>全国図鑑 (Pokémon GO)にノノクラゲ系統の色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/09:</span>
                         <span class="update-content">Pokémon GOモードを削除し、図鑑タブに全国図鑑 (Pokémon GO)を追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/03/04:</span>
                         <span class="update-content">対応タイトル一覧を追加。GOモードにゼラオラを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/02/27:</span>
-                        <span class="update-content">シンオウ図鑑を「DP,BDSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。</br>メガガブリアスZを追加。GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
+                        <span class="update-content">シンオウ図鑑を「DP,BDSP」と「Pt」の2種類に変更。初登場地方に「ホウエン (ORAS)」を追加。<br>メガガブリアスZを追加。GOモードにサッチムシ系統を追加し、ヒバニー系統とヤクデ系統に色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/02/26:</span>
-                        <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。</br>メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
+                        <span class="update-content">メスボタンを廃止し、メスのすがたを他のポケモンと同じ仕様に変更。<br>メガプテラを追加。メスのすがた、メガシンカ、キョダイマックスを地方図鑑に対応。</span></div>
                         <div class="update-tag"><span class="update-date">2026/02/20:</span>
                         <span class="update-content">公開</span></div>
                     </details>
@@ -1777,14 +1690,14 @@
             <div class="footer-navicontainer">
                 <nav class="footer-navi">
                     <ol>
-                        <li><a href="/">ポケモン図鑑コンプ率チェッカー</a></li>
+                        <li><a href="index.html">ポケモン図鑑コンプ率チェッカー</a></li>
                     </ol>
                 </nav>
             </div>
             <div class="footer-container">
                 <ul class="footer-links">
-                    <li><a href="/about.html">このサイトについて</a></li>
-                    <li><a href="/privacy.html">免責事項・プライバシーポリシー</a></li>
+                    <li><a href="about.html">このサイトについて</a></li>
+                    <li><a href="privacy.html">免責事項・プライバシーポリシー</a></li>
                     <li><a href="https://forms.gle/a2hXUwiJi8g8TkxV7" class="seo-tag" target="_blank" rel="noopener">お問い合わせ</a></li>
                     <li><a href="https://x.com/pokeche0342" class="seo-tag" target="_blank" rel="noopener">公式ツイッター（X）</a></li>
                 </ul>
@@ -1828,11 +1741,6 @@
                     
                     // 読み込みが完了してから描画を開始
                     render(); 
-
-                    select.addEventListener('change', function() {
-                        updateSEOAndURL(this.value, false); // URLとタイトルを更新
-                        render(); // 再描画
-                    });
                     
                 } 
                 catch (error) {
@@ -2041,15 +1949,32 @@
             
                     // 3. Descriptionの書き換え
                     const metaDesc = document.querySelector('meta[name="description"]');
-                    if (metaDesc) metaDesc.setAttribute('content', seoData[mode].description);
+                    if (metaDesc) {
+                        metaDesc.setAttribute(
+                            'content',
+                            seoData[mode].description
+                        );
+                    }
                 }
-            
-                // URLの書き換え処理（以下略）
+
+                const baseUrl =
+                    window.location.origin + window.location.pathname;
+
+                const newUrl = mode === 'all'
+                    ? baseUrl
+                    : `${baseUrl}?mode=${encodeURIComponent(mode)}`;
+
                 if (!isInitialLoad) {
-                    const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                    // modeが'all'の時はbaseUrlそのまま、それ以外の時は'?mode='をつける
-                    const newUrl = (mode === 'all') ? baseUrl : baseUrl + '?mode=' + mode;
-                    window.history.replaceState({ path: newUrl }, '', newUrl);
+                    window.history.replaceState(
+                        { path: newUrl },
+                        '',
+                        newUrl
+                    );
+                }
+
+                const canonicalTag = document.getElementById('canonicalUrl');
+                if (canonicalTag) {
+                    canonicalTag.href = newUrl;
                 }
             }
 
@@ -2060,7 +1985,7 @@
                 "g2": { base: ["g2"], origins: [], ranges: [], suffix: "（金銀クリスタル）"},
                 "g3": { base: ["g3"], origins: [], ranges: [], suffix: "（RSE）"},
                 "g3-1": { base: ["all"], origins: ["1"], ranges: [["all", 1, 151]], suffix: "（FRLG）"},
-                "g4": { base: ["g4"], origins: [], ranges: [], suffix: "（DP、DBSP）"},
+                "g4": { base: ["g4"], origins: [], ranges: [], suffix: "（DP、BDSP）"},
                 "g4-1": { base: ["g4-1"], origins: [], ranges: [], suffix: "（プラチナ）"},
                 "g4-2": { base: ["g4-2"], origins: [], ranges: [], suffix: "（HGSS）"},
                 "g5": { base: ["g5"], origins: ["5"], ranges: [], suffix: "（BW）"}, 
@@ -2095,7 +2020,6 @@
             pokedex.classList.add('is-loading');
         	const searchInput = document.getElementById('searchInput');
         	const modeSelect = document.getElementById('pokedexType'); 
-        	const originsFilter = document.getElementById('originsFilter');
         	const hasFemaleFilter = document.getElementById('hasFemaleFilter');
         	const notNeedFilter = document.getElementById('notNeedFilter');
         	const eventOnlyFilter = document.getElementById('eventOnlyFilter');
@@ -2104,28 +2028,6 @@
         	const MegaFilter = document.getElementById('MegaFilter');
         	const GmaxFilter = document.getElementById('GmaxFilter');
 
-            function updateUrlAndCanonical() {
-                const currentMode = document.getElementById('pokedexType').value;
-                const baseUrl = window.location.origin + window.location.pathname;
-
-                // 1. 新しいURLを作る
-                let newUrl;
-                if (currentMode === 'all') {
-                    newUrl = baseUrl;
-                } 
-                else {
-                    newUrl = baseUrl + "?mode=" + currentMode;
-                }
-
-                // 2. ブラウザのURLバーを書き換える（ページのリロードは発生しません）
-                window.history.replaceState(null, '', newUrl);
-
-                // 3. Canonicalタグを新しいURLに書き換える
-                const canonicalTag = document.getElementById('canonicalUrl');
-                if (canonicalTag) {
-                    canonicalTag.href = newUrl;
-                }
-            }
             
 
             function updateFilterUI() {
@@ -2219,6 +2121,9 @@
             let shinyList = JSON.parse(localStorage.getItem('shinyPokemon')) || [];
 
         	function render() {
+                // 再描画前のスクロール位置を保存
+                const savedScrollX = window.scrollX;
+                const savedScrollY = window.scrollY;
         		pokedex.innerHTML = '';
         		const config = modeSettings[modeSelect.value] || modeSettings["all"];
                 const isGoMode = config.onlyGo === true;
@@ -2352,11 +2257,6 @@
                         return a.currentNo - b.currentNo; // 同じ範囲内なら現在の番号順
                     }
                 });
-
-        		// ④ 名前検索フィルタ
-        		if (searchInput.value) {
-        			displayData = displayData.filter(p => p.name.includes(searchInput.value));
-        		}
                 
                 const fragment = document.createDocumentFragment();
         		// ⑤ 描画
@@ -2465,7 +2365,7 @@
                         if (e.target.closest('.mini-btn')) return;
                     
                         // 【最重要】なぞり中、またはなぞり直後（300ms以内）はクリックを完全に無視
-                        if (isDragging || hasMoved) {
+                        if (isDragging || hasMoved || isBlockingClick) {
                             e.preventDefault();
                             e.stopPropagation();
                             return;
@@ -2500,13 +2400,12 @@
                         };
                     }
                     
+                    fragment.appendChild(card);
                     
-        			pokedex.appendChild(card);
-                    
-                    pokedex.classList.remove('is-loading');
         	    });
                 
                 pokedex.appendChild(fragment);
+                pokedex.classList.remove('is-loading');
                 // --- ⑥ 集計処理（ループの外に出す） ---
                 const totalVisible = displayData.length;
                 
@@ -2520,14 +2419,14 @@
                 // render内のボタン非表示ロジック（!p.noShiny && !(isNotInGoActive && p.notInGoShiny)など）と同じ条件で絞り込む
                 const isNotInGoActive = isGoMode; // フィルタの状態を取得
                 const currentMode = document.getElementById('pokedexType').value;
-                const totalShinyPossible = displayData.filter(p => {
-                    // ボタンが表示される条件：(noShinyがtrueでない) かつ (GO未実装フィルタONかつnotInGoShinyがtrue)ではない
-                    // つまり render内の shinyBtnHtml が空文字にならない条件
+                const shinyPossibleTargets = displayData.filter(p => {
                     return !p.noShiny && !(p.shinyLocked && p.shinyLocked.includes(currentMode)) && !(isNotInGoActive && p.notInGoShiny);
-                }).length;
+                });
+
+                const totalShinyPossible = shinyPossibleTargets.length;
                 
                 // 3. 色違いの捕獲集計
-                const shinyCount = displayData.filter(p => 
+                const shinyCount = shinyPossibleTargets.filter(p => 
                     shinyList.some(id => String(id) === String(p.id))
                 ).length;
                 
@@ -2550,6 +2449,11 @@
                         shinyCounterElement.innerText = `★色違い: ${shinyCount} / ${totalShinyPossible} (${shinyPercent}%)`;
                     }
                 }
+                                
+                // DOMの再配置が完了した次のフレームで位置を復元
+                requestAnimationFrame(() => {
+                    window.scrollTo(savedScrollX, savedScrollY);
+                });
             }
 
             // 表示中のポケモンを一括操作する関数
@@ -2557,9 +2461,6 @@
                 const action = isCaught ? "「捕獲済み」" : "「未捕獲」";
                 if (!confirm(`現在表示されているポケモンをすべて${action}にしますか？`)) return;
 
-                // 現在のフィルタ条件を再現して、対象のIDリストを作成
-                const config = modeSettings[modeSelect.value] || modeSettings["all"];
-                const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked')).map(cb => cb.value);
                 const targets = getCurrentlyDisplayedTargets();
                 const targetIds = targets.map(p => String(p.id));
 
@@ -2625,11 +2526,10 @@
                 const isGoMode = config.onlyGo === true;
                 const selectedOrigins = Array.from(document.querySelectorAll('.origin-check:checked'))
                 .map(cb => cb.value);
-        		let displayData = [...pokemonData];
                 const hideCaught = document.getElementById('hideCaughtFilter').checked;
                 const hideShinyCaught = document.getElementById('hideShinyCaughtFilter').checked;
                 
-                return pokemonData.filter(p => {
+                let targets = pokemonData.filter(p => {
         			const bases = Array.isArray(config.base) ? config.base : [config.base];
                     const isBaseMatch = (bases.includes("all")) || (p.localNos && bases.some(b => p.localNos[b] !== undefined));
         			const isModeOriginMatch = config.origins.length === 0 || config.origins.includes(p.origins);
@@ -2667,6 +2567,26 @@
             
                     return isBaseMatch && isModeOriginMatch && isSelectOriginMatch && matchFemale && matchEvent && matchGo && matchForm && match869 && matchGmax && matchMega&& matchHideCaught&& matchHideShinyCaught && matchSearch && matchNotNeed;
                 });
+
+                if (config.ranges.length > 0) {
+                    targets = targets.filter(p => {
+                        return config.ranges.some(([targetBase, start, end]) => {
+                            const num = targetBase === "all"
+                                ? p.id
+                                : p.localNos
+                                    ? p.localNos[targetBase]
+                                    : null;
+
+                            const actualEnd = end === undefined ? start : end;
+
+                            return num !== null &&
+                                num >= start &&
+                                num <= actualEnd;
+                        });
+                    });
+                }
+
+                return targets;
             }
             
             
@@ -2696,46 +2616,30 @@
                 }
             }
 
-            const dropBtn = document.getElementById('originDropdownBtn');
-            const dropMenu = document.getElementById('originDropdownMenu');
-
-            // 開閉の切り替え
-            dropBtn.onclick = (e) => {
-                e.stopPropagation();
-                const isOpen = dropMenu.style.display === 'block';
-                dropMenu.style.display = isOpen ? 'none' : 'block';
-            };
-
-            // メニュー外をクリックで閉じる
-            document.addEventListener('click', () => {
-                dropMenu.style.display = 'none';
-            });
-
-            // メニュー内クリックで勝手に閉じないようにする（複数選択のため）
-            dropMenu.onclick = (e) => e.stopPropagation();
-
-            // 選択状況をボタンのテキストに反映（おまけ）
-            document.querySelectorAll('.origin-check').forEach(cb => {
-                cb.addEventListener('change', () => {
-                    const checked = document.querySelectorAll('.origin-check:checked');
-                    dropBtn.innerText = checked.length > 0 ? `${checked.length}件選択中` : "地方を選択 (複数可)";
-                });
-            });
-
             // --- ドラッグ・なぞり操作の統合管理 ---
             let isDragging = false;
-            let hasMoved = false; // 「なぞり」が発生したかどうかのフラグ
+            let hasMoved = false; 
             let dragMode = null;
-            let targetType = null; // 'caught', 'shiny' のいずれか
+            let targetType = null; 
+            let isBlockingClick = false; // 'caught', 'shiny' のいずれか
 
 
             document.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    dragMode = null;
-                    targetType = null;
-                    // なぞった場合のみ、最後に数字を更新
-                    if (hasMoved) render();
+                const wasDragging = isDragging;
+                const wasMoved = hasMoved;
+
+                isDragging = false;
+                hasMoved = false;
+                dragMode = null;
+                targetType = null;
+
+                if (wasDragging && wasMoved) {
+                    isBlockingClick = true;
+                    render();
+
+                    setTimeout(() => {
+                        isBlockingClick = false;
+                    }, 300);
                 }
             });
             // 共通のなぞり処理関数
@@ -2790,7 +2694,6 @@
                 const touch = e.touches[0]; // 1本目の指を確実に指定
                 const target = e.target;
                 const card = target ? target.closest('.pokemon') : null;
-                const isControl = target ? target.closest('.mini-btn, input, select, button, .dropdown-menu') : null;
             
                 if (card) {
                     isTouching = true;
@@ -2835,21 +2738,35 @@
                 }
             }, { passive: false });
             
-            // スマホ：指を離した
-            let isBlockingClick = false; // 「偽のクリック」を捨てるためのフラグ
             
             document.addEventListener('touchend', () => {
-                if (isTouching && hasMoved) {
+                const wasDragging = isTouching && hasMoved;
+
                 isTouching = false;
                 hasMoved = false;
                 dragMode = null;
                 targetType = null;
-                    // 全てのリストを保存
+
+                if (wasDragging) {
+                    isBlockingClick = true;
+
                     localStorage.setItem('caughtPokemon', JSON.stringify(caughtList));
                     localStorage.setItem('shinyPokemon', JSON.stringify(shinyList));
-                    
-                    render(); // 最新の保存データで画面を清書
+
+                    render();
+
+                    setTimeout(() => {
+                        isBlockingClick = false;
+                    }, 300);
                 }
+            }, { passive: true });
+
+            document.addEventListener('touchcancel', () => {
+                isTouching = false;
+                hasMoved = false;
+                dragMode = null;
+                targetType = null;
+                isBlockingClick = false;
             }, { passive: true });
             
             
@@ -2932,8 +2849,11 @@
             
                 // 現在の図鑑名を取得（selectのテキストを取得）
                 const modeSelect = document.getElementById('pokedexType');
-                const configName = modeSelect.options[modeSelect.selectedIndex].text.split(' ')[0];
+                const configName = modeSelect.options[modeSelect.selectedIndex].text;
             
+                // 現在のモードを含むURLを取得
+                const siteUrl = window.location.href;
+
                 // 捕獲済み集計（型変換対応の some を使用）
                 const caught = currentTargets.filter(p => 
                     caughtList.some(id => String(id) === String(p.id))
@@ -2951,7 +2871,7 @@
                     return !(p.noShiny || (isNotInGoActive && p.notInGoShiny) || isShinyLockedHere);
                 });
                 const totalShiny = shinyPossibleTargets.length;
-                const shiny = currentTargets.filter(p => 
+                const shiny = shinyPossibleTargets.filter(p => 
                     shinyList.some(id => String(id) === String(p.id))
                 ).length;
             
@@ -2959,14 +2879,11 @@
                 const caughtPer = Math.round((caught / total) * 1000) / 10;
                 const shinyPer = totalShiny > 0 ? Math.round((shiny / totalShiny) * 1000) / 10 : 0;
             
-                const siteUrl = window.location.href;
-                let title = config.suffix || "";
             
                 let text = `【ポケモン図鑑コンプ率チェッカー】\n` +
-                             `${configName}${title}\n` +
+                             `${configName}\n` +
                              `捕獲済み: ${caught} / ${total} (${caughtPer}%)\n`;
                 if (totalShiny > 0) {
-                    const shinyPer = Math.round((shiny / totalShiny) * 1000) / 10;
                     text += `★色違い: ${shiny} / ${totalShiny} (${shinyPer}%)\n`;
                 }
                 text += `${siteUrl}`;
@@ -2978,17 +2895,6 @@
                 window.open(xUrl, '_blank');
             }
 
-            // リスト操作の共通関数
-            function toggleIdInList(list, id, isAdd, storageKey) {
-                if (isAdd) {
-                    if (!list.includes(id)) list.push(id);
-                } 
-                else {
-                    const idx = list.indexOf(id);
-                    if (idx > -1) list.splice(idx, 1);
-                }
-                localStorage.setItem(storageKey, JSON.stringify(list));
-            }
 
             document.addEventListener('DOMContentLoaded', () => {
     
@@ -3006,13 +2912,12 @@
 
                 // ページを開いた瞬間に、今のモードに合わせてボタンの表示・非表示を整える
                 updateFilterUI(); 
-                updateUrlAndCanonical();
 
                 // --- 2. 各要素へのイベント登録（今のコードをここに入れる） ---
                 modeSelect.onchange = () => {
-                    updateFilterUI(); // モードが変わるたびにボタンの表示を更新
-                    updateUrlAndCanonical();
-                    render();         // その後、図鑑を描画
+                    updateFilterUI();
+                    updateSEOAndURL(modeSelect.value, false);
+                    render();
                 };
             
                 document.querySelectorAll('.origin-check').forEach(cb => {
@@ -3032,8 +2937,6 @@
                 GmaxFilter.onchange = render;
                 MegaFilter.onchange = render;
             
-                // --- 3. 最初の描画 ---
-                render();
             });
         </script>
         <!-- スクロールナビゲーションボタン -->
