@@ -149,9 +149,7 @@
                 position: relative;
                 color: #000;
                 text-align: left;
-                display: flex;       /* ボタン内の文字も中央寄せにする */
                 vertical-align: middle; /* Flexが効かない環境への保険 */
-                align-items: center;
             }
 
             /* チェック式プルダウンのチェックボックス */
@@ -177,9 +175,7 @@
                 position: relative;
                 color: #000;
                 text-align: left;
-                display: flex;       /* ボタン内の文字も中央寄せにする */
                 vertical-align: middle; /* Flexが効かない環境への保険 */
-                align-items: center;
             }
 
             /* 検索欄 */
@@ -1608,7 +1604,7 @@
                     </div>
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><div class="update-tag">最終更新:2026/09/05</div></summary>
+                        <summary><span class="update-tag">最終更新:2026/09/05</span></summary>
                         <div class="update-tag"><span class="update-date">2026/09/05:</span>
                         <span class="update-content">詳細検索の配置を変更と細かな修正。（内容の変更は無し）</span></div>
                         <div class="update-tag"><span class="update-date">2026/09/03:</span>
@@ -1717,41 +1713,37 @@
             // 【重要】JSONを読み込む関数
             async function init() {
                 try {
-                    // 【追加】URLパラメータから初期モードを決定
                     const urlParams = new URLSearchParams(window.location.search);
                     const targetMode = urlParams.get('mode');
                     const select = document.getElementById('pokedexType');
 
-                    if (targetMode && select.querySelector(`option[value="${targetMode}"]`)) {
-                        select.value = targetMode; // プルダウンをURLに合わせる
-                        updateSEOAndURL(targetMode, true); // タイトルを書き換え
-                    } 
-                    else {
-                        updateSEOAndURL(select.value, true); // デフォルト（allなど）でセット
+                    if (
+                        targetMode &&
+                        select.querySelector(`option[value="${targetMode}"]`)
+                    ) {
+                        select.value = targetMode;
                     }
-                    // 同じフォルダにある pokemon.json を取得
+
+                    // URLからモードを確定した後にSEO情報とフィルターUIを更新
+                    updateSEOAndURL(select.value, true);
+                    updateFilterUI();
+
                     const response = await fetch('pokemon.json');
 
                     if (!response.ok) {
                         throw new Error('ファイルの読み込みに失敗しました');
                     }
 
-                    // JSONデータを配列として読み込む
                     pokemonData = await response.json();
-                    
-                    // 読み込みが完了してから描画を開始
-                    render(); 
-                    
-                } 
-                catch (error) {
+
+                    render();
+                } catch (error) {
                     console.error("エラーが発生しました:", error);
-                    document.getElementById('pokedex').innerHTML = 
-                    `<p style="color:red;">データの読み込みに失敗しました。Live Serverで開いているか、ファイル名が正しいか確認してください。</p>`;
+
+                    document.getElementById('pokedex').innerHTML =
+                        `<p style="color:red;">データの読み込みに失敗しました。Live Serverで開いているか、ファイル名が正しいか確認してください。</p>`;
                 }
             }
-
-            // ページの読み込みが終わったら実行
-            window.onload = init;
 
             // ① 各図鑑ごとのタイトルと説明文のリスト
             const seoData = {
@@ -2158,8 +2150,6 @@
 
         			// 【追加】姿違いの除外（ONで非表示）// noForm が true の個体を、チェックONの時に取り除く// 1. 現在のモード（地方図鑑）を取得
         			const currentMode = modeSelect.value;
-
-
 
         			// 2. 判定に使うIDを特定
         			let targetId;
@@ -2771,28 +2761,25 @@
             
             
             // ① データをテキストエリアに書き出す
-            function exportToTextarea() {
+            async function exportToTextarea() {
                 const textContent = [
                     `CAUGHT:${caughtList.join(',')}`,
                     `SHINY:${shinyList.join(',')}`,
                 ].join('\n');
-            
+
                 const textarea = document.getElementById('backupTextarea');
                 textarea.value = textContent;
-                textarea.select(); // テキストエリアを選択状態にする
-            
-                // 【修正】安全なコピー処理
+                textarea.select();
+
                 try {
-                    // まず新しい方法を試す
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                        navigator.clipboard.writeText(textContent);
+                    if (navigator.clipboard?.writeText) {
+                        await navigator.clipboard.writeText(textContent);
                     } else {
-                        // 失敗・または未対応時は古い方法（選択済みのテキストエリアをコピー）を実行
                         document.execCommand('copy');
                     }
+
                     alert("テキストエリアに書き出し、クリップボードにコピーしました！");
                 } catch (err) {
-                    // コピー自体が失敗しても、書き出しは成功しているのでアラートのみ
                     alert("テキストエリアに書き出しました。枠内の文字をコピーして保存してください。");
                 }
             }
@@ -2897,23 +2884,7 @@
 
 
             document.addEventListener('DOMContentLoaded', () => {
-    
-                // --- 1. 初期化処理 ---
-                const urlParams = new URLSearchParams(window.location.search);
-                const modeFromUrl = urlParams.get('mode'); // ?mode=〇〇 の 〇〇 を取得
-
-                if (modeFromUrl) {
-                    const modeSelect = document.getElementById('pokedexType');
-                    // もしURLで指定されたモードが、プルダウンの選択肢に存在すればセットする
-                    if ([...modeSelect.options].some(opt => opt.value === modeFromUrl)) {
-                        modeSelect.value = modeFromUrl;
-                    }
-                }
-
-                // ページを開いた瞬間に、今のモードに合わせてボタンの表示・非表示を整える
-                updateFilterUI(); 
-
-                // --- 2. 各要素へのイベント登録（今のコードをここに入れる） ---
+                // --- 各要素へのイベント登録（今のコードをここに入れる） ---
                 modeSelect.onchange = () => {
                     updateFilterUI();
                     updateSEOAndURL(modeSelect.value, false);
@@ -2937,6 +2908,8 @@
                 GmaxFilter.onchange = render;
                 MegaFilter.onchange = render;
             
+                init();
+
             });
         </script>
         <!-- スクロールナビゲーションボタン -->
