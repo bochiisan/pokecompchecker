@@ -255,7 +255,7 @@
             .bulk-menu p {
                 font-size: 14px; 
                 font-weight: bold; 
-                margin: 5px 0; 
+                margin: 0 auto 5px; 
                 color: #000; 
             }
 
@@ -274,7 +274,6 @@
                 font-weight: bold; 
                 margin: 0; 
                 color: #000; 
-                width: 80px; 
                 text-align: right;
             }
 
@@ -306,7 +305,7 @@
                 grid-template-columns: repeat(auto-fill, 100px); 
                 gap: 12px; 
                 padding: 20px 10px; 
-                margin: 0 auto; 
+                margin: 0 20px;
                 justify-content: center;
                 justify-items: center;
             }
@@ -997,7 +996,7 @@
 
                 /* 1つ1つのマスのデザイン */
                 .pokemon {
-                    width: 85px;
+                    width: 75px;
                     min-height: 80px;
                     padding: 17px 2px 5px;
                     font-size: 9px;
@@ -1018,6 +1017,9 @@
                 /* 図鑑ナンバーの枠 */
                 .container {
                     height: 16px;
+                    top: 6px;
+                    right: 2px;
+                    justify-content: flex-end;
                 }
 
                 /* 説明ゾーン */
@@ -1122,17 +1124,6 @@
                 .header-container h1 {
                     font-size: 20px;
                 }
-                    
-                /* カウンター全体 */
-                .counter-container {
-                    font-size: 12px;
-                }
-
-
-	            /* プルダウンエリアのp */
-                .filter-row p {
-                    font-size: 10px;
-                }
 
 	            /* プルダウン系のサイズ */
                 #pokedexType, #sortSelect, #searchInput {
@@ -1161,30 +1152,6 @@
                     width: 110px;
                 }
 
-	            /* 操作パネルのチェック */
-                .filter-group {
-                    font-size: 10px;
-                }
-
-                /* 操作パネルのチェックのチェックボックス */
-                .filter-group input[type="checkbox" i] { 
-                    width: 10px;
-                }
-
-                /* 一括操作ボックスタイトル */
-                .bulk-title {
-                    font-size: 10px; 
-                }
-
-                .bulk-menu p {
-                    font-size: 10px; 
-                }
-
-                /* 一括操作ボックスのボタンエリアのp */
-                .bulk-btncontainer p {
-                    font-size: 10px; 
-                }
-
                 /* ボタンをきれいに並べるための共通スタイル */
                 .bulk-btn-green, .bulk-btn-red, .bulk-btn-orange {
                     height: 25px;
@@ -1200,7 +1167,7 @@
 
                 /* 1つ1つのマスのデザイン */
                 .pokemon {
-                    width: 65px;
+                    width: 60px;
                     min-height: 65px;
                     padding: 13px 2px 0px;
                     font-size: 8px;
@@ -1294,36 +1261,16 @@
                 .footer-navi {
                     font-size: 10px;
                 }
-
             }
 
-            @media screen and (max-width: 429px) {
-	            /* 操作パネルのプルダウンエリア */
-                .filter-row {
-                    max-width: 329px;
-                }
-
-            }
-
-            @media screen and (max-width: 380px) {
-	            /* 操作パネルのチェック */
-                .filter-group {
-                    gap: 0px 5px;
-                }
-
-            }
-
-            @media screen and (max-width: 364px) {
-	            /* 操作パネルのチェック */
-                .filter-group {
+            @media screen and (max-width: 367px) {
+                /* 1つ1つのマスのデザイン */
+                .pokemon {
+                    width: 65px;
+                    min-height: 65px;
+                    padding: 13px 2px 0px;
                     font-size: 8px;
                 }
-
-                /* 操作パネルのチェックのチェックボックス */
-                .filter-group input[type="checkbox" i] { 
-                    width: 8px;
-                }
-
             }
 
         </style>
@@ -1608,7 +1555,9 @@
                     </div>
                     <h2>更新情報</h2>
                     <details class="accordion">
-                        <summary><span class="update-tag">最終更新:2026/10/09</span></summary>
+                        <summary><span class="update-tag">最終更新:2026/10/26</span></summary>
+                        <div class="update-tag"><span class="update-date">2026/10/26:</span>
+                        <span class="update-content">UIの調整。</span></div>
                         <div class="update-tag"><span class="update-date">2026/10/09:</span>
                         <span class="update-content">全国図鑑 (Pokémon GO)にジュラルドン（キョダイマックスのすがた）とその色違いを追加。</span></div>
                         <div class="update-tag"><span class="update-date">2026/10/03:</span>
